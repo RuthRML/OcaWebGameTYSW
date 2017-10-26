@@ -44,7 +44,7 @@ function unirse(){
 var ws;
 
 function conectarWebSocket() {
-	ws = new WebSocket ("ws://localhost:8080/LaOca/servidorDePartidas");
+	ws = new WebSocket ("ws://localhost:8080/OcaWebGameTYSW/servidorDePartidas");
 	
 	ws.onopen = function(){
 		console.log("Websocket conectado");
