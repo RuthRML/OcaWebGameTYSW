@@ -4,25 +4,30 @@
     pageEncoding="UTF-8"%>
 
 <%
-	String p=request.getParameter("p");
-	JSONObject jso=new JSONObject(p);
-	String nombreJugador=jso.getString("nombre");
-	int numeroDeJugadores=jso.getInt("numeroDeJugadores");
-	session.setAttribute("nombreDeUsuario", nombreJugador);	
+
+	String p = request.getParameter("p");
+	JSONObject jso = new JSONObject(p);
+	String nombreJugador = jso.getString("nombre");
+	int numeroDeJugadores = jso.getInt("numeroDeJugadores");
+	session.setAttribute("nombreDeUsuario", nombreJugador);
 	
-	JSONObject respuesta=new JSONObject();
-	try {
-		int idPartida=Manager.get().crearPartida(nombreJugador, numeroDeJugadores);
+	JSONObject respuesta = new JSONObject();
+	
+	try{
+		int idPartida = Manager.get().crearPartida(nombreJugador, numeroDeJugadores);
+		
+		session.setAttribute ("nombreDeUsuario", nombreJugador);
 		respuesta.put("result", "OK");
 		respuesta.put("mensaje", idPartida);
 		
-		Cookie cookie=new Cookie("kookie", "" + numeroDeJugadores);
-		cookie.setMaxAge(30);
+		Cookie cookie = new Cookie ("kookie", "" + numeroDeJugadores);
+		cookie.setMaxAge(30); //Expira en 30 segundos
 		response.addCookie(cookie);
-	}
-	catch (Exception e) {
+	}catch (Exception e){
 		respuesta.put("result", "ERROR");
 		respuesta.put("mensaje", e.getMessage());
 	}
+	
 	out.println(respuesta.toString());
+
 %>

@@ -2,18 +2,18 @@ package edu.uclm.esi.tysweb.laoca.dao;
 
 import java.sql.Connection;
 
-public class Broker {
+public class DBBroker {
 	private Pool pool;
 	
-	private Broker() {
-		this.pool=new Pool(2);
+	private DBBroker() {
+		this.pool = new Pool(2);
 	}
 	
 	private static class BrokerHolder {
-		static Broker singleton=new Broker();
+		static DBBroker singleton = new DBBroker();
 	}
 	
-	public static Broker get() {
+	public static DBBroker get() {
 		return BrokerHolder.singleton;
 	}
 
@@ -24,4 +24,5 @@ public class Broker {
 	public void close(Connection bd) {
 		this.pool.close(bd);
 	}
+
 }

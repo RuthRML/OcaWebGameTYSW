@@ -7,15 +7,15 @@ import java.sql.ResultSet;
 public class DAOUsuario {
 
 	public static boolean existe(String nombreJugador) throws Exception {
-		String sql="Select count(*) from usuario where email=?";
-		Connection bd=Broker.get().getBD();
-		PreparedStatement ps=bd.prepareStatement(sql);
-		ps.setString(1, nombreJugador);
-		ResultSet rs=ps.executeQuery();
+		String sql = "SELECT count(*) FROM usuario WHERE email=?";
+		Connection bd = DBBroker.get().getBD();
+		PreparedStatement ps = bd.prepareStatement(sql);
+		ps.setString(1,  nombreJugador);
+		ResultSet rs = ps.executeQuery();
 		rs.next();
-		int resultado=rs.getInt(1);
-		Broker.get().close(bd);
-		return resultado==1;
+		int resultado = rs.getInt(1);
+		DBBroker.get().close(bd);
+		return resultado == 1;
 	}
 
 }
