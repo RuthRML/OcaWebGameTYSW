@@ -53,23 +53,26 @@ Tablero.prototype.crearCasillas = function() {
 	}
 
 	var x0ant = this.casillas[8].x0;
-	var xfant = this.casillas[8].xf;
+	var xfant = this.casillas[8].xF;
+	var yfant = this.casillas[8].yF;
 	
 	for (var i = 9; i < 16; i++) {
 		if (i == 9) {
 			this.casillas[i].x0 = x0ant;
-			this.casillas[i].y0 = this.casillas[i - 1].yf;
+			this.casillas[i].y0 = yfant;
 			this.casillas[i].xF = xfant;
 			this.casillas[i].yF = this.casillas[i].y0 + 50;
 			this.casillas[i].crearCirculo();
 		} else {
 			this.casillas[i].x0 = x0ant;
-			this.casillas[i].y0 = this.casillas[i-1].yf;
+			this.casillas[i].y0 = this.casillas[i-1].yF;
 			this.casillas[i].xF = xfant;
 			this.casillas[i].yF = this.casillas[i].y0 + 50;
 			this.casillas[i].crearCirculo();
 		}
 	}
+	
+	
 
 }
 
