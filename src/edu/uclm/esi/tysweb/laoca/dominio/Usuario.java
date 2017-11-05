@@ -1,5 +1,8 @@
 package edu.uclm.esi.tysweb.laoca.dominio;
 
+import java.sql.SQLException;
+
+
 import edu.uclm.esi.tysweb.laoca.dao.DAOUsuario;
 
 public class Usuario {
@@ -17,6 +20,10 @@ public class Usuario {
 
 	public String getLogin() {
 		return this.login;
+	}
+
+	public static void insert(String nombreUsuario, String email, String pwd) throws SQLException {
+		DAOUsuario.registrar(nombreUsuario, email, pwd);
 	}
 
 }

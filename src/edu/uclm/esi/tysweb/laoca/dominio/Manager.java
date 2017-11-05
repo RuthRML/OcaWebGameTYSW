@@ -1,6 +1,8 @@
 package edu.uclm.esi.tysweb.laoca.dominio;
 
+import java.sql.SQLException;
 import java.util.concurrent.ConcurrentHashMap;
+
 
 import edu.uclm.esi.tysweb.laoca.dao.DBBroker;
 
@@ -59,6 +61,9 @@ public class Manager {
 			this.partidasEnJuego.put(partida.getId(), partida);
 		}
 		
+	}
+	public void registrar(String nombreUsuario, String email, String pwd1) throws SQLException {
+		Usuario.insert(nombreUsuario, email, pwd1);
 	}
 	
 }
