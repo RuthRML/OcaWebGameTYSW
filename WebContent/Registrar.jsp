@@ -7,6 +7,7 @@
     String email=request.getParameter("email");
     String pwd1=request.getParameter("pwd1");
     String pwd2=request.getParameter("pwd2");
+    String boton=request.getParameter("boton");
     String msg=null;
     if (boton!=null) {
         if (pwd1==null || pwd2==null || pwd1.length()==0 || pwd2.length()==0) {
