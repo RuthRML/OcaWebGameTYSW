@@ -8,6 +8,8 @@ function crearPartida(){
 			console.log(respuesta.result);
 			conectarWebSocket();
 			localStorage.nombre = document.getElementById("nombre").value;
+			var divMensajes=document.getElementById("divMensajes");
+			divMensajes.innerHTML += "Se ha conectado";
 		}
 	};
 
