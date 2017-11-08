@@ -46,11 +46,14 @@ Tablero.prototype.crearCasillas = function() {
 
 	//Creación de la primera fila
 	for (var i = 0; i < 10; i++) {
-		this.casillas[i].x0 = i * 50;
+		this.casillas[i].x0 = i * 50 + 50;
 		this.casillas[i].y0 = 400;
 		this.casillas[i].xF = this.casillas[i].x0 + 50;
 		this.casillas[i].yF = this.casillas[i].y0 + 50;
 		this.casillas[i].crearCirculo();
+		if(i != 9){
+			this.casillas[i].crearLinea(this.casillas[i].x0, this.casillas[i].xF , this.casillas[i].y0, this.casillas[i].y0);
+		}
 	}
 	
 	var x0ant = this.casillas[9].x0;
@@ -63,6 +66,9 @@ Tablero.prototype.crearCasillas = function() {
 		this.casillas[i].xF = xFant;
 		this.casillas[i].yF = this.casillas[i - 1].y0;
 		this.casillas[i].crearCirculo();
+		if(i != 16){
+			this.casillas[i].crearLinea(this.casillas[i].x0, this.casillas[i].x0 , this.casillas[i].y0, this.casillas[i].yF);
+		}
 	}
 	
 	var y0ant = this.casillas[16].y0;
@@ -75,6 +81,9 @@ Tablero.prototype.crearCasillas = function() {
 		this.casillas[i].xF = this.casillas[i - 1].x0;
 		this.casillas[i].yF = yFant;
 		this.casillas[i].crearCirculo();
+		if(i != 25){
+			this.casillas[i].crearLinea(this.casillas[i].x0, this.casillas[i].xF , this.casillas[i].yF, this.casillas[i].yF);
+		}
 	}
 	
 	x0ant = this.casillas[25].x0;
@@ -87,6 +96,9 @@ Tablero.prototype.crearCasillas = function() {
 		this.casillas[i].xF = xFant;
 		this.casillas[i].yF = this.casillas[i].y0 - 50;
 		this.casillas[i].crearCirculo();
+		if(i != 26 ){
+			this.casillas[i].crearLinea(this.casillas[i].xF, this.casillas[i].xF , this.casillas[i].y0, this.casillas[i].yF);
+		}
 	}
 	
 	var y0ant = this.casillas[31].y0;
@@ -99,6 +111,9 @@ Tablero.prototype.crearCasillas = function() {
 		this.casillas[i].xF = this.casillas[i].x0 + 50;
 		this.casillas[i].yF = yFant;
 		this.casillas[i].crearCirculo();
+		if(i != 39){
+			this.casillas[i].crearLinea(this.casillas[i].x0, this.casillas[i].xF , this.casillas[i].y0, this.casillas[i].y0);
+		}
 	}
 	
 	x0ant = this.casillas[39].x0;
@@ -111,6 +126,9 @@ Tablero.prototype.crearCasillas = function() {
 		this.casillas[i].xF = xFant;
 		this.casillas[i].yF = this.casillas[i - 1].y0;
 		this.casillas[i].crearCirculo();
+		if(i != 44){
+			this.casillas[i].crearLinea(this.casillas[i].x0, this.casillas[i].x0 , this.casillas[i].y0, this.casillas[i].yF);
+		}
 	}
 	
 	var y0ant = this.casillas[44].y0;
@@ -123,6 +141,9 @@ Tablero.prototype.crearCasillas = function() {
 		this.casillas[i].xF = this.casillas[i - 1].x0;
 		this.casillas[i].yF = yFant;
 		this.casillas[i].crearCirculo();
+		if(i != 51){
+			this.casillas[i].crearLinea(this.casillas[i].x0, this.casillas[i].xF , this.casillas[i].yF, this.casillas[i].yF);
+		}
 	}
 	
 	x0ant = this.casillas[51].x0;
@@ -135,6 +156,9 @@ Tablero.prototype.crearCasillas = function() {
 		this.casillas[i].xF = xFant;
 		this.casillas[i].yF = this.casillas[i].y0 - 50;
 		this.casillas[i].crearCirculo();
+		if(i != 52 ){
+			this.casillas[i].crearLinea(this.casillas[i].xF, this.casillas[i].xF , this.casillas[i].y0, this.casillas[i].yF);
+		}
 	}
 	
 	var y0ant = this.casillas[55].y0;
@@ -147,6 +171,9 @@ Tablero.prototype.crearCasillas = function() {
 		this.casillas[i].xF = this.casillas[i].x0 + 50;
 		this.casillas[i].yF = yFant;
 		this.casillas[i].crearCirculo();
+		if(i != 61){
+			this.casillas[i].crearLinea(this.casillas[i].x0, this.casillas[i].xF , this.casillas[i].y0, this.casillas[i].y0);
+		}
 	}
 	
 	x0ant = this.casillas[61].x0;
@@ -159,6 +186,9 @@ Tablero.prototype.crearCasillas = function() {
 		this.casillas[i].xF = xFant;
 		this.casillas[i].yF = this.casillas[i - 1].y0;
 		this.casillas[i].crearCirculo();
+		if(i != 64){
+			this.casillas[i].crearLinea(this.casillas[i].x0, this.casillas[i].x0 , this.casillas[i].y0, this.casillas[i].yF);
+		}
 	}
 
 }
@@ -169,6 +199,9 @@ function Casilla() {
 
 Casilla.prototype.dibujar = function(lienzo) {
 	lienzo.appendChild(this.rectangle);
+	if (typeof this.newLine != 'undefined'){
+		lienzo.appendChild(this.newLine);
+	}
 }
 
 Casilla.prototype.crearCirculo = function() {
@@ -178,6 +211,18 @@ Casilla.prototype.crearCirculo = function() {
 	this.rectangle.setAttribute("width", 50);
 	this.rectangle.setAttribute("height", 50);
 	this.rectangle.setAttribute("stroke", "black");
-	this.rectangle.setAttribute("stroke-width", "4");
+	this.rectangle.setAttribute("stroke-width", "2");
 	this.rectangle.setAttribute("fill", "rgb(255, 255, 255)")
+}
+
+
+Casilla.prototype.crearLinea = function(xC, xF, yC, yF){
+	this.newLine = document.createElementNS('http://www.w3.org/2000/svg','line');
+	this.newLine.setAttribute('id','lineaBorde');
+	this.newLine.setAttribute('x1', xC);
+	this.newLine.setAttribute('y1', yC);
+	this.newLine.setAttribute('x2', xF);
+	this.newLine.setAttribute('y2', yF);
+	this.newLine.setAttribute("stroke", "black")
+	this.newLine.setAttribute("stroke-width", "10")
 }
