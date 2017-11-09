@@ -51,8 +51,20 @@ Tablero.prototype.crearCasillas = function() {
 		this.casillas[i].xF = this.casillas[i].x0 + 50;
 		this.casillas[i].yF = this.casillas[i].y0 + 50;
 		this.casillas[i].crearCirculo();
+		
+		// Crear bordes en la primera fila
+		if(i == 0){
+			this.casillas[i].crearBordeVertical(this.casillas[i].x0, this.casillas[i].x0, this.casillas[i].y0, this.casillas[i].yF);
+		}
+		
 		if(i != 9){
 			this.casillas[i].crearLinea(this.casillas[i].x0, this.casillas[i].xF , this.casillas[i].y0, this.casillas[i].y0);
+		}
+		
+		this.casillas[i].crearBordeHorizontal(this.casillas[i].x0, this.casillas[i].xF, this.casillas[i].yF, this.casillas[i].yF);
+		
+		if(i == 9){
+			this.casillas[i].crearBordeVertical(this.casillas[i].xF, this.casillas[i].xF, this.casillas[i].yF, this.casillas[i].y0);
 		}
 	}
 	
@@ -66,9 +78,18 @@ Tablero.prototype.crearCasillas = function() {
 		this.casillas[i].xF = xFant;
 		this.casillas[i].yF = this.casillas[i - 1].y0;
 		this.casillas[i].crearCirculo();
+		
+		// Crear bordes de la segunda fila
 		if(i != 16){
 			this.casillas[i].crearLinea(this.casillas[i].x0, this.casillas[i].x0 , this.casillas[i].y0, this.casillas[i].yF);
 		}
+		
+		this.casillas[i].crearBordeVertical(this.casillas[i].xF, this.casillas[i].xF, this.casillas[i].yF, this.casillas[i].y0);
+		
+		if(i == 16){
+			this.casillas[i].crearBordeHorizontal(this.casillas[i].xF, this.casillas[i].x0, this.casillas[i].y0, this.casillas[i].y0);
+		}
+		
 	}
 	
 	var y0ant = this.casillas[16].y0;
@@ -81,8 +102,16 @@ Tablero.prototype.crearCasillas = function() {
 		this.casillas[i].xF = this.casillas[i - 1].x0;
 		this.casillas[i].yF = yFant;
 		this.casillas[i].crearCirculo();
+		
+		// Crear bordes de la tercera fila
 		if(i != 25){
 			this.casillas[i].crearLinea(this.casillas[i].x0, this.casillas[i].xF , this.casillas[i].yF, this.casillas[i].yF);
+		}
+		
+		this.casillas[i].crearBordeHorizontal(this.casillas[i].xF, this.casillas[i].x0, this.casillas[i].y0, this.casillas[i].y0);
+		
+		if(i == 25){
+			this.casillas[i].crearBordeVertical(this.casillas[i].x0, this.casillas[i].x0, this.casillas[i].y0, this.casillas[i].yF);
 		}
 	}
 	
@@ -96,9 +125,13 @@ Tablero.prototype.crearCasillas = function() {
 		this.casillas[i].xF = xFant;
 		this.casillas[i].yF = this.casillas[i].y0 - 50;
 		this.casillas[i].crearCirculo();
+		
+		// Crear bordes de la cuarta fila
 		if(i != 26 ){
 			this.casillas[i].crearLinea(this.casillas[i].xF, this.casillas[i].xF , this.casillas[i].y0, this.casillas[i].yF);
 		}
+		
+		this.casillas[i].crearBordeVertical(this.casillas[i].x0, this.casillas[i].x0, this.casillas[i].y0, this.casillas[i].yF);
 	}
 	
 	var y0ant = this.casillas[31].y0;
@@ -113,6 +146,10 @@ Tablero.prototype.crearCasillas = function() {
 		this.casillas[i].crearCirculo();
 		if(i != 39){
 			this.casillas[i].crearLinea(this.casillas[i].x0, this.casillas[i].xF , this.casillas[i].y0, this.casillas[i].y0);
+		}
+		
+		if(i == 32){
+			this.casillas[i].crearBordeVertical(this.casillas[i].x0, this.casillas[i].x0, this.casillas[i].y0, this.casillas[i].yF);
 		}
 	}
 	
@@ -202,6 +239,12 @@ Casilla.prototype.dibujar = function(lienzo) {
 	if (typeof this.newLine != 'undefined'){
 		lienzo.appendChild(this.newLine);
 	}
+	if (typeof this.newBordeHorizontal != 'undefined'){
+		lienzo.appendChild(this.newBordeHorizontal);
+	}
+	if (typeof this.newBordeVertical != 'undefined'){
+		lienzo.appendChild(this.newBordeVertical)
+	}
 }
 
 Casilla.prototype.crearCirculo = function() {
@@ -225,4 +268,26 @@ Casilla.prototype.crearLinea = function(xC, xF, yC, yF){
 	this.newLine.setAttribute('y2', yF);
 	this.newLine.setAttribute("stroke", "black")
 	this.newLine.setAttribute("stroke-width", "10")
+}
+
+Casilla.prototype.crearBordeHorizontal = function(xC, xF, yC, yF){
+	this.newBordeHorizontal = document.createElementNS('http://www.w3.org/2000/svg','line');
+	this.newBordeHorizontal.setAttribute('id','lineaBorde');
+	this.newBordeHorizontal.setAttribute('x1', xC);
+	this.newBordeHorizontal.setAttribute('y1', yC);
+	this.newBordeHorizontal.setAttribute('x2', xF);
+	this.newBordeHorizontal.setAttribute('y2', yF);
+	this.newBordeHorizontal.setAttribute("stroke", "black")
+	this.newBordeHorizontal.setAttribute("stroke-width", "4")
+}
+
+Casilla.prototype.crearBordeVertical = function(xC, xF, yC, yF){
+	this.newBordeVertical = document.createElementNS('http://www.w3.org/2000/svg','line');
+	this.newBordeVertical.setAttribute('id','lineaBorde');
+	this.newBordeVertical.setAttribute('x1', xC);
+	this.newBordeVertical.setAttribute('y1', yC);
+	this.newBordeVertical.setAttribute('x2', xF);
+	this.newBordeVertical.setAttribute('y2', yF);
+	this.newBordeVertical.setAttribute("stroke", "black")
+	this.newBordeVertical.setAttribute("stroke-width", "4")
 }
