@@ -27,5 +27,7 @@ public class Partida {
 	public boolean isReady() {
 		return this.jugadores.size() == this.numeroDeJugadores;
 	}
+	
+	
 
 }

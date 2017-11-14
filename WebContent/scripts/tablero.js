@@ -1,12 +1,22 @@
 function Tablero() {
 	this.casillas = [];
+	this.fichas=[];
 	this.crearCasillas();
+	this.crearFichas();
+	
 }
+
+
 
 Tablero.prototype.dibujar = function(lienzo) {
 	for (var i = 0; i < 66; i++) {
 		this.casillas[i].dibujar(lienzo);
 	}
+	
+	for (var i = 0; i < this.fichas.length; i++) {
+		this.fichas[i].dibujar(lienzo);
+	}
+	
 }
 
 Tablero.prototype.crearCasillas = function() {
@@ -230,12 +240,27 @@ Tablero.prototype.crearCasillas = function() {
 
 }
 
+Tablero.prototype.crearFichas = function() {
+	for (var i = 0; i < 2; i++) { //algun numero que represente la cantidad de jugadores
+		var ficha = new Ficha();
+		ficha.crearFicha(this.lienzo);
+		this.fichas.push(ficha);
+	}
+}
+
+
+
 function Casilla() {
 	this.tipo = "NORMAL";
 }
 
+
 Casilla.prototype.dibujar = function(lienzo) {
-	lienzo.appendChild(this.rectangle);
+	try{
+		lienzo.appendChild(this.rectangle);
+	}catch(err){
+		
+	}
 	if (typeof this.newLine != 'undefined'){
 		lienzo.appendChild(this.newLine);
 	}
@@ -291,3 +316,31 @@ Casilla.prototype.crearBordeVertical = function(xC, xF, yC, yF){
 	this.newBordeVertical.setAttribute("stroke", "black")
 	this.newBordeVertical.setAttribute("stroke-width", "4")
 }
+
+
+function Ficha(){
+	this.nombreJugador="";
+	this.posicion=0;
+	this.color="green";
+}
+
+Ficha.prototype.crearFicha = function(lienzo){
+	var x0=75;
+	var y0=425;
+	var ratio=10;
+	this.circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+	this.circle.setAttribute("cx", x0);
+	this.circle.setAttribute("cy", y0);
+	this.circle.setAttribute("r", ratio);
+	this.circle.setAttribute("fill", this.color);
+
+}
+
+
+Ficha.prototype.dibujar = function(lienzo) {
+	lienzo.appendChild(this.circle);
+}
+
+
+
+
