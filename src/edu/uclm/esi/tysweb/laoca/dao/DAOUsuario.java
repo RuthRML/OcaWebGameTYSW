@@ -5,18 +5,28 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.bson.BsonDocument;
+import org.bson.BsonString;
+
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
+import edu.uclm.esi.tysweb.laoca.mongodb.MongoBroker;
+
 public class DAOUsuario {
 
 	public static boolean existe(String nombreJugador) throws Exception {
-		String sql = "SELECT count(*) FROM usuario WHERE email=?";
-		Connection bd = DBBroker.get().getBD();
-		PreparedStatement ps = bd.prepareStatement(sql);
-		ps.setString(1,  nombreJugador);
-		ResultSet rs = ps.executeQuery();
-		rs.next();
-		int resultado = rs.getInt(1);
-		DBBroker.get().close(bd);
-		return resultado == 1;
+		
+		MongoBroker broker = MongoBroker.get();
+		BsonDocument criterio = new BsonDocument();
+		criterio.append("email", new BsonString(nombreJugador));
+		
+		MongoDatabase db = broker.getDatabase("OCA");
+		MongoCollection<BsonDocument> usuarios = db.getCollection("usuarios", BsonDocument.class);
+		
+		BsonDocument usuario = usuarios.find(criterio).first();
+		
+		return usuario != null;
 	}
 	
 	

@@ -157,10 +157,7 @@ Tablero.prototype.crearCasillas = function() {
 		if(i != 39){
 			this.casillas[i].crearLinea(this.casillas[i].x0, this.casillas[i].xF , this.casillas[i].y0, this.casillas[i].y0);
 		}
-		
-		if(i == 32){
-			this.casillas[i].crearBordeVertical(this.casillas[i].x0, this.casillas[i].x0, this.casillas[i].y0, this.casillas[i].yF);
-		}
+
 	}
 	
 	x0ant = this.casillas[39].x0;
