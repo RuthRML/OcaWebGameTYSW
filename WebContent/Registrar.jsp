@@ -16,11 +16,12 @@
     
    
         Manager.get().registrar(email, email, pwd1);
-        respuesta.put("result","OK");
+        respuesta.put("resultado","OK");
     }
 	
 	catch(Exception e){
-		respuesta.put("result","ERROR");
+		System.out.println("El mensaje error es: "+e.getMessage());
+		respuesta.put("resultado","ERROR");
 		respuesta.put("mensaje",e.getMessage());
 	}
 	out.println(respuesta.toString());

@@ -43,6 +43,14 @@ public class Usuario {
 		
 	}
 
+	public boolean entrar(String pwd1)throws Exception  {
+		if(DAOUsuario.enter(this,pwd1)) {
+			return true;
+		}
+		return false;
+		
+	}
+
 	
 
 }

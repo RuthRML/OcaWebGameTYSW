@@ -8,6 +8,7 @@ import org.bson.Document;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
+import com.mongodb.MongoSocketOpenException;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -17,9 +18,14 @@ public class MongoBroker {
 	
 	private MongoClient mongoClient;
 	
-	private MongoBroker() {
+	private MongoBroker() throws Exception {
 		//this.mongoClient=new MongoClient("alarcosj.esi.uclm.es",27017);
+		try {
 		this.mongoClient=new MongoClient("localhost",27017);
+		}catch(Exception e) {
+			throw new Exception("No se pudo conectar a la base de datos. Lo siento");
+		}
+		
 		//Mirar como se pasan las credenciales
 		//MongoCredential credentialsList = MongoCredential
 		System.out.println("hey");
@@ -62,7 +68,12 @@ public class MongoBroker {
 	}
 	
 	private static class MongoBrokerHolder{
-		static MongoBroker singleton = new MongoBroker();
+		static MongoBroker singleton;
+		
+		public MongoBrokerHolder() throws Exception{
+			singleton   = new MongoBroker();
+		}
+		
 	}
 
 	public static MongoBroker get() {

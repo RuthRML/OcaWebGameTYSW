@@ -27,6 +27,7 @@ function registro() {
             if (reqRegistrar.status==200) {
                 var result=JSON.parse(reqRegistrar.responseText);
                 if (result.resultado=="OK") {
+                	
                 	document.getElementById("nombreUsuario").value="";
                     document.getElementById("email").value="";
                     document.getElementById("pwd1").value="";
@@ -34,7 +35,8 @@ function registro() {
                     alert("Registro exitoso, " + emailRegistro);
                     divRegistro.style="display:none";
                 } else {
-                    alert("Error: " + result.resultado);
+                	console.log(result);
+                    alert("Error: " + result.mensaje);
                     mensajeRegistro.innerHTML=result.resultado;
                 }
             } else {
