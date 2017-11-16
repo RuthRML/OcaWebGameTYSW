@@ -2,6 +2,8 @@ package edu.uclm.esi.tysweb.laoca.dao;
 
 import java.sql.Connection;
 
+import com.mongodb.client.MongoDatabase;
+
 public class Broker {
 	private Pool pool;
 	
@@ -24,4 +26,6 @@ public class Broker {
 	public void close(Connection bd) {
 		this.pool.close(bd);
 	}
+
+	
 }

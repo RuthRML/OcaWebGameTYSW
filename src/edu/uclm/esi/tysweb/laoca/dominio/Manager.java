@@ -62,8 +62,12 @@ public class Manager {
 		}
 		
 	}
-	public void registrar(String nombreUsuario, String email, String pwd1) throws SQLException {
-		Usuario.insert(nombreUsuario, email, pwd1);
+	public void registrar(String nombreUsuario, String email, String pwd1) throws Exception {
+		Usuario usuario = new  UsuarioRegistrado();
+		usuario.setNonbre(nombreUsuario);
+
+			
+		usuario.insert(pwd1);
 	}
 	
 }

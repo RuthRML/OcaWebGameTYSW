@@ -1,28 +1,47 @@
+<%@page import="org.json.JSONObject"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@page import="edu.uclm.esi.tysweb.laoca.dominio.Manager"%>
 <%@page import="edu.uclm.esi.tysweb.laoca.util.ValidatorUtil"%>
 <%
-	String nombreUsuario=request.getParameter("nombreUsuario");
-    String email=request.getParameter("email");
-    String pwd1=request.getParameter("pwd1");
-    String pwd2=request.getParameter("pwd2");
+	String p=request.getParameter("p");
+	JSONObject jso= new JSONObject(p);
+	JSONObject respuesta= new JSONObject(p);
+	try{
+    String email=jso.optString("email");
+    String pwd1=jso.optString("pwd1");
+    String pwd2=jso.optString("pwd2");
     String boton=request.getParameter("boton");
-    String msg=null;
-    if (boton!=null) {
-        if (pwd1==null || pwd2==null || pwd1.length()==0 || pwd2.length()==0) {
-            msg="Las contraseñas deben coincidir";
-        } else if (!pwd1.equals(pwd2)) {
-            msg="Las contraseñas deben coincidir";
-        } else if (email==null || email.length()==0) {
-            msg="El email no puede estar vacío";
-        } else if (email!=null && email.length()>45) {
-            msg="El email no puede tener más de 45 caracteres";
-        } else if (!ValidatorUtil.validateEmail(email)) {
-            msg="La dirección de email es inválida";
-        }
-        if (msg==null) {
-            Manager.get().registrar(nombreUsuario, email, pwd1);
-        }
+    comprobarCredenciales( email,  pwd1,  pwd2) ;
+    
+   
+        Manager.get().registrar(email, email, pwd1);
+        respuesta.put("result","OK");
     }
+	
+	catch(Exception e){
+		respuesta.put("result","ERROR");
+		respuesta.put("mensaje",e.getMessage());
+	}
+	out.println(respuesta.toString());
+	
+%>
+<%!
+private void comprobarCredenciales(String email, String pwd1, String pwd2) throws Exception{
+	
+        if (pwd1==null || pwd2==null || pwd1.length()==0 || pwd2.length()==0) {
+            throw new Exception("Las contraseñas deben coincidir");
+        } else if(pwd1.length()<4){
+        	throw new Exception("La contraseña debe ser mínimo de 4 caracteres");
+        }else if (!pwd1.equals(pwd2)) {
+        	throw new Exception("Las contraseñas deben coincidir");
+        } else if (email==null || email.length()==0) {
+        	 throw new Exception("El email no puede estar vacío");
+        } else if (email!=null && email.length()>45) {
+        	 throw new Exception("El email no puede tener más de 45 caracteres");
+        } else if (!ValidatorUtil.validateEmail(email)) {
+        	 throw new Exception("La dirección de email es inválida");
+        }
+        
+}
 %>

@@ -2,12 +2,15 @@ package edu.uclm.esi.tysweb.laoca.dominio;
 
 import java.sql.SQLException;
 
+import org.bson.BsonDocument;
 
 import edu.uclm.esi.tysweb.laoca.dao.DAOUsuario;
 
 public class Usuario {
+	
 
-	private String login;
+	protected String login;
+	protected Partida partida;
 
 	public Usuario(String nombreJugador) throws Exception {
 		
@@ -18,6 +21,10 @@ public class Usuario {
 		this.login = nombreJugador;
 	}
 
+	public Usuario() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getLogin() {
 		return this.login;
 	}
@@ -25,5 +32,17 @@ public class Usuario {
 	public static void insert(String nombreUsuario, String email, String pwd) throws SQLException {
 		DAOUsuario.registrar(nombreUsuario, email, pwd);
 	}
+
+	public void setNonbre(String email) {
+		this.login=email;
+		
+	}
+
+	public  void insert(String pwd1) throws Exception {
+		DAOUsuario.insert(this,pwd1);
+		
+	}
+
+	
 
 }

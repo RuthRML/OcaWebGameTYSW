@@ -4,12 +4,14 @@ function crearPartida(){
 	request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	request.onreadystatechange = function(){
 		if(request.readyState == 4){
-			var respuesta = request.responseText;
-			console.log(respuesta.result);
-			conectarWebSocket();
-			localStorage.nombre = document.getElementById("nombre").value;
-			var divMensajes=document.getElementById("divMensajes");
-			divMensajes.innerHTML += "Se ha conectado";
+			var respuesta = JSON.parse(request.responseText);
+			if (respuesta.result=="OK") {
+				console.log(respuesta.result);
+				conectarWebSocket();
+				localStorage.nombre = document.getElementById("nombre").value;
+				var divMensajes=document.getElementById("divMensajes");
+				divMensajes.innerHTML += "Se ha conectado";
+			} else alert("Error de conexion");
 		}
 	};
 
