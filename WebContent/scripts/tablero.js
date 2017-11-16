@@ -1,3 +1,6 @@
+var ficha5 = new Image();
+ficha5.src = "/imagenes/ficha5.png";
+
 function Tablero() {
 	this.casillas = [];
 	this.fichas=[];
@@ -280,7 +283,15 @@ Casilla.prototype.crearCirculo = function() {
 	this.rectangle.setAttribute("height", 50);
 	this.rectangle.setAttribute("stroke", "black");
 	this.rectangle.setAttribute("stroke-width", "2");
-	this.rectangle.setAttribute("fill", "rgb(255, 255, 255)")
+	this.rectangle.setAttribute("fill", "rgb(255, 255, 255)");
+/*	var svgimg = document.createElementNS('http://www.w3.org/2000/svg','image');
+	svgimg.setAttributeNS(null,'height','50');
+	svgimg.setAttributeNS(null,'width','50');
+	svgimg.setAttributeNS('http://www.w3.org/1999/xlink','href', ficha5);
+	svgimg.setAttributeNS(null,'x','10');
+	svgimg.setAttributeNS(null,'y','10');
+	svgimg.setAttributeNS(null, 'visibility', 'visible');
+	this.rectangle.appendChild(svgimg);*/
 }
 
 
