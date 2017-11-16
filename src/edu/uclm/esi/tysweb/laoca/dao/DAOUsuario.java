@@ -61,7 +61,12 @@ public class DAOUsuario {
 
 		bUsuario.append("email", new BsonString(usuario.getLogin()));
 		bUsuario.append("pwd",encriptar(pwd));
-		MongoDatabase db = MongoBroker.get().getDatabase("laoca");
+		MongoDatabase db;
+		try {
+		db= MongoBroker.get().getDatabase("laoca");
+		}catch(Exception e) {
+			throw new Exception("No se pudo conectar a la base de datos");
+		}
 		MongoCollection<BsonDocument> usuarios = db.getCollection("usuarios",BsonDocument.class);
 		
 		try {
@@ -106,6 +111,43 @@ public class DAOUsuario {
 		roles.add(rol);
 		creacionDeUsuario.append("roles", roles);
 		MongoBroker.get().getDatabase("laoca").runCommand(creacionDeUsuario);
+	}
+
+
+
+	public static boolean enter(Usuario usuario, String pwd1) throws Exception {
+		boolean entro=false;
+			if(existe(usuario.getLogin())) {
+				if(validaContrasenha(usuario.getLogin(),pwd1)) {
+					
+				}else {
+					throw new Exception("Contraseña invalida");
+				}
+			}else {
+				throw new Exception("Usuario incorrecto");
+			}
+				
+				
+		return entro;	
+		
+		
+	}
+
+
+
+	private static boolean validaContrasenha(String nombreJugador,String pwd1) throws Exception {
+		MongoBroker broker = MongoBroker.get();
+		BsonDocument criterio = new BsonDocument();
+		criterio.append("email", new BsonString(nombreJugador));
+		criterio.append("pwd",encriptar(pwd1));
+		MongoDatabase db = broker.getDatabase("laoca");
+		MongoCollection<BsonDocument>usuarios = db.getCollection("usuarios", BsonDocument.class);
+		BsonDocument usuario = usuarios.find(criterio).first();
+		//broker.close();
+		
+		
+		return usuario!=null;
+
 	}
 	
 	

@@ -70,4 +70,14 @@ public class Manager {
 		usuario.insert(pwd1);
 	}
 	
+	public void ingresar(String nombreUsuario, String pwd1) throws Exception {
+		Usuario usuario = new  UsuarioRegistrado();
+		usuario.setNonbre(nombreUsuario);
+
+			
+		if(usuario.entrar(pwd1)) {
+			
+		}
+	}
+	
 }
