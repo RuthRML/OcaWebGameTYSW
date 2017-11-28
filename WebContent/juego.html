@@ -10,157 +10,41 @@
 </head>
 
 <body>
-<div class="container">
-		<div class="row">
-			<svg id="tablero" width="700" height="700" style="background-color:powderblue; margin: 0 auto;">
-			</svg>
-		
-	
-<!-- <script>
-var table = $('<table></table>').addClass('table table-bordered table-inverse');
-for(i=0; i<3; i++){
-    var row = $('<tr></tr>');
-    var th = $('<th></th>').attr('scope',"row");
-    row.append(th);
-    for(i=0; i<3; i++){
-    var cell = $('<td></td>');
-    row.append(cell);
-    
-    }
-    cell.text('result ' + i);
-    table.append(row);
-}
+<div id="wrapper">
+	<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<h1>La Oca</h1>
+				</div>
+			</div>
+			<div class="row">
+			<div class="col-md-9">				
+				<svg id="tablero" viewBox="0 0 1130 900" xmlns=”http://www.w3.org/2000/svg">
+				</svg>
+			</div>
+			<div class="col-md-3">
+					<h3>Partida ID:</h3>
+					<button class="btn btn-outline-primary" id="btnDado" onclick="tirarDado()"><img src="imagenes/die.png"><p>¡Lanzar dado!</p></button>
+					<button class="btn btn-outline-danger" id="btnSalir" onclick="salir()"><img src="imagenes/flag.png"><p>Dejar partida</p></button>
+					<hr>
+					<p style="text-align:center; text-transform: uppercase; font-weight: bold;">Jugadores de la partida</p>
+					<ul class="list-group">
+	  					<li class="list-group-item active">Jugador 1</li>
+	 					<li class="list-group-item">Jugador 2</li>
+	  					<li class="list-group-item">Jugador 3</li>
+	  					<li class="list-group-item">Jugador 4</li>
+	  					<li class="list-group-item">Jugador 5</li>
+					</ul>
+					<hr>
+			</div>
+			</div>
 
-
-$('#here_table').append(table);
-</script> -->
-
-<!--
-<table class="table table-bordered table-inverse">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Username</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-    </tr>
-  </tbody>
-</table>
-//-->
-
-		</div>
 	</div>
-	
+</div>	
 	<script src="scripts/tablero.js"></script>
 	<script src="scripts/partidas.js"></script>
 	
-		<script>
+	<script>
 		var tablero = new Tablero();
 		var lienzo = document.getElementById("tablero");
 		tablero.dibujar(lienzo);
