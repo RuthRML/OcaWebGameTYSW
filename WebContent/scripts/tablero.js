@@ -54,11 +54,122 @@ Tablero.prototype.crearBordes = function(){
 	bordeSuperior.setAttribute("stroke", "black");
 	bordeSuperior.setAttribute("stroke-width", "4");
 	this.bordes.push(bordeSuperior);
+	
+	// Borde primera fila
+	var bordePrimeraFila = document.createElementNS('http://www.w3.org/2000/svg','line');
+	bordePrimeraFila.setAttribute('id', 'lineabordePrimeraFila');
+	bordePrimeraFila.setAttribute('x1', 60);
+	bordePrimeraFila.setAttribute('y1', 730);
+	bordePrimeraFila.setAttribute('x2', 960);
+	bordePrimeraFila.setAttribute('y2', 730);
+	bordePrimeraFila.setAttribute('stroke', "black");
+	bordePrimeraFila.setAttribute('stroke-width', '4');
+	this.bordes.push(bordePrimeraFila);
+	
+	// Borde segunda fila
+	var bordeSegundaFila = document.createElementNS('http://www.w3.org/2000/svg','line');
+	bordeSegundaFila.setAttribute('id', 'lineabordeSegundaFila');
+	bordeSegundaFila.setAttribute('x1', 960);
+	bordeSegundaFila.setAttribute('y1', 730);
+	bordeSegundaFila.setAttribute('x2', 960);
+	bordeSegundaFila.setAttribute('y2', 130);
+	bordeSegundaFila.setAttribute('stroke', "black");
+	bordeSegundaFila.setAttribute('stroke-width', '4');
+	this.bordes.push(bordeSegundaFila);
+	
+	// Borde tercera fila
+	var bordeTerceraFila = document.createElementNS('http://www.w3.org/2000/svg','line');
+	bordeTerceraFila.setAttribute('id', 'lineabordeTerceraFila');
+	bordeTerceraFila.setAttribute('x1', 960);
+	bordeTerceraFila.setAttribute('y1', 130);
+	bordeTerceraFila.setAttribute('x2', 160);
+	bordeTerceraFila.setAttribute('y2', 130);
+	bordeTerceraFila.setAttribute('stroke', "black");
+	bordeTerceraFila.setAttribute('stroke-width', '4');
+	this.bordes.push(bordeTerceraFila);
+	
+	// Borde cuarta fila
+	var bordeCuartaFila = document.createElementNS('http://www.w3.org/2000/svg','line');
+	bordeCuartaFila.setAttribute('id', 'lineabordeCuartaFila');
+	bordeCuartaFila.setAttribute('x1', 160);
+	bordeCuartaFila.setAttribute('y1', 130);
+	bordeCuartaFila.setAttribute('x2', 160);
+	bordeCuartaFila.setAttribute('y2', 630);
+	bordeCuartaFila.setAttribute('stroke', "black");
+	bordeCuartaFila.setAttribute('stroke-width', '4');
+	this.bordes.push(bordeCuartaFila);
+	
+	// Borde quinta fila
+	var bordeQuintaFila = document.createElementNS('http://www.w3.org/2000/svg','line');
+	bordeQuintaFila.setAttribute('id', 'lineabordeQuintaFila');
+	bordeQuintaFila.setAttribute('x1', 160);
+	bordeQuintaFila.setAttribute('y1', 630);
+	bordeQuintaFila.setAttribute('x2', 860);
+	bordeQuintaFila.setAttribute('y2', 630);
+	bordeQuintaFila.setAttribute('stroke', "black");
+	bordeQuintaFila.setAttribute('stroke-width', '4');
+	this.bordes.push(bordeQuintaFila);
+	
+	// Borde sexta fila
+	var bordeSextaFila = document.createElementNS('http://www.w3.org/2000/svg','line');
+	bordeSextaFila.setAttribute('id', 'lineabordeSextaFila');
+	bordeSextaFila.setAttribute('x1', 860);
+	bordeSextaFila.setAttribute('y1', 630);
+	bordeSextaFila.setAttribute('x2', 860);
+	bordeSextaFila.setAttribute('y2', 230);
+	bordeSextaFila.setAttribute('stroke', "black");
+	bordeSextaFila.setAttribute('stroke-width', '4');
+	this.bordes.push(bordeSextaFila);
+	
+	// Borde séptima fila
+	var bordeSeptimaFila = document.createElementNS('http://www.w3.org/2000/svg','line');
+	bordeSeptimaFila.setAttribute('id', 'lineabordeSeptimaFila');
+	bordeSeptimaFila.setAttribute('x1', 860);
+	bordeSeptimaFila.setAttribute('y1', 230);
+	bordeSeptimaFila.setAttribute('x2', 260);
+	bordeSeptimaFila.setAttribute('y2', 230);
+	bordeSeptimaFila.setAttribute('stroke', "black");
+	bordeSeptimaFila.setAttribute('stroke-width', '4');
+	this.bordes.push(bordeSeptimaFila);
+	
+	// Borde octava fila
+	var bordeOctavaFila = document.createElementNS('http://www.w3.org/2000/svg','line');
+	bordeOctavaFila.setAttribute('id', 'lineabordeOctavaFila');
+	bordeOctavaFila.setAttribute('x1', 260);
+	bordeOctavaFila.setAttribute('y1', 230);
+	bordeOctavaFila.setAttribute('x2', 260);
+	bordeOctavaFila.setAttribute('y2', 530);
+	bordeOctavaFila.setAttribute('stroke', "black");
+	bordeOctavaFila.setAttribute('stroke-width', '4');
+	this.bordes.push(bordeOctavaFila);
+	
+	// Borde novena fila
+	var bordeNovenaFila = document.createElementNS('http://www.w3.org/2000/svg','line');
+	bordeNovenaFila.setAttribute('id', 'lineabordeNovenaFila');
+	bordeNovenaFila.setAttribute('x1', 260);
+	bordeNovenaFila.setAttribute('y1', 530);
+	bordeNovenaFila.setAttribute('x2', 760);
+	bordeNovenaFila.setAttribute('y2', 530);
+	bordeNovenaFila.setAttribute('stroke', "black");
+	bordeNovenaFila.setAttribute('stroke-width', '4');
+	this.bordes.push(bordeNovenaFila);
+	
+	// Borde decima fila
+	var bordeDecimaFila = document.createElementNS('http://www.w3.org/2000/svg','line');
+	bordeDecimaFila.setAttribute('id', 'lineabordeDecimaFila');
+	bordeDecimaFila.setAttribute('x1', 760);
+	bordeDecimaFila.setAttribute('y1', 530);
+	bordeDecimaFila.setAttribute('x2', 760);
+	bordeDecimaFila.setAttribute('y2', 330);
+	bordeDecimaFila.setAttribute('stroke', "black");
+	bordeDecimaFila.setAttribute('stroke-width', '4');
+	this.bordes.push(bordeDecimaFila);
+	
 }
 
 Tablero.prototype.dibujar = function(lienzo) {
 	// Dibujar casillas
-	for (var i = 0; i < 66; i++) {
+	for (var i = 0; i < 65; i++) {
 		this.casillas[i].dibujar(lienzo);
 	}
 	
@@ -128,13 +239,6 @@ Tablero.prototype.crearCasillas = function() {
 		this.casillas[i].yF = this.casillas[i].y0 + 100;
 		this.casillas[i].valor = i;
 		this.casillas[i].crearCirculo();
-		
-		// Crear bordes		
-		// Borde superior
-		if(i != 9){
-			this.casillas[i].crearLinea(this.casillas[i].x0, this.casillas[i].xF , this.casillas[i].y0, this.casillas[i].y0);
-		}
-
 	}
 	
 	var x0ant = this.casillas[9].x0;
@@ -148,13 +252,6 @@ Tablero.prototype.crearCasillas = function() {
 		this.casillas[i].yF = this.casillas[i - 1].y0;
 		this.casillas[i].valor = i;
 		this.casillas[i].crearCirculo();
-		
-		// Crear bordes de la segunda fila
-		// Crear bordes izquierda
-		if(i != 16){
-			this.casillas[i].crearLinea(this.casillas[i].x0, this.casillas[i].x0 , this.casillas[i].y0, this.casillas[i].yF);
-		}
-		
 	}
 	
 	var y0ant = this.casillas[16].y0;
@@ -168,13 +265,6 @@ Tablero.prototype.crearCasillas = function() {
 		this.casillas[i].yF = yFant;
 		this.casillas[i].valor = i;
 		this.casillas[i].crearCirculo();
-		
-		// Crear bordes de la tercera fila
-		// Bordes inferiores 
-		if(i != 25){
-			this.casillas[i].crearLinea(this.casillas[i].x0, this.casillas[i].xF , this.casillas[i].yF, this.casillas[i].yF);
-		}
-		
 	}
 	
 	x0ant = this.casillas[25].x0;
@@ -188,12 +278,6 @@ Tablero.prototype.crearCasillas = function() {
 		this.casillas[i].yF = this.casillas[i].y0 - 100;
 		this.casillas[i].valor = i;
 		this.casillas[i].crearCirculo();
-		
-		// Crear bordes de la cuarta fila
-		// Bordes derecha
-		if(i != 26 ){
-			this.casillas[i].crearLinea(this.casillas[i].xF, this.casillas[i].xF , this.casillas[i].y0, this.casillas[i].yF);
-		}
 	}
 	
 	var y0ant = this.casillas[31].y0;
@@ -207,10 +291,6 @@ Tablero.prototype.crearCasillas = function() {
 		this.casillas[i].yF = yFant;
 		this.casillas[i].valor = i;
 		this.casillas[i].crearCirculo();
-		if(i != 39){
-			this.casillas[i].crearLinea(this.casillas[i].x0, this.casillas[i].xF , this.casillas[i].y0, this.casillas[i].y0);
-		}
-	
 	}
 	
 	x0ant = this.casillas[39].x0;
@@ -224,9 +304,6 @@ Tablero.prototype.crearCasillas = function() {
 		this.casillas[i].yF = this.casillas[i - 1].y0;
 		this.casillas[i].valor = i;
 		this.casillas[i].crearCirculo();
-		if(i != 44){
-			this.casillas[i].crearLinea(this.casillas[i].x0, this.casillas[i].x0 , this.casillas[i].y0, this.casillas[i].yF);
-		}
 	}
 	
 	var y0ant = this.casillas[44].y0;
@@ -240,9 +317,6 @@ Tablero.prototype.crearCasillas = function() {
 		this.casillas[i].yF = yFant;
 		this.casillas[i].valor = i;
 		this.casillas[i].crearCirculo();
-		if(i != 51){
-			this.casillas[i].crearLinea(this.casillas[i].x0, this.casillas[i].xF , this.casillas[i].yF, this.casillas[i].yF);
-		}
 	}
 	
 	x0ant = this.casillas[51].x0;
@@ -256,9 +330,6 @@ Tablero.prototype.crearCasillas = function() {
 		this.casillas[i].yF = this.casillas[i].y0 - 100;
 		this.casillas[i].valor = i;
 		this.casillas[i].crearCirculo();
-		if(i != 52 ){
-			this.casillas[i].crearLinea(this.casillas[i].xF, this.casillas[i].xF , this.casillas[i].y0, this.casillas[i].yF);
-		}
 	}
 	
 	var y0ant = this.casillas[55].y0;
@@ -272,9 +343,6 @@ Tablero.prototype.crearCasillas = function() {
 		this.casillas[i].yF = yFant;
 		this.casillas[i].valor = i;
 		this.casillas[i].crearCirculo();
-		if(i != 61){
-			this.casillas[i].crearLinea(this.casillas[i].x0, this.casillas[i].xF , this.casillas[i].y0, this.casillas[i].y0);
-		}
 	}
 	
 	x0ant = this.casillas[61].x0;
@@ -288,9 +356,6 @@ Tablero.prototype.crearCasillas = function() {
 		this.casillas[i].yF = this.casillas[i - 1].y0;
 		this.casillas[i].valor = i;
 		this.casillas[i].crearCirculo();
-		if(i != 64){
-			this.casillas[i].crearLinea(this.casillas[i].x0, this.casillas[i].x0 , this.casillas[i].y0, this.casillas[i].yF);
-		}
 	}
 
 }
@@ -339,13 +404,6 @@ Casilla.prototype.dibujar = function(lienzo) {
 	}catch(err){
 		console.log("Error al dibujar las casillas.");
 	}
-	if (typeof this.newLine != 'undefined'){
-		try{
-			lienzo.appendChild(this.newLine);
-		}catch(err){
-			console.log("Error al dibujar los bordes de las fichas.");
-		}
-	}
 
 }
 
@@ -375,18 +433,6 @@ Casilla.prototype.crearCirculo = function() {
 		this.img.setAttributeNS(null, 'x', this.x0);
 		this.img.setAttributeNS(null, 'y', this.y0);
 	this.grp.appendChild(this.img);
-}
-
-
-Casilla.prototype.crearLinea = function(xC, xF, yC, yF){
-	this.newLine = document.createElementNS('http://www.w3.org/2000/svg','line');
-	this.newLine.setAttribute('id','lineaBorde');
-	this.newLine.setAttribute('x1', xC);
-	this.newLine.setAttribute('y1', yC);
-	this.newLine.setAttribute('x2', xF);
-	this.newLine.setAttribute('y2', yF);
-	this.newLine.setAttribute("stroke", "black");
-	this.newLine.setAttribute("stroke-width", "10");
 }
 
 function Ficha(){
