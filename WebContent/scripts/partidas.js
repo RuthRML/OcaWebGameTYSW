@@ -12,7 +12,7 @@ function crearPartida(){
 				localStorage.nombre = document.getElementById("nombre").value;
 				var divMensajes=document.getElementById("divMensajes");
 				divMensajes.innerHTML += "Se ha conectado";
-			} else {
+			} else{
 				console.log(respuesta.mensaje);
 				alert(respuesta.mensaje);
 			}
@@ -20,12 +20,12 @@ function crearPartida(){
 	};
 
 	var p = {
-		nombre : document.getElementById("nombre").value,
-		numeroDeJugadores : document.getElementById("numero").value
+			nombre : document.getElementById("nombre").value,
+			numeroDeJugadores : document.getElementById("numero").value
 	};
-	
+
 	request.send("p=" + JSON.stringify(p));
-	
+
 }
 
 function unirse(){
@@ -34,69 +34,55 @@ function unirse(){
 	request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	request.onreadystatechange = function(){
 		if(request.readyState == 4){
-			var respuesta = request.responseText;
+
+			var respuesta = JSON.parse(request.responseText);
 			if (respuesta.result=="OK") {
 				console.log(respuesta);
 				conectarWebSocket();
 				localStorage.nombre = document.getElementById("nombre").value;
+
 			}else{
-				alert("Error al unirse.");
+
+				aler("error al unirse");
+
+
+
 			}
 		}
 	};
 
 	var p = {
-		nombre : document.getElementById("nombre").value
+			nombre : document.getElementById("nombre").value
 	};
-	
+
 	request.send("p=" + JSON.stringify(p));
-	
+
 }
-
-/*function tirarDado(){
-	var request = new XMLHttpRequest();
-	request.open("post", "tirarDado.jsp");
-	request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	request.onreadystatechange == function(){
-		if(request.readyState == 4){
-			var respuesta = request.responseText;
-			console.log(respuesta);
-			conectarWebSocket();
-		}else{
-			alert("Error al tirar dado.");
-		}
-	};
-
-	var iframeDocument = document.getElementById('iframeIndex').contentDocument;
-	
-	var p = {
-		nombre : iframeDocument.getElementById("nombre").value
-	};
-	
-	request.send("p=" + JSON.stringify(p));
-}*/
 
 var ws;
 
 function conectarWebSocket() {
 	ws = new WebSocket ("ws://localhost:8080/OcaWebGameTYSW/servidorDePartidas");
-	
+
 	ws.onopen = function(){
 		console.log("Websocket conectado");
+
+		//var tablero = new Tablero();
+		//tablero.dibujar(svgTablero);
 	}
-	
+
 	ws.onmessage = function (datos){
 		var mensaje = datos.data;
 		mensaje = JSON.parse(mensaje);
-		
+
 		if(mensaje.tipo == "DIFUSION"){
 			console.log(mensaje.mensaje);
-		}else if(mensaje.tipo == "COMIENZO"){
-			addMensaje("Comienza la partida.");
+		}else if (mensaje.tipo =="COMIENZO"){
+			addMensaje("Comienza la partida");
 		}
-		
+
 	}
-	
+
 }
 
 function comenzar(mensaje){
@@ -104,23 +90,20 @@ function comenzar(mensaje){
 	if(mensaje.jugadorConElTurno==localStorage.nombre){
 		btnDado.setAttribute("style","display:visible");
 	}else{
+
 		btnDado.setAttribute("style","display:none");
 	}
-
-	var listaJugadores = document.getElementById("listaDeJugadores");
-	var jugadores = mensaje.jugadores;
-
+	var spanListaJugadores=document.getElementById("spanListaJugadores");
+	var jugadores= mensaje.jugadores;
 	for (var i = 0; i < jugadores.length; i++) {
-		r = r + jugadores[i];
-		//spanListaJugadores.innerHTML=r;
-        var li = document.createElement('li');
-        li.innerHTML=r;
-        listaJugadores.appendChild(li);
+		r=r+jugadores[i];
+		spanListaJugadores.innerHTML=r;
 	}
 }
 
+
 function addMensaje(texto) {
-	var div = document.createElement("div");
+	var div=document.createElement("div");
 	divChat.appendChild(div);
 	div.innerHTML=texto;
 }

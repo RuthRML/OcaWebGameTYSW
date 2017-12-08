@@ -38,14 +38,19 @@ public class DAOUsuario {
 		
 		MongoBroker broker = MongoBroker.get();
 		BsonDocument criterio = new BsonDocument();
-		criterio.append("email", new BsonString(nombreJugador));	
+		criterio.append("email", new BsonString(nombreJugador));
+		
+	
 		
 		MongoClient conexion = broker.getConexionPrivilegiada();
-		MongoDatabase db = conexion.getDatabase("laoca");		
+		MongoDatabase db = conexion.getDatabase("laoca");
+		
+		
 
 		MongoCollection<BsonDocument>usuarios = db.getCollection("usuarios", BsonDocument.class);
 		BsonDocument usuario = usuarios.find(criterio).first();
-		//broker.close();		
+		//broker.close();
+		
 		
 		return usuario!=null;
 		
@@ -67,21 +72,24 @@ public class DAOUsuario {
 
 		bUsuario.append("email", new BsonString(usuario.getLogin()));
 		bUsuario.append("pwd",encriptar(pwd));
+		
 
 		MongoClient conexion = MongoBroker.get().getConexionPrivilegiada();
 		MongoDatabase db = conexion.getDatabase("laoca");
 		MongoCollection<BsonDocument>usuarios = db.getCollection("usuarios", BsonDocument.class);
 		
 		
-		MongoClient client = MongoBroker.get().getDatabase("laoca", "creadorDeJugadores", "creadorDeJugadores");
+		MongoClient client = MongoBroker.get().getDatabase("laoca", "creadorDeUsuarios", "creadorDeUsuarios");
+		
 
+		
 		try {
-			usuarios.insertOne(bUsuario);
-			crearComoUsuarioDeLaBD( usuario,  pwd);
+		usuarios.insertOne(bUsuario);
+		crearComoUsuarioDeLaBD( usuario,  pwd);
 		}catch(MongoWriteException e) {
 			if(e.getCode()==11000) 
 				throw new Exception("¿No estarás ya registrado, chaval/chavala?");
-			throw new Exception("Quien sabe qué pasó.");
+			throw new Exception("Quien sabe qué pasó");
 		}
 	}
 
@@ -89,22 +97,32 @@ public class DAOUsuario {
 
 	private static BsonString encriptar(String pwd) throws Exception{
 		MessageDigest md = MessageDigest.getInstance("MD5");
-		byte[] messageDigest = md.digest(pwd.getBytes());
-		BigInteger number = new BigInteger(1, messageDigest);
-		String hashtext = number.toString(16);
+		 byte[] messageDigest = md.digest(pwd.getBytes());
+		 BigInteger number = new BigInteger(1, messageDigest);
+		 String hashtext = number.toString(16);
 		 
-		while (hashtext.length() < 32) {
-			hashtext = "0" + hashtext;
-		}
-
-		return new BsonString(hashtext);
+		 while (hashtext.length() < 32) {
+		 hashtext = "0" + hashtext;
+		 }
+		 return new BsonString(hashtext);
 		
 	}
 	
 	private static void crearComoUsuarioDeLaBD(Usuario usuario, String pwd) throws Exception {
+		BsonDocument creacionDeUsuario=new BsonDocument();
+		creacionDeUsuario.append("createUser", new BsonString(usuario.getLogin()));
+		creacionDeUsuario.append("pwd", new BsonString(pwd));
+		BsonDocument rol=new BsonDocument();
+		rol.append("role", new BsonString("JugadorDeLaOca"));
+		rol.append("db", new BsonString("laoca"));
+		BsonArray roles=new BsonArray();
+		roles.add(rol);
+		creacionDeUsuario.append("roles", roles);
+
+		MongoBroker.get().getConexionPrivilegiada().getDatabase("laoca").runCommand(creacionDeUsuario);
+	
 		
-		
-		BsonDocument creacionDeUsuario = new BsonDocument();
+		/*BsonDocument creacionDeUsuario = new BsonDocument();
 		creacionDeUsuario.append("user", new BsonString(usuario.getLogin()));
 		creacionDeUsuario.append("pwd", new BsonString(pwd));
 		
@@ -117,7 +135,8 @@ public class DAOUsuario {
 		BsonArray roles = new BsonArray();
 		roles.add(rol);
 		creacionDeUsuario.append("roles", roles);
-		MongoBroker.get().getDatabase("laoca", "creadorDeJugadores", "creadorDeJugadores").getDatabase("laoca").runCommand(creacionDeUsuario);
+		MongoBroker.get().getDatabase("laoca", "creadorDeUsuarios", "creadorDeUsuarios").getDatabase("laoca").runCommand(creacionDeUsuario);
+		*/
 	}
 
 
@@ -156,7 +175,9 @@ public class DAOUsuario {
 		return usuario!=null;
 
 	}
-	
+
+
+
 	public static Usuario login(String nombreUsuario, String pwd1) throws Exception {
 		
 		MongoClient conexion = MongoBroker.get().getDatabase(nombreUsuario, pwd1, "laoca");
@@ -178,5 +199,7 @@ public class DAOUsuario {
 		conexion.close();
 		return usuario;
 	}
+	
+	
 
 }

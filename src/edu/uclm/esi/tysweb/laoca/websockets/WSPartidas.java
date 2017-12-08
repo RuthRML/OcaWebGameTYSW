@@ -44,7 +44,10 @@ public class WSPartidas {
 	@OnClose
 	public void usuarioSeVa(Session session) {
 		HttpSession sesionHttp = sesionesPorHttpSession.get(session.getId());
-		sesionHttp.invalidate();		
+		sesionHttp.invalidate();
+
+
+		
 		broadcast("Se ha ido un usuario");
 		
 	}

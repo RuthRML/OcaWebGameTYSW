@@ -1,3 +1,87 @@
+/*package edu.uclm.esi.tysweb.laoca.dominio;
+
+import java.sql.SQLException;
+import java.util.concurrent.ConcurrentHashMap;
+
+
+import edu.uclm.esi.tysweb.laoca.dao.DBBroker;
+
+public class Manager {
+	
+	private ConcurrentHashMap<String, Usuario> usuarios;
+	private ConcurrentHashMap<Integer, Partida> partidasPendientes;
+	private ConcurrentHashMap<Integer, Partida> partidasEnJuego;
+
+	private Manager() {
+		this.usuarios = new ConcurrentHashMap<>();
+		this.partidasPendientes = new ConcurrentHashMap<>();
+		this.partidasEnJuego = new ConcurrentHashMap<>();
+		DBBroker.get();
+	}
+	
+	private static class ManagerHolder {
+		static Manager singleton = new Manager();
+	}
+	
+	public static Manager get() {
+		return ManagerHolder.singleton;
+	}
+	
+	public int crearPartida (String nombreJugador, int numeroDeJugadores) throws Exception {
+		Usuario usuario = findUsuario(nombreJugador);
+		if (usuario.getPartida()!=null)
+			throw new Exception("El usuario ya está asociado a una partida. Desconéctate para crear una nueva o unirte a otra");
+
+		Partida partida=new Partida(usuario, numeroDeJugadores);
+		usuario.setPartida(partida);
+		this.partidasPendientes.put(partida.getId(), partida);
+		return usuario;
+	}
+
+	private Usuario findUsuario(String nombreJugador) throws Exception{
+		Usuario usuario = this.usuarios.get(nombreJugador);
+		
+		if(usuario == null) {
+			usuario = new Usuario(nombreJugador);
+			this.usuarios.put(nombreJugador, usuario);
+		}
+		
+		return usuario;
+	}
+	
+	public void addJugador (String nombreJugador) throws Exception {
+		if (partidasPendientes.isEmpty()) {
+			throw new Exception ("No hay partidas pendientes. Crea una.");
+		}
+		
+		Partida partida = this.partidasPendientes.elements().nextElement();
+		Usuario usuario = findUsuario(nombreJugador);
+		partida.add(usuario);
+		
+		if (partida.isReady()) {
+			this.partidasPendientes.remove(partida.getId());
+			this.partidasEnJuego.put(partida.getId(), partida);
+		}
+		
+	}
+	public void registrar(String nombreUsuario, String email, String pwd1) throws Exception {
+		Usuario usuario = new  UsuarioRegistrado();
+		usuario.setNonbre(nombreUsuario);
+
+			
+		usuario.insert(pwd1);
+	}
+	
+	public Usuario ingresar(String nombreUsuario, String pwd1) throws Exception {
+		return UsuarioRegistrado.login(nombreUsuario,pwd1);
+		
+
+	}
+	
+}*/
+
+
+
 package edu.uclm.esi.tysweb.laoca.dominio;
 
 import java.io.File;
@@ -30,9 +114,11 @@ public class Manager {
 	}
 
 	private Usuario findUsuario(String nombreJugador) throws Exception {
+		
 		Usuario usuario=this.usuarios.get(nombreJugador);
+		
 		if (usuario==null) {
-			System.out.println("Usuario es nulo.");
+			System.out.println("usuario es nulo");
 			usuario=new Usuario(nombreJugador);
 			this.usuarios.put(nombreJugador, usuario);
 		}
@@ -96,3 +182,8 @@ public class Manager {
 	}
 	
 }
+
+
+
+
+
