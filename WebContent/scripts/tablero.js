@@ -1,6 +1,3 @@
-var ficha5 = new Image();
-ficha5.src = "imagenes/ficha5.png";
-
 function Tablero() {
 	this.casillas = [];
 	this.fichas=[];

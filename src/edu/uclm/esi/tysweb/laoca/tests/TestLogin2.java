@@ -20,7 +20,7 @@ public class TestLogin2 {
 
   @Before
   public void setUp() throws Exception {
-	  System.setProperty("webdriver.chrome.driver", "/home/josealejandro/Documentos/OcaWebGameTYSW/chromedriver");
+    System.setProperty("webdriver.chrome.driver", "/home/josealejandro/Documentos/OcaWebGameTYSW/chromedriver");
     driverRoja = new FirefoxDriver();
     driverAzul = new ChromeDriver();
     baseUrl = "http://localhost:8080";
@@ -30,24 +30,24 @@ public class TestLogin2 {
 
   @Test
   public void testLogin2() throws Exception {
-	  driverRoja.get(baseUrl + "/OcaWebGameTYSW/");
-	    
-	    driverRoja.findElement(By.id("numero")).clear();
-	    driverRoja.findElement(By.id("numero")).sendKeys("2");
-	    driverRoja.findElement(By.cssSelector("button.btn.btn-primary")).click();
-	    driverRoja.findElement(By.id("nombre")).clear();
-	    driverRoja.findElement(By.id("nombre")).sendKeys("pepe1@pepe.com");
-	    driverRoja.findElement(By.id("btnCrearPartida")).click();
-	    Thread.sleep(1000);
-	    
-	    driverAzul.get(baseUrl + "/OcaWebGameTYSW/");
-	    Thread.sleep(1000);
-	    driverAzul.findElement(By.id("numero")).clear();
-	    driverAzul.findElement(By.cssSelector("button.btn.btn-primary")).click();
-	    driverAzul.findElement(By.id("nombre")).clear();
-	    driverAzul.findElement(By.id("nombre")).sendKeys("pepe2@pepe.com");
-	    driverAzul.findElement(By.id("btnUnirse")).click();
-	    Thread.sleep(1000);
+    driverRoja.get(baseUrl + "/OcaWebGameTYSW/");
+      
+      driverRoja.findElement(By.id("numero")).clear();
+      driverRoja.findElement(By.id("numero")).sendKeys("2");
+      driverRoja.findElement(By.cssSelector("button.btn.btn-primary")).click();
+      driverRoja.findElement(By.id("nombre")).clear();
+      driverRoja.findElement(By.id("nombre")).sendKeys("pepe1@pepe.com");
+      driverRoja.findElement(By.id("btnCrearPartida")).click();
+      Thread.sleep(1000);
+      
+      driverAzul.get(baseUrl + "/OcaWebGameTYSW/");
+      Thread.sleep(1000);
+      driverAzul.findElement(By.id("numero")).clear();
+      driverAzul.findElement(By.cssSelector("button.btn.btn-primary")).click();
+      driverAzul.findElement(By.id("nombre")).clear();
+      driverAzul.findElement(By.id("nombre")).sendKeys("pepe2@pepe.com");
+      driverAzul.findElement(By.id("btnUnirse")).click();
+      Thread.sleep(1000);
     try {
       assertEquals("Se ha conectado", driverRoja.findElement(By.id("divMensajes")).getText());
     } catch (Error e) {

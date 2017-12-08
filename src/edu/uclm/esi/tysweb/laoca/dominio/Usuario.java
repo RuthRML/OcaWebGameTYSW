@@ -1,8 +1,10 @@
 package edu.uclm.esi.tysweb.laoca.dominio;
 
-import java.sql.SQLException;
+import java.io.IOException;
 
-import org.bson.BsonDocument;
+import javax.websocket.Session;
+
+import org.json.JSONObject;
 
 import edu.uclm.esi.tysweb.laoca.dao.DAOUsuario;
 
@@ -11,31 +13,26 @@ public class Usuario {
 
 	protected String login;
 	protected Partida partida;
+	private Session sesion;
 
 	public Usuario(String nombreJugador) throws Exception {
 		
 		if (!DAOUsuario.existe(nombreJugador)) {
 			throw new Exception ("Usuario no registrado");
-		}
-		
+		}		
 		this.login = nombreJugador;
 	}
 
 	public Usuario() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public String getLogin() {
 		return this.login;
 	}
 
-	public static void insert(String nombreUsuario, String email, String pwd) throws SQLException {
-		DAOUsuario.registrar(nombreUsuario, email, pwd);
-	}
-
-	public void setNonbre(String email) {
+	public void setNombre(String email) {
 		this.login=email;
-		
 	}
 
 	public  void insert(String pwd1) throws Exception {
@@ -43,14 +40,26 @@ public class Usuario {
 		
 	}
 
-	public boolean entrar(String pwd1)throws Exception  {
-		if(DAOUsuario.enter(this,pwd1)) {
-			return true;
-		}
-		return false;
+	public Partida getPartida() {
+		return partida;
+	}
+
+	public void setPartida(Partida partida) {
+		this.partida = partida;
+	}
+
+	public void setWSSession(Session sesion) {
+		this.sesion=sesion;
+	}
+
+	public void enviar(String jugador, int dado) {
+		// TODO Auto-generated method stub
 		
 	}
 
-	
+	public void enviar(JSONObject jso) throws IOException {
+		this.sesion.getBasicRemote().sendText(jso.toString());
+		
+	}	
 
 }

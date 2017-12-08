@@ -1,4 +1,5 @@
 <%@page import="edu.uclm.esi.tysweb.laoca.dominio.Manager"%>
+<%@page import="edu.uclm.esi.tysweb.laoca.dominio.Usuario"%>
 <%@page import="org.json.JSONObject"%>
 <%@ page language="java" contentType="application/json; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -13,6 +14,7 @@
 	JSONObject respuesta = new JSONObject();
 	
 	try{
+		Usuario usuario = Manager.get().addJugador(nombreJugador);
 		Manager.get().addJugador(nombreJugador);
 		respuesta.put("result", "OK");
 	}catch (Exception e){

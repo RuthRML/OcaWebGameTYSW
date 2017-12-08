@@ -5,13 +5,17 @@ function crearPartida(){
 	request.onreadystatechange = function(){
 		if(request.readyState == 4){
 			var respuesta = JSON.parse(request.responseText);
+			console.log(respuesta);
 			if (respuesta.result=="OK") {
 				console.log(respuesta.result);
 				conectarWebSocket();
 				localStorage.nombre = document.getElementById("nombre").value;
 				var divMensajes=document.getElementById("divMensajes");
 				divMensajes.innerHTML += "Se ha conectado";
-			} else alert("Error de conexion");
+			} else {
+				console.log(respuesta.mensaje);
+				alert(respuesta.mensaje);
+			}
 		}
 	};
 
@@ -31,9 +35,13 @@ function unirse(){
 	request.onreadystatechange = function(){
 		if(request.readyState == 4){
 			var respuesta = request.responseText;
-			console.log(respuesta);
-			conectarWebSocket();
-			localStorage.nombre = document.getElementById("nombre").value;
+			if (respuesta.result=="OK") {
+				console.log(respuesta);
+				conectarWebSocket();
+				localStorage.nombre = document.getElementById("nombre").value;
+			}else{
+				alert("Error al unirse.");
+			}
 		}
 	};
 
@@ -44,6 +52,29 @@ function unirse(){
 	request.send("p=" + JSON.stringify(p));
 	
 }
+
+/*function tirarDado(){
+	var request = new XMLHttpRequest();
+	request.open("post", "tirarDado.jsp");
+	request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	request.onreadystatechange == function(){
+		if(request.readyState == 4){
+			var respuesta = request.responseText;
+			console.log(respuesta);
+			conectarWebSocket();
+		}else{
+			alert("Error al tirar dado.");
+		}
+	};
+
+	var iframeDocument = document.getElementById('iframeIndex').contentDocument;
+	
+	var p = {
+		nombre : iframeDocument.getElementById("nombre").value
+	};
+	
+	request.send("p=" + JSON.stringify(p));
+}*/
 
 var ws;
 
@@ -60,12 +91,39 @@ function conectarWebSocket() {
 		
 		if(mensaje.tipo == "DIFUSION"){
 			console.log(mensaje.mensaje);
+		}else if(mensaje.tipo == "COMIENZO"){
+			addMensaje("Comienza la partida.");
 		}
 		
 	}
 	
 }
 
+function comenzar(mensaje){
+	var btnDado = document.getElementById("btnDado");
+	if(mensaje.jugadorConElTurno==localStorage.nombre){
+		btnDado.setAttribute("style","display:visible");
+	}else{
+		btnDado.setAttribute("style","display:none");
+	}
+
+	var listaJugadores = document.getElementById("listaDeJugadores");
+	var jugadores = mensaje.jugadores;
+
+	for (var i = 0; i < jugadores.length; i++) {
+		r = r + jugadores[i];
+		//spanListaJugadores.innerHTML=r;
+        var li = document.createElement('li');
+        li.innerHTML=r;
+        listaJugadores.appendChild(li);
+	}
+}
+
+function addMensaje(texto) {
+	var div = document.createElement("div");
+	divChat.appendChild(div);
+	div.innerHTML=texto;
+}
 
 
 

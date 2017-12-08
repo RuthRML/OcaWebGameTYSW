@@ -1,5 +1,6 @@
 <%@page import="org.json.JSONObject"%>
 <%@page import="edu.uclm.esi.tysweb.laoca.dominio.Manager"%>
+<%@page import="edu.uclm.esi.tysweb.laoca.dominio.Usuario"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
@@ -7,21 +8,21 @@
 
 	JSONObject jso= new JSONObject(p);
 	JSONObject respuesta= new JSONObject(p);
+
 	try{
-	String email=jso.optString("email");
-	String pwd=jso.optString("pwd");
-	validar( email,  pwd) ;
-	Manager.get().ingresar(email, pwd);
+		String email=jso.optString("email");
+		String pwd=jso.optString("pwd");
+		validar(email,  pwd);
+		Usuario usuario = Manager.get().login(email, pwd);
+		session.setAttribute("usuario",usuario);
 	    respuesta.put("resultado","OK");
-	}
-	
-	catch(Exception e){
+	}catch(Exception e){
 		System.out.println("El mensaje error es: "+e.getMessage());
 		respuesta.put("resultado","ERROR");
 		respuesta.put("mensaje",e.getMessage());
 	}
-	out.println(respuesta.toString());
-	
+
+	out.println(respuesta.toString());	
 
 %>
 

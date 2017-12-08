@@ -11,12 +11,16 @@ import org.bson.BsonArray;
 import org.bson.BsonDocument;
 import org.bson.BsonString;
 import org.bson.BsonValue;
+import org.bson.conversions.Bson;
 
+import com.mongodb.MongoClient;
 import com.mongodb.MongoWriteException;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 import edu.uclm.esi.tysweb.laoca.dominio.Usuario;
+import edu.uclm.esi.tysweb.laoca.dominio.UsuarioRegistrado;
 import edu.uclm.esi.tysweb.laoca.mongodb.MongoBroker;
 
 public class DAOUsuario {
@@ -34,12 +38,14 @@ public class DAOUsuario {
 		
 		MongoBroker broker = MongoBroker.get();
 		BsonDocument criterio = new BsonDocument();
-		criterio.append("email", new BsonString(nombreJugador));
-		MongoDatabase db = broker.getDatabase("laoca");
+		criterio.append("email", new BsonString(nombreJugador));	
+		
+		MongoClient conexion = broker.getConexionPrivilegiada();
+		MongoDatabase db = conexion.getDatabase("laoca");		
+
 		MongoCollection<BsonDocument>usuarios = db.getCollection("usuarios", BsonDocument.class);
 		BsonDocument usuario = usuarios.find(criterio).first();
-		//broker.close();
-		
+		//broker.close();		
 		
 		return usuario!=null;
 		
@@ -61,21 +67,21 @@ public class DAOUsuario {
 
 		bUsuario.append("email", new BsonString(usuario.getLogin()));
 		bUsuario.append("pwd",encriptar(pwd));
-		MongoDatabase db;
-		try {
-		db= MongoBroker.get().getDatabase("laoca");
-		}catch(Exception e) {
-			throw new Exception("No se pudo conectar a la base de datos");
-		}
-		MongoCollection<BsonDocument> usuarios = db.getCollection("usuarios",BsonDocument.class);
+
+		MongoClient conexion = MongoBroker.get().getConexionPrivilegiada();
+		MongoDatabase db = conexion.getDatabase("laoca");
+		MongoCollection<BsonDocument>usuarios = db.getCollection("usuarios", BsonDocument.class);
 		
+		
+		MongoClient client = MongoBroker.get().getDatabase("laoca", "creadorDeJugadores", "creadorDeJugadores");
+
 		try {
-		usuarios.insertOne(bUsuario);
-		crearComoUsuarioDeLaBD( usuario,  pwd);
+			usuarios.insertOne(bUsuario);
+			crearComoUsuarioDeLaBD( usuario,  pwd);
 		}catch(MongoWriteException e) {
 			if(e.getCode()==11000) 
 				throw new Exception("¿No estarás ya registrado, chaval/chavala?");
-			throw new Exception("Quien sabe qué pasó");
+			throw new Exception("Quien sabe qué pasó.");
 		}
 	}
 
@@ -83,18 +89,19 @@ public class DAOUsuario {
 
 	private static BsonString encriptar(String pwd) throws Exception{
 		MessageDigest md = MessageDigest.getInstance("MD5");
-		 byte[] messageDigest = md.digest(pwd.getBytes());
-		 BigInteger number = new BigInteger(1, messageDigest);
-		 String hashtext = number.toString(16);
+		byte[] messageDigest = md.digest(pwd.getBytes());
+		BigInteger number = new BigInteger(1, messageDigest);
+		String hashtext = number.toString(16);
 		 
-		 while (hashtext.length() < 32) {
-		 hashtext = "0" + hashtext;
-		 }
-		 return new BsonString(hashtext);
+		while (hashtext.length() < 32) {
+			hashtext = "0" + hashtext;
+		}
+
+		return new BsonString(hashtext);
 		
 	}
 	
-	private static void crearComoUsuarioDeLaBD(Usuario usuario, String pwd) {
+	private static void crearComoUsuarioDeLaBD(Usuario usuario, String pwd) throws Exception {
 		
 		
 		BsonDocument creacionDeUsuario = new BsonDocument();
@@ -110,7 +117,7 @@ public class DAOUsuario {
 		BsonArray roles = new BsonArray();
 		roles.add(rol);
 		creacionDeUsuario.append("roles", roles);
-		MongoBroker.get().getDatabase("laoca").runCommand(creacionDeUsuario);
+		MongoBroker.get().getDatabase("laoca", "creadorDeJugadores", "creadorDeJugadores").getDatabase("laoca").runCommand(creacionDeUsuario);
 	}
 
 
@@ -150,6 +157,26 @@ public class DAOUsuario {
 
 	}
 	
-	
+	public static Usuario login(String nombreUsuario, String pwd1) throws Exception {
+		
+		MongoClient conexion = MongoBroker.get().getDatabase(nombreUsuario, pwd1, "laoca");
+		
+		BsonDocument criterio = new BsonDocument();
+		criterio.append("email", new BsonString(nombreUsuario));
+		MongoCollection<BsonDocument> usuarios=
+				
+				conexion.getDatabase("laoca").getCollection("usuarios",BsonDocument.class);
+		
+
+		FindIterable<BsonDocument> resultado = usuarios.find(criterio);
+		Usuario usuario=null;
+		if(resultado.first()!=null){
+			 usuario = new UsuarioRegistrado();
+			usuario.setNombre(nombreUsuario);
+			
+		}
+		conexion.close();
+		return usuario;
+	}
 
 }

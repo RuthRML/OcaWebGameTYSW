@@ -1,4 +1,5 @@
 <%@page import="edu.uclm.esi.tysweb.laoca.dominio.Manager"%>
+<%@page import="edu.uclm.esi.tysweb.laoca.dominio.Usuario"%>
 <%@page import="org.json.JSONObject"%>
 <%@ page language="java" contentType="application/json; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -14,7 +15,9 @@
 	JSONObject respuesta = new JSONObject();
 	
 	try{
-		int idPartida = Manager.get().crearPartida(nombreJugador, numeroDeJugadores);
+		Usuario usuarioPartida = Manager.get().crearPartida(nombreJugador, numeroDeJugadores);
+
+		int idPartida = usuarioPartida.getPartida().getId();
 		
 		session.setAttribute ("nombreDeUsuario", nombreJugador);
 		respuesta.put("result", "OK");
