@@ -22,7 +22,7 @@ public class MongoBroker {
 	private ConcurrentLinkedQueue<MongoClient> usadas, libres;
 	private MongoClient conexionPrivilegiada;
 	
-	private MongoBroker() throws Exception {
+	private MongoBroker() {
 		MongoCredential credenciales=MongoCredential.createCredential("creadorDeUsuarios", 
 				"laoca", "creadorDeUsuarios".toCharArray());
 		ServerAddress address=new ServerAddress("localhost");
