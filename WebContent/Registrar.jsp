@@ -8,11 +8,12 @@
 	JSONObject jso= new JSONObject(p);
 	JSONObject respuesta= new JSONObject(p);
 	try{
-        String email=jso.optString("email");
-        String pwd1=jso.optString("pwd1");
-        String pwd2=jso.optString("pwd2");
-        String boton=request.getParameter("boton");
-        comprobarCredenciales(email,  pwd1,  pwd2);    
+    String email=jso.optString("email");
+    String pwd1=jso.optString("pwd1");
+    String pwd2=jso.optString("pwd2");
+    String boton=request.getParameter("boton");
+    comprobarCredenciales( email,  pwd1,  pwd2) ;
+    
    
         Manager.get().registrar(email, pwd1);
         respuesta.put("resultado","OK");
@@ -26,7 +27,6 @@
 	out.println(respuesta.toString());
 	
 %>
-
 <%!
 private void comprobarCredenciales(String email, String pwd1, String pwd2) throws Exception{
 	

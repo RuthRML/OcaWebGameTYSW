@@ -1,0 +1,110 @@
+// Creación de un súperusuario
+var root = {
+	user : "root",
+	pwd  : "root",
+	roles : [
+		{ 
+			role : "userAdminAnyDatabase", db : "admin"
+		},
+		{ 
+			role : "dbOwner", db : "admin"
+		}
+	]
+}
+
+db.createUser(root)
+
+// Creación de un rol
+var rolJugadorDeLaOca = {
+	role : "JugadorDeLaOca",
+	privileges : [
+		{
+			resource : {
+				db : "laoca",
+				collection : "usuarios"
+			},
+			actions : ["find"]
+		}
+	],
+	roles : []
+}
+
+// Creación de un usuario con ese rol
+var jugadorGenerico = {
+	user : "jugador",
+	pwd  : "jugador",
+	roles : [
+		{ 
+			role : "JugadorDeLaOca", db : "laoca"
+		}
+	]
+}
+
+
+db.createUser(jugadorGenerico)
+
+var creadorDeUsuarios = {
+	user : "creadorDeUsuarios",
+	pwd  : "creadorDeUsuarios",
+	roles : [
+		{ 
+			role : "userAdmin", db : "admin"
+		},
+		{ 
+			role : "userAdmin", db : "laoca"
+		}
+	],
+	privileges : [
+		{
+			resource : {
+				db : "laoca",
+				collection : "usuarios"
+			},
+			actions : ["find", "insert"]
+		}
+	]
+}
+
+var creador = {
+	role : "creador",
+	privileges : [
+		{
+			resource : {
+				db : "laoca",
+				collection : "usuarios"
+			},
+			actions : ["find","insert"]
+		}
+	],
+	roles : [
+		{ 
+			role : "userAdmin", db : "admin"
+		},
+		{ 
+			role : "userAdmin", db : "laoca"
+		}
+	]
+}
+
+
+var creadorDeUsuarios = {
+	user : "creadorDeUsuarios",
+	pwd  : "creadorDeUsuarios",
+	roles : [
+		{ 
+			role : "creador", db : "laoca"
+		}
+	]
+}
+
+como haria usted para ofrecer un servicio web a unos computadores especificos? R/ colocando las cabeceras acces control allow origin 
+
+cómo haría para implementar un servidor de publicidad?
+aceptar peticiones de cualquier origen with credentials = true en la peticion que me hagan
+
+que hacen los scripts de anuncios? Evnian peticiones cruzadas cors. Se envian cookies de terceros al servidor.
+
+Para lanzar mongo en modo "seguro":
+
+
+mongod --auth
