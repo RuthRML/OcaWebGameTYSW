@@ -27,23 +27,15 @@
 					<label for="labelNumeroJugadores">Introduce número de jugadores</label>
 					<input type="number" class="form-control" id="numero" placeholder="Número de jugadores" title="Introduce número de jugadores">
 				</div>
-				<button onclick="event.preventDefault(); crearPartida()" class="btn btn-primary" type="submit" id="btnCrearPartida">Comenzar</button>
-				<button onclick="event.preventDefault(); unirse()" class="btn btn-primary" type="submit" id="btnUnirse">Unirse</button>
+				<button onclick="event.preventDefault(); crearPartida(); location.href=juego.html" class="btn btn-primary" type="submit" id="btnCrearPartida">Comenzar</button>
+				<button onclick="event.preventDefault(); unirse(); location.href=juego.html" class="btn btn-primary" type="submit" id="btnUnirse">Unirse</button>
 				<div id="divMensajes"></div>
 			</form>
 			
 		</div>
-		<!-- <svg id="tablero" width="700" height="700" style="background-color:powderblue">
-		</svg> -->
-	</div>
-	
-<!-- 	Nombre: <input type="text" id="nombre"><br>
-	Número de jugadores: <input type="number" id="numero"><br>
-	<button onclick="crearPartida()">Crear</button>
-	<br>
-	<button onclick="unirse()">Unirse</button> -->
-	
-	
+
+	</div>	
+
 	<script>
 		if (localStorage.nombre!=undefined){
 			document.getElementById("nombre").value=localStorage.nombre;
@@ -51,15 +43,7 @@
 	</script>
 	
 	<script src="scripts/tablero.js"></script>
-	<script src="scripts/partidas.js"></script>
-	
-	
-<!-- 	<script>
-		var tablero = new Tablero();
-		var lienzo = document.getElementById("tablero");
-		tablero.dibujar(lienzo);
-	</script> -->
-	
+	<script src="scripts/partidas.js"></script>	
 	
 </body>
 	

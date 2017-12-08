@@ -6,3 +6,28 @@ body {
 	background-color: white;
 	padding: 30px;
 }
+
+#wrapper {
+	width: 70%;
+	margin: 0 auto;
+} 
+#wrapper .container{
+	max-width: 100%; 
+	display: block;
+}
+
+#tablero{
+	width: 100%;
+	height: 100%;
+	background-color: powderblue;
+	margin: 0 auto;
+}
+
+.btn-primary{
+	padding: 10px;
+}
+
+.list-group-item{
+	text-align: center;
+	text-transform: uppercase;
+}
