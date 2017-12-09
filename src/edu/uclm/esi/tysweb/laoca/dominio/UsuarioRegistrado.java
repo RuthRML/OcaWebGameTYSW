@@ -4,8 +4,6 @@ import edu.uclm.esi.tysweb.laoca.dao.DAOUsuario;
 
 public class UsuarioRegistrado extends Usuario {
 
-
-
 	public UsuarioRegistrado(String nombreJugador) throws Exception {
 		super(nombreJugador);
 		// TODO Auto-generated constructor stub

@@ -9,23 +9,23 @@ public class Pool {
 
 	private ConcurrentLinkedQueue<Connection> libres;
 	private ConcurrentLinkedQueue<Connection> usadas;
-	
-	Pool(int numeroDeConexiones){
-		
+
+	Pool(int numeroDeConexiones) {
+
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
 			System.exit(-1);
 		}
-		
+
 		String url = "jdbc:mysql://alarcosj.esi.uclm.es:3306/listadelacompra";
-		
+
 		this.libres = new ConcurrentLinkedQueue<>();
 		this.usadas = new ConcurrentLinkedQueue<>();
-		
+
 		for (int i = 0; i < numeroDeConexiones; i++) {
 			Connection bd;
-			
+
 			try {
 				bd = DriverManager.getConnection(url, "listadelacompra", "");
 				this.libres.add(bd);
@@ -35,18 +35,17 @@ public class Pool {
 				e.printStackTrace();
 				break;
 			}
-			
-			
+
 		}
-		
+
 	}
 
 	public Connection getBD() throws Exception {
-		
+
 		if (this.libres.size() == 0) {
-			throw new Exception ("No hay conexiones libres");
+			throw new Exception("No hay conexiones libres");
 		}
-		
+
 		Connection bd = this.libres.poll();
 		this.usadas.offer(bd);
 		return null;
@@ -56,5 +55,5 @@ public class Pool {
 		this.usadas.remove(bd);
 		this.libres.offer(bd);
 	}
-	
+
 }

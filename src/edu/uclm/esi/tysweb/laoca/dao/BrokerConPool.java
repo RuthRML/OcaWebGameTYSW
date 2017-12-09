@@ -2,20 +2,18 @@ package edu.uclm.esi.tysweb.laoca.dao;
 
 import java.sql.Connection;
 
-import com.mongodb.client.MongoDatabase;
-
-public class Broker {
+public class BrokerConPool extends AbstractBroker {
 	private Pool pool;
 
-	private Broker() {
+	private BrokerConPool() {
 		this.pool = new Pool(2);
 	}
 
 	private static class BrokerHolder {
-		static Broker singleton = new Broker();
+		static BrokerConPool singleton = new BrokerConPool();
 	}
 
-	public static Broker get() {
+	public static BrokerConPool get() {
 		return BrokerHolder.singleton;
 	}
 
@@ -26,5 +24,4 @@ public class Broker {
 	public void close(Connection bd) {
 		this.pool.close(bd);
 	}
-
 }

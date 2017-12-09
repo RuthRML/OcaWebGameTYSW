@@ -79,13 +79,16 @@ public class Usuario {
 	protected String login;
 	protected Partida partida;
 	private Session sesion;
-	private boolean estaRegistrado=true;
+	private boolean estaRegistrado = true;
+	private int turnosSinTirar;
+
+	private Casilla casilla;
 
 	public Usuario(String nombreJugador) throws Exception {
 		if (!DAOUsuario.existe(nombreJugador))
-			estaRegistrado=false;
-			//throw new Exception("Usuario no registrado");
-		this.login=nombreJugador;
+			estaRegistrado = false;
+		// throw new Exception("Usuario no registrado");
+		this.login = nombreJugador;
 	}
 
 	public Usuario() {
@@ -96,26 +99,24 @@ public class Usuario {
 	}
 
 	public void setPartida(Partida partida) {
-		this.partida=partida;
+		this.partida = partida;
 	}
-	
+
 	public Partida getPartida() {
 		return partida;
 	}
-	
-
 
 	public void setWSSession(Session sesion) {
-		this.sesion=sesion;
+		this.sesion = sesion;
 	}
 
 	public void enviar(String jugador, int dado) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void setNombre(String email) {
-		this.login=email;
+		this.login = email;
 	}
 
 	public void insert(String pwd) throws Exception {
@@ -124,7 +125,29 @@ public class Usuario {
 
 	public void enviar(JSONObject jso) throws IOException {
 		this.sesion.getBasicRemote().sendText(jso.toString());
-		
+
+	}
+
+	public Casilla getCasilla() {
+		return this.casilla;
+	}
+
+	public void setCasilla(Casilla casilla) {
+		this.casilla = casilla;
+	}
+
+	public int getTurnosSinTirar() {
+		return this.turnosSinTirar;
+	}
+
+	public void setTurnosSinTirar(int turnosSinTirar) {
+		this.turnosSinTirar = turnosSinTirar;
+	}
+
+	@Override
+	public String toString() {
+		return this.login + " jugando en " + (this.partida != null ? this.partida.getId() : "ninguna ") + ", "
+				+ this.casilla.getPos() + ", turnos: " + this.turnosSinTirar;
 	}
 
 }

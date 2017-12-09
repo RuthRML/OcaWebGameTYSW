@@ -4,15 +4,15 @@ import java.sql.Connection;
 
 public class DBBroker {
 	private Pool pool;
-	
+
 	private DBBroker() {
 		this.pool = new Pool(2);
 	}
-	
+
 	private static class BrokerHolder {
 		static DBBroker singleton = new DBBroker();
 	}
-	
+
 	public static DBBroker get() {
 		return BrokerHolder.singleton;
 	}
