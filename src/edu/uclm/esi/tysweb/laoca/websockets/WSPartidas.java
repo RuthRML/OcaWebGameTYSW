@@ -32,7 +32,7 @@ public class WSPartidas {
 
 		System.out.println("Sesión " + sesion.getId());
 		sesionesPorId.put(sesion.getId(), sesion);
-		sesionesPorNombre.put(usuario.getLogin(), sesion);
+		//sesionesPorNombre.put(usuario.getLogin(), sesion);
 
 		broadcast("Ha llegado " + usuario.getLogin());
 
@@ -42,12 +42,11 @@ public class WSPartidas {
 	}
 
 	@OnClose
-	public void usuarioSeVa(Session session) {
-		HttpSession sesionHttp = sesionesPorHttpSession.get(session.getId());
-		sesionHttp.invalidate();
-
-		broadcast("Se ha ido un usuario");
-
+	public void usuarioSeVa(Session session) throws IOException {
+		//HttpSession sesionHttp = sesionesPorHttpSession.get(session.getId());
+		//sesionHttp.invalidate();
+		sesionesPorId.remove(session.getId());
+		broadcast("Se ha ido un usuario.");
 	}
 
 	@OnMessage
@@ -57,11 +56,13 @@ public class WSPartidas {
 			int idPartida = jso.getInt("idPartida");
 			String jugador = jso.getString("nombreJugador");
 			int dado = jso.getInt("puntos");
-			// Manager.get().actualizarTablero(idPartida, jugador, dado);
+			System.out.println("Partida "+idPartida + " jugador "+jugador + " dado "+dado);
+			 //Manager.get().actualizarTablero(idPartida, jugador, dado);
 
 			try {
 				JSONObject mensaje = Manager.get().tirarDado(idPartida, jugador, dado);
 			} catch (Exception e) {
+				System.out.println("hubo error con el tirar dado");
 			}
 
 		}

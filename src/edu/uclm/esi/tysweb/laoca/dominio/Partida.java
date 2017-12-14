@@ -63,10 +63,12 @@ public class Partida {
 		// for (int i = 0; i < this.jugadores.size(); i++) {
 		// jsa.put(jugadores.))
 		// }
-		for (Usuario jugador : jugadores)
+		for (Usuario jugador : jugadores) {
 			jsa.put(jugador.getLogin());
+			addJugador(jugador);
+		}
+		
 		jso.put("jugadores", jsa);
-
 		broadcast(jso);
 		/*
 		 * Enumeration< Usuario> eJugadores = this.jugadores.elements();

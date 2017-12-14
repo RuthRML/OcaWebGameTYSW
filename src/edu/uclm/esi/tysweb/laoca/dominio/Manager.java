@@ -23,11 +23,12 @@ public class Manager {
 	public Usuario crearPartida(String nombreJugador, int numeroDeJugadores) throws Exception {
 		Usuario usuario = findUsuario(nombreJugador);
 		if (usuario.getPartida() != null)
-			throw new Exception("El usuario ya est√° asociado a una partida. Descon√©ctate para crear una nueva o unirte a otra");
+			throw new Exception("El usuario ya est· asociado a una partida. DesconÈctate para crear una nueva o unirte a otra.");
 
 		Partida partida = new Partida(usuario, numeroDeJugadores);
 		usuario.setPartida(partida);
 		this.partidasPendientes.put(partida.getId(), partida);
+		comprobarPartida(partida);
 		return usuario;
 	}
 
@@ -36,7 +37,7 @@ public class Manager {
 		Usuario usuario = this.usuarios.get(nombreJugador);
 
 		if (usuario == null) {
-			System.out.println("usuario es nulo");
+			System.out.println("El usuario no existe en la base de datos. Se crea uno nuevo.");
 			usuario = new Usuario(nombreJugador);
 			this.usuarios.put(nombreJugador, usuario);
 		}
@@ -53,17 +54,21 @@ public class Manager {
 
 	public Usuario addJugador(String nombreJugador) throws Exception {
 		if (this.partidasPendientes.isEmpty())
-			throw new Exception("No hay partidas pendientes. Crea una, pendejo");
+			throw new Exception("No hay partidas pendientes. Crea una.");
 		Partida partida = this.partidasPendientes.elements().nextElement();
 		Usuario usuario = findUsuario(nombreJugador);
 		partida.add(usuario);
 		usuario.setPartida(partida);
+		comprobarPartida(partida);
+		return usuario;
+	}
+
+	public void comprobarPartida(Partida partida) {
 		if (partida.isReady()) {
 			this.partidasPendientes.remove(partida.getId());
 			this.partidasEnJuego.put(partida.getId(), partida);
 			partida.comenzar();
 		}
-		return usuario;
 	}
 
 	public void setWebAppPath(String webAppPath) {

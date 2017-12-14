@@ -8,10 +8,9 @@ function crearPartida(){
 			console.log(respuesta);
 			if (respuesta.result=="OK") {
 				console.log(respuesta.result);
-				conectarWebSocket();
+				window.location.href='juego.html';
 				localStorage.nombre = document.getElementById("nombre").value;
-				var divMensajes=document.getElementById("divMensajes");
-				divMensajes.innerHTML += "Se ha conectado";
+				sessionStorage.idPartida=respuesta.mensaje;				
 			} else{
 				console.log(respuesta.mensaje);
 				alert(respuesta.mensaje);
@@ -34,19 +33,14 @@ function unirse(){
 	request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	request.onreadystatechange = function(){
 		if(request.readyState == 4){
-
 			var respuesta = JSON.parse(request.responseText);
 			if (respuesta.result=="OK") {
 				console.log(respuesta);
 				conectarWebSocket();
 				localStorage.nombre = document.getElementById("nombre").value;
-
+				sessionStorage.idPartida=respuesta.mensaje;
 			}else{
-
-				aler("error al unirse");
-
-
-
+				alert("Error al unirse.");
 			}
 		}
 	};
@@ -65,7 +59,7 @@ function conectarWebSocket() {
 	ws = new WebSocket ("ws://localhost:8080/OcaWebGameTYSW/servidorDePartidas");
 
 	ws.onopen = function(){
-		console.log("Websocket conectado");
+		console.log("Websocket conectado.");
 
 		//var tablero = new Tablero();
 		//tablero.dibujar(svgTablero);
@@ -74,11 +68,37 @@ function conectarWebSocket() {
 	ws.onmessage = function (datos){
 		var mensaje = datos.data;
 		mensaje = JSON.parse(mensaje);
-
+		console.log("Estoy aquí.");
 		if(mensaje.tipo == "DIFUSION"){
 			console.log(mensaje.mensaje);
 		}else if (mensaje.tipo =="COMIENZO"){
-			addMensaje("Comienza la partida");
+			cosole.log("Comienza la partida.");
+		}else if (mensaje.tipo =="TIRADA"){
+			
+			//Atributos de la respuesta json
+			var casillaOrigen = mensaje.casillaOrigen;
+			var dado = mensaje.dado;
+			var destinoInicial = mensaje.destinoInicial;
+			var destinoFinal = mensaje.destinoFinal;
+			var mensajeLlegada = mensaje.mensaje;
+			var ganador = mensaje.ganador; //solo en caso que ya haya un ganador
+			var idPartida = mensaje.idPartida;
+			var jugadorQueTiroElDado = mensaje.jugador;
+			
+			console.log(casillaOrigen);console.log(dado);console.log(destinoInicial);
+			console.log(destinoFinal);
+			console.log(mensajeLlegada);//console.log(ganador);
+			console.log(idPartida);
+			console.log(jugadorQueTiroElDado);
+			
+			
+			/*En caso que haya un ganador*/
+			if(ganador!=null){
+				//TODO mostrar en pantalla que ya hubo un ganador
+			}
+			
+			
+			
 		}
 
 	}
@@ -90,22 +110,22 @@ function comenzar(mensaje){
 	if(mensaje.jugadorConElTurno==localStorage.nombre){
 		btnDado.setAttribute("style","display:visible");
 	}else{
-
 		btnDado.setAttribute("style","display:none");
 	}
-	var spanListaJugadores=document.getElementById("spanListaJugadores");
+	var listListaJugadores = document.getElementById("listaDeJugadores");
 	var jugadores= mensaje.jugadores;
 	for (var i = 0; i < jugadores.length; i++) {
-		r=r+jugadores[i];
-		spanListaJugadores.innerHTML=r;
+		var lijugador = document.createElement("li");
+		lijugador.appendChild(document.createTextNode(jugadores[i]));
+		listListaJugadores.appendChild(lijugador);
 	}
 }
 
 
 function addMensaje(texto) {
-	var div=document.createElement("div");
-	divChat.appendChild(div);
-	div.innerHTML=texto;
+	//var div=document.createElement("div");
+	//divChat.appendChild(div);
+	//div.innerHTML=texto;
 }
 
 
