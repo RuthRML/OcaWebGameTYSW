@@ -19,7 +19,7 @@
 		
 		int idPartida = usuarioPartida.getPartida().getId();
 		
-		session.setAttribute ("usuario", usuarioPartida);
+		session.setAttribute ("nombreDeUsuario", usuarioPartida);
 		respuesta.put("result", "OK");
 		respuesta.put("mensaje", idPartida);
 		

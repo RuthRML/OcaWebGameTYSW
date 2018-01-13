@@ -9,17 +9,18 @@
 	String p = request.getParameter("p");
 	JSONObject jso = new JSONObject(p);
 	String nombreJugador = jso.getString("nombre");
-	session.setAttribute("nombreDeUsuario", nombreJugador);
 	
 	JSONObject respuesta = new JSONObject();
 	
 	try{
 		Usuario usuario = Manager.get().addJugador(nombreJugador);
-		Manager.get().addJugador(nombreJugador);
+		session.setAttribute("usuario", nombreJugador);
 		respuesta.put("result", "OK");
 	}catch (Exception e){
 		respuesta.put("result", "ERROR");
 		respuesta.put("mensaje", e.getMessage());
 	}
+	
+	out.println(respuesta.toString());
 
 %>

@@ -23,7 +23,7 @@ public class Manager {
 	public Usuario crearPartida(String nombreJugador, int numeroDeJugadores) throws Exception {
 		Usuario usuario = findUsuario(nombreJugador);
 		if (usuario.getPartida() != null)
-			throw new Exception("El usuario ya est· asociado a una partida. DesconÈctate para crear una nueva o unirte a otra.");
+			throw new Exception("El usuario ya est√° asociado a una partida. Descon√©ctate para crear una nueva o unirte a otra.");
 
 		Partida partida = new Partida(usuario, numeroDeJugadores);
 		usuario.setPartida(partida);

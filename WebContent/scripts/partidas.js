@@ -36,7 +36,8 @@ function unirse(){
 			var respuesta = JSON.parse(request.responseText);
 			if (respuesta.result=="OK") {
 				console.log(respuesta);
-				conectarWebSocket();
+				//conectarWebSocket();
+				window.location.href='juego.html';
 				localStorage.nombre = document.getElementById("nombre").value;
 				sessionStorage.idPartida=respuesta.mensaje;
 			}else{
@@ -72,7 +73,7 @@ function conectarWebSocket() {
 		if(mensaje.tipo == "DIFUSION"){
 			console.log(mensaje.mensaje);
 		}else if (mensaje.tipo =="COMIENZO"){
-			cosole.log("Comienza la partida.");
+			console.log("Comienza la partida.");
 		}else if (mensaje.tipo =="TIRADA"){
 			
 			//Atributos de la respuesta json
@@ -127,7 +128,6 @@ function addMensaje(texto) {
 	//divChat.appendChild(div);
 	//div.innerHTML=texto;
 }
-
 
 
 
