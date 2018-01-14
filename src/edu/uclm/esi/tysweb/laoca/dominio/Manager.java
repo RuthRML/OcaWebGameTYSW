@@ -65,8 +65,9 @@ public class Manager {
 
 	public void comprobarPartida(Partida partida) {
 		if (partida.isReady()) {
-			this.partidasPendientes.remove(partida.getId());
 			this.partidasEnJuego.put(partida.getId(), partida);
+			this.partidasPendientes.remove(partida.getId());
+			
 			partida.comenzar();
 		}
 	}

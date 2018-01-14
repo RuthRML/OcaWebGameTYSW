@@ -69,7 +69,7 @@ public class Partida {
 		}
 		
 		jso.put("jugadores", jsa);
-		broadcast(jso);
+		broadcastPrimeraVez(jso);
 		/*
 		 * Enumeration< Usuario> eJugadores = this.jugadores.elements();
 		 * while(eJugadores.hasMoreElements()) { Usuario
@@ -163,6 +163,21 @@ public class Partida {
 		this.tablero.addJugador(jugador);
 	}
 
+	void broadcastPrimeraVez(JSONObject jso) {
+		for (int i = jugadores.size() - 1; i >= 0; i--) {
+			Usuario jugador = jugadores.get(i);
+			try {
+				jugador.enviar(jso);
+			} catch (Exception e) {
+				// TODO: eliminar de la colección, mirar si la partida ha terminado
+				// y decirle al WSServer que quite a este jugador
+				continue;
+				//this.jugadores.remove(jugador);
+				//WSPartidas.removeSession(jugador);
+			}
+		}
+	}
+	
 	void broadcast(JSONObject jso) {
 		for (int i = jugadores.size() - 1; i >= 0; i--) {
 			Usuario jugador = jugadores.get(i);
@@ -171,6 +186,7 @@ public class Partida {
 			} catch (Exception e) {
 				// TODO: eliminar de la colección, mirar si la partida ha terminado
 				// y decirle al WSServer que quite a este jugador
+				//continue;
 				this.jugadores.remove(jugador);
 				WSPartidas.removeSession(jugador);
 			}

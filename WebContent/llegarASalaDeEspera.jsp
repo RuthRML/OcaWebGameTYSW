@@ -14,7 +14,9 @@
 	
 	try{
 		Usuario usuario = Manager.get().addJugador(nombreJugador);
-		session.setAttribute("usuario", nombreJugador);
+		session.setAttribute("usuario", usuario);
+		int idPartida = usuario.getPartida().getId();
+		respuesta.put("mensaje", idPartida);
 		respuesta.put("result", "OK");
 	}catch (Exception e){
 		respuesta.put("result", "ERROR");

@@ -27,7 +27,7 @@ public class WSPartidas {
 	@OnOpen
 	public void open(Session sesion, EndpointConfig config) {
 		HttpSession httpSession = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
-		Usuario usuario = (Usuario) httpSession.getAttribute("nombreDeUsuario");
+		Usuario usuario = (Usuario) httpSession.getAttribute("usuario");
 		usuario.setWSSession(sesion);
 
 		System.out.println("Sesión " + sesion.getId());
