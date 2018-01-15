@@ -62,7 +62,7 @@ public class WSPartidas {
 			try {
 				JSONObject mensaje = Manager.get().tirarDado(idPartida, jugador, dado);
 			} catch (Exception e) {
-				System.out.println("hubo error con el tirar dado");
+				System.out.println(e.getMessage());
 			}
 
 		}

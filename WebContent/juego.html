@@ -63,7 +63,8 @@
 			
 			conectarWebSocket();
 			function tirarDado(){
-				var numero = getRandomInt(1,6);
+				//var numero = getRandomInt(1,6);
+				var numero=Math.floor(Math.random() * (6 - 1 + 1)) + 1;
 				console.log(numero);
 				var p={
 						tipo:'DADO',
@@ -78,9 +79,9 @@
 				
 			}
 		
-			function getRandomInt(min, max) {
-			    return Math.floor(Math.random() * (max - min + 1)) + min;
-			}
+			//function getRandomInt(min, max) {
+			//    return Math.floor(Math.random() * (max - min + 1)) + min;
+			//}
 		</script>
 	
 	</body>

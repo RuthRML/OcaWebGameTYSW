@@ -8,8 +8,10 @@ public class Tablero {
 
 	Tablero() {
 		this.casillas = new Casilla[63];
-		for (int i = 0; i < 63; i++)
+		for (int i = 0; i < 63; i++) {
 			this.casillas[i] = new Casilla(i);
+			this.casillas[i].setMensaje("Casilla normal");
+		}
 
 		// Ocas
 		this.casillas[4].setSiguiente(this.casillas[8]);

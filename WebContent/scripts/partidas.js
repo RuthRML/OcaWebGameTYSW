@@ -76,6 +76,7 @@ function conectarWebSocket() {
 			console.log("Comienza la partida.");
 		}else if (mensaje.tipo =="TIRADA"){
 			
+			try{
 			//Atributos de la respuesta json
 			var casillaOrigen = mensaje.casillaOrigen;
 			var dado = mensaje.dado;
@@ -92,6 +93,9 @@ function conectarWebSocket() {
 			console.log(idPartida);
 			console.log(jugadorQueTiroElDado);
 			
+			}catch(err){
+				console.log("Error en partidas.js");
+			}
 			
 			/*En caso que haya un ganador*/
 			if(ganador!=null){
