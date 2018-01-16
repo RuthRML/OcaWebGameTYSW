@@ -74,6 +74,7 @@ function conectarWebSocket() {
 			console.log(mensaje.mensaje);
 		}else if (mensaje.tipo =="COMIENZO"){
 			console.log("Comienza la partida.");
+			tablero.actualizarNombresFichas(mensaje.jugadores);
 		}else if (mensaje.tipo =="TIRADA"){
 			
 			try{
@@ -92,6 +93,13 @@ function conectarWebSocket() {
 			console.log(mensajeLlegada);//console.log(ganador);
 			console.log(idPartida);
 			console.log(jugadorQueTiroElDado);
+			
+			if(destinoInicial!=null && destinoFinal==null){
+			tablero.actualizarFichas(jugadorQueTiroElDado,casillaOrigen,destinoInicial);
+			}else if(destinoInicial!=null && destinoFinal!=null){
+			tablero.actualizarFichas(jugadorQueTiroElDado,casillaOrigen,destinoFinal);
+				
+			}
 			
 			}catch(err){
 				console.log("Error en partidas.js");
