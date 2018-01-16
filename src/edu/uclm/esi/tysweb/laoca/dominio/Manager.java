@@ -59,15 +59,14 @@ public class Manager {
 		Usuario usuario = findUsuario(nombreJugador);
 		partida.add(usuario);
 		usuario.setPartida(partida);
-		comprobarPartida(partida);
+		//comprobarPartida(partida);
 		return usuario;
 	}
 
 	public void comprobarPartida(Partida partida) {
 		if (partida.isReady()) {
 			this.partidasEnJuego.put(partida.getId(), partida);
-			this.partidasPendientes.remove(partida.getId());
-			
+			this.partidasPendientes.remove(partida.getId());			
 			partida.comenzar();
 		}
 	}

@@ -76,7 +76,7 @@ function conectarWebSocket() {
 			console.log(mensaje.mensaje);
 			
 			
-		}else if (mensaje.tipo =="COMIENZO"){
+		}else if (mensaje.tipo == "COMIENZO"){
 			
 			console.log("Comienza la partida.");
 			tablero.actualizarNombresFichas(mensaje.jugadores);
