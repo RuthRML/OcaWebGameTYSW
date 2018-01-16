@@ -9,7 +9,7 @@ function crearPartida(){
 			if (respuesta.result=="OK") {
 				console.log(respuesta.result);
 				window.location.href='juego.html';
-				localStorage.nombre = document.getElementById("nombre").value;
+				sessionStorage.nombre = document.getElementById("nombre").value;
 				sessionStorage.idPartida=respuesta.mensaje;				
 			} else{
 				console.log(respuesta.mensaje);
@@ -38,7 +38,7 @@ function unirse(){
 				console.log(respuesta);
 				//conectarWebSocket();
 				window.location.href='juego.html';
-				localStorage.nombre = document.getElementById("nombre").value;
+				sessionStorage.nombre = document.getElementById("nombre").value;
 				sessionStorage.idPartida=respuesta.mensaje;
 			}else{
 				alert("Error al unirse.");
@@ -69,37 +69,47 @@ function conectarWebSocket() {
 	ws.onmessage = function (datos){
 		var mensaje = datos.data;
 		mensaje = JSON.parse(mensaje);
-		console.log("Estoy aquí.");
+		//console.log("Estoy aquí.");
+		
 		if(mensaje.tipo == "DIFUSION"){
+			
 			console.log(mensaje.mensaje);
+			
+			
 		}else if (mensaje.tipo =="COMIENZO"){
+			
 			console.log("Comienza la partida.");
 			tablero.actualizarNombresFichas(mensaje.jugadores);
-		}else if (mensaje.tipo =="TIRADA"){
+			//sessionStorage.casilla = 0;
+			//document.getElementById("casilla").innerHTML = sessionStorage.casilla;
+			// Avisar quien tiene el turno
+			
+		}else if (mensaje.tipo == "TIRADA"){
 			
 			try{
-			//Atributos de la respuesta json
-			var casillaOrigen = mensaje.casillaOrigen;
-			var dado = mensaje.dado;
-			var destinoInicial = mensaje.destinoInicial;
-			var destinoFinal = mensaje.destinoFinal;
-			var mensajeLlegada = mensaje.mensaje;
-			var ganador = mensaje.ganador; //solo en caso que ya haya un ganador
-			var idPartida = mensaje.idPartida;
-			var jugadorQueTiroElDado = mensaje.jugador;
-			
-			console.log(casillaOrigen);console.log(dado);console.log(destinoInicial);
-			console.log(destinoFinal);
-			console.log(mensajeLlegada);//console.log(ganador);
-			console.log(idPartida);
-			console.log(jugadorQueTiroElDado);
-			
-			if(destinoInicial!=null && destinoFinal==null){
-			tablero.actualizarFichas(jugadorQueTiroElDado,casillaOrigen,destinoInicial);
-			}else if(destinoInicial!=null && destinoFinal!=null){
-			tablero.actualizarFichas(jugadorQueTiroElDado,casillaOrigen,destinoFinal);
+				//Atributos de la respuesta json
+				var casillaOrigen = mensaje.casillaOrigen;
+				var dado = mensaje.dado;
+				var destinoInicial = mensaje.destinoInicial;
+				var destinoFinal = mensaje.destinoFinal;
+				var mensajeLlegada = mensaje.mensaje;
+				var ganador = mensaje.ganador; //solo en caso que ya haya un ganador
+				var idPartida = mensaje.idPartida;
+				var jugadorQueTiroElDado = mensaje.jugador;
 				
-			}
+				console.log(casillaOrigen);
+				console.log(dado);
+				console.log(destinoInicial);
+				console.log(destinoFinal);
+				console.log(mensajeLlegada);//console.log(ganador);
+				console.log(idPartida);
+				console.log(jugadorQueTiroElDado);
+				
+				if(destinoInicial!=null && destinoFinal==null){
+					tablero.actualizarFichas(jugadorQueTiroElDado, casillaOrigen, destinoInicial);
+				}else if(destinoInicial!=null && destinoFinal!=null){
+					tablero.actualizarFichas(jugadorQueTiroElDado, casillaOrigen, destinoFinal);					
+				}
 			
 			}catch(err){
 				console.log("Error en partidas.js");
@@ -108,9 +118,7 @@ function conectarWebSocket() {
 			/*En caso que haya un ganador*/
 			if(ganador!=null){
 				//TODO mostrar en pantalla que ya hubo un ganador
-			}
-			
-			
+			}	
 			
 		}
 
@@ -121,9 +129,11 @@ function conectarWebSocket() {
 function comenzar(mensaje){
 	var btnDado = document.getElementById("btnDado");
 	if(mensaje.jugadorConElTurno==localStorage.nombre){
-		btnDado.setAttribute("style","display:visible");
+		//btnDado.setAttribute("style", "display:visible");
+		btnDado.disable = true; // AÑADIDO
 	}else{
-		btnDado.setAttribute("style","display:none");
+		//btnDado.setAttribute("style","display:none");
+		btnDado.disable = false; // AÑADIDO
 	}
 	var listListaJugadores = document.getElementById("listaDeJugadores");
 	var jugadores= mensaje.jugadores;

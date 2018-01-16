@@ -4,7 +4,6 @@
  */
 
 function estaConectado(){
-	var request = new XMLHttpRequest();
 	var request = new XMLHttpRequest();	
 	request.open("get","Cuentas.jsp");
 	request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");

@@ -30,7 +30,7 @@ public class WSPartidas {
 		Usuario usuario = (Usuario) httpSession.getAttribute("usuario");
 		usuario.setWSSession(sesion);
 
-		System.out.println("Sesión " + sesion.getId());
+		System.out.println("Sesion " + sesion.getId());
 		sesionesPorId.put(sesion.getId(), sesion);
 		//sesionesPorNombre.put(usuario.getLogin(), sesion);
 
@@ -56,7 +56,7 @@ public class WSPartidas {
 			int idPartida = jso.getInt("idPartida");
 			String jugador = jso.getString("nombreJugador");
 			int dado = jso.getInt("puntos");
-			System.out.println("Partida "+idPartida + " jugador "+jugador + " dado "+dado);
+			System.out.println("Partida "+idPartida + " jugador "+ jugador + " dado "+ dado);
 			 //Manager.get().actualizarTablero(idPartida, jugador, dado);
 
 			try {
@@ -88,4 +88,10 @@ public class WSPartidas {
 		// TODO Auto-generated method stub
 
 	}
+
+	public static ConcurrentHashMap<String, Session> getSesionesPorId() {
+		return sesionesPorId;
+	}
+	
+	
 }

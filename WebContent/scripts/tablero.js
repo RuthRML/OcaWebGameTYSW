@@ -392,8 +392,22 @@ Tablero.prototype.crearFichas = function() {
 
 
 Tablero.prototype.actualizarNombresFichas = function(jugadores){
+	var listListaJugadores = document.getElementById("listaDeJugadores");
 	for (var i = 0; i < jugadores.length; i++) {
 	    this.fichas[i].nombreJugador=jugadores[i];
+	    var lijugador = document.createElement("li");
+	    lijugador.className = "list-group-item";
+	    if(this.fichas[i].color == "green")
+	    	lijugador.appendChild(document.createTextNode(jugadores[i] + " es el verde."));
+	    else if(this.fichas[i].color == "gold")
+	    	lijugador.appendChild(document.createTextNode(jugadores[i] + " es el amarillo."));
+	    else if(this.fichas[i].color == "red")
+	    	lijugador.appendChild(document.createTextNode(jugadores[i] + " es el rojo."));
+	    else if(this.fichas[i].color == "mediumpurple")
+	    	lijugador.appendChild(document.createTextNode(jugadores[i] + " es el morado."));
+	    else
+	    	lijugador.appendChild(document.createTextNode(jugadores[i] + " es el azul."));
+		listListaJugadores.appendChild(lijugador);
 	}
 }
 
@@ -507,17 +521,35 @@ Tablero.prototype.actualizarFichas = function(jugador, casillaAnterior,casillaNu
 
 
 
-Tablero.prototype.actualizarFichas = function(jugador, casillaAnterior,casillaNueva) {
+Tablero.prototype.actualizarFichas = function(jugador, casillaAnterior, casillaNueva) {
 	for (var i = 0; i < 5; i++) { //algun numero que represente la cantidad de jugadores
 		if( this.fichas[i].nombreJugador==jugador){
+			
 			var casillaAsociadaNueva = this.casillas[casillaNueva];
 			var casillaAsociadaAnterior=this.casillas[casillaAnterior]
 			
+			//sessionStorage.casilla = this.casillas[casillaNueva].valor;
+			//document.getElementById("casilla").innerHTML = sessionStorage.casilla;
+			
 			//var new_pos_x = casillaAsociadaNueva.x0+((casillaAsociadaNueva.xF-casillaAsociadaNueva.x0) /2);
-			this.fichas[i].circle.setAttribute("cx", casillaAsociadaNueva.x0+50);
-			this.fichas[i].circle.setAttribute("cy", casillaAsociadaNueva.y0+50);
-			
-			
+			if(this.fichas[i].color == "mediumpurple"){
+				this.fichas[i].circle.setAttribute("cx", casillaAsociadaNueva.x0+50);
+				this.fichas[i].circle.setAttribute("cy", casillaAsociadaNueva.y0+50);
+			}else if(this.fichas[i].color == "green"){
+				this.fichas[i].circle.setAttribute("cx", casillaAsociadaNueva.x0+25);
+				this.fichas[i].circle.setAttribute("cy", casillaAsociadaNueva.y0+75);
+			}else if(this.fichas[i].color == "red"){
+				this.fichas[i].circle.setAttribute("cx", casillaAsociadaNueva.x0+75);
+				this.fichas[i].circle.setAttribute("cy", casillaAsociadaNueva.y0+75);
+			}else if(this.fichas[i].color == "gold"){
+				this.fichas[i].circle.setAttribute("cx", casillaAsociadaNueva.x0+75);
+				this.fichas[i].circle.setAttribute("cy", casillaAsociadaNueva.y0+25);
+			}else if(this.fichas[i].color == "dodgerblue"){
+				this.fichas[i].circle.setAttribute("cx", casillaAsociadaNueva.x0+25);
+				this.fichas[i].circle.setAttribute("cy", casillaAsociadaNueva.y0+25);
+			}else{
+				console.log("Error al actualizar las fichas.");
+			}
 			
 		}
 		
@@ -570,7 +602,7 @@ Casilla.prototype.crearCirculo = function() {
 function Ficha(){
 	this.colores = ["green", "dodgerblue", "red", "gold", "mediumpurple"];
 	this.nombreJugador="";
-	this.posicion=0;
+	this.posicion = 0;
 	this.color = "";
 }
 

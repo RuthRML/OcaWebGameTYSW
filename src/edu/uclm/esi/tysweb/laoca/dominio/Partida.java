@@ -1,9 +1,12 @@
 package edu.uclm.esi.tysweb.laoca.dominio;
 
+import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Random;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
+
+import javax.websocket.Session;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -97,6 +100,7 @@ public class Partida {
 		result.put("tipo", "TIRADA");
 		result.put("casillaOrigen", jugador.getCasilla().getPos());
 		result.put("dado", dado);
+		result.put("jugadorConElTurno", this.jugadorConElTurno); // AÑADIDO
 		Casilla destino = this.tablero.tirarDado(jugador, dado);
 		result.put("destinoInicial", destino.getPos());
 		Casilla siguiente = destino.getSiguiente();
@@ -164,7 +168,17 @@ public class Partida {
 	}
 
 	void broadcastPrimeraVez(JSONObject jso) {
-		for (int i = jugadores.size() - 1; i >= 0; i--) {
+		ConcurrentHashMap<String, Session> sesionesid = WSPartidas.getSesionesPorId();
+		Enumeration<Session> sesiones = sesionesid.elements();
+		while (sesiones.hasMoreElements()) {
+			Session sesion = sesiones.nextElement();
+			try {
+				sesion.getBasicRemote().sendText(jso.toString());
+			} catch (IOException e) {
+				continue;
+			}
+		}
+		/*for (int i = jugadores.size() - 1; i >= 0; i--) {
 			Usuario jugador = jugadores.get(i);
 			try {
 				jugador.enviar(jso);
@@ -175,7 +189,7 @@ public class Partida {
 				//this.jugadores.remove(jugador);
 				//WSPartidas.removeSession(jugador);
 			}
-		}
+		}*/
 	}
 	
 	void broadcast(JSONObject jso) {
