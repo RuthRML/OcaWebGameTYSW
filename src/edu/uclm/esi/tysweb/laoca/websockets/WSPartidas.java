@@ -34,7 +34,7 @@ public class WSPartidas {
 		sesionesPorId.put(sesion.getId(), sesion);
 		//sesionesPorNombre.put(usuario.getLogin(), sesion);
 
-		broadcast("Ha llegado " + usuario.getLogin());
+		broadcast("Ha llegado " + usuario.getNombre());
 
 		Partida partida = usuario.getPartida();
 		if (partida.isReady())
