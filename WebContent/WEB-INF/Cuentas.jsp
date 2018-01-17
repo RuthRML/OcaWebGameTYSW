@@ -4,10 +4,11 @@
 <%@ page import="edu.uclm.esi.tysweb.laoca.dominio.*, org.json.*" %>
 <%
 	JSONObject jso = new JSONObject();
-	Usuario usuario = (Usuario) session.getAttribute("nombreDeUsuario");
+	Usuario usuario = (Usuario) session.getAttribute("nombreDeUsuario");	
 	if(usuario==null){
 		jso.put("result","ERROR");	
 	}else{
+		jso.put("nombreUsuario", usuario.getNombre());
 		jso.put("result","OK");
 	}
 	out.print(jso.toString());

@@ -29,8 +29,13 @@
 		<div class="container" id="divRegistro">
 			<div class="row">
 				<form class="col-lg-6" style="margin: 0 auto;">
-
-					<form action="Registrar.jsp" method="post">
+						<div class="form-group">
+							<label for="labelNombre">Nombre</label> <input
+								type="text" class="form-control" id="nombre"
+								placeholder="Introduzca un nombre de jugador"
+								title="Nickname">
+						</div>
+				
 						<div class="form-group">
 							<label for="labelCorreo">Correo Electrónico</label> <input
 								type="text" class="form-control" id="correo"
@@ -48,7 +53,8 @@
 								placeholder="Repita la contraseña" title="Repita la contraseña">
 						</div>
 						<button onclick="event.preventDefault(); registro()"
-							class="btn btn-primary" type="submit" id="btnRegistrar">Registrarse</button>
+							class="btn btn-primary" type="button" id="btnRegistrar">Registrarse</button>
+						<a href="index.html">Cancelar</a>
 						<p>o registrarse usando cualquiera de las redes sociales.</p>
 						<div id="my-signin2" data-width="300" data-height="200"
 							data-longtitle="true">
@@ -80,7 +86,8 @@
 									console.log('Email:  '
 											+ googleUser.getBasicProfile()
 													.getEmail());
-									registroCuentaRedSocial(googleUser.getBasicProfile().getEmail(),
+									registroCuentaRedSocial(googleUser.getBasicProfile().getName(), 
+											googleUser.getBasicProfile().getEmail(),
 											googleUser.getBasicProfile().getID());
 								}
 								function onFailure(error) {
@@ -113,8 +120,6 @@
 						</div>
 
 						<div id="status"></div>
-
-					</form>
 				</form>
 			</div>
 
@@ -199,111 +204,16 @@
     console.log('Welcome!  Fetching your information.... ');
     FB.api('/me', function(response) {
     	var nombreSeparado=response.name;
-    	nombre=nombreSeparado.replace(/\s/g, '');
-      console.log('Successful login for: ' + response.name);
-      //document.getElementById('status').innerHTML =
+    	nombre = nombreSeparado.replace(/\s/g, '');
+      	console.log('Successful login for: ' + response.name);
+      	//document.getElementById('status').innerHTML =
         //'Thanks for logging in, ' + idUsuario + ' ! ' +nombre;
-      registroCuentaRedSocial(nombre,idUsuario);
+      	registroCuentaRedSocial(nombre,idUsuario);
     });
   }
-
-	function registro() {
-
-		var req = emailRegistro = document.getElementById("correo").value;
-		//var req=nombreUsuario=document.getElementById("nombreUsuario").value;
-		var pass1 = document.getElementById("pwd1").value;
-		var pass2 = document.getElementById("pwd2").value;
-		//var idSession=document.getElementById("idSession").value;
-		var divRegistro = document.getElementById("divRegistro");
-		var mensajeRegistro = document.getElementById("divRegistro");
-
-		var reqRegistrar = new XMLHttpRequest();
-
-		reqRegistrar.open("post", "Registrar.jsp");
-		reqRegistrar.setRequestHeader("Content-Type",
-				"application/x-www-form-urlencoded");
-		reqRegistrar.onreadystatechange = function() {
-			if (reqRegistrar.readyState == 4) {
-				if (reqRegistrar.status == 200) {
-					var result = JSON.parse(reqRegistrar.responseText);
-					if (result.resultado == "OK") {
-
-						document.getElementById("nombreUsuario").value = "";
-						document.getElementById("email").value = "";
-						document.getElementById("pwd1").value = "";
-						document.getElementById("pwd2").value = "";
-						alert("Registro exitoso, " + emailRegistro);
-						divRegistro.style = "display:none";
-					} else {
-						console.log(result);
-						alert("Error: " + result.mensaje);
-						mensajeRegistro.innerHTML = result.resultado;
-					}
-				} else {
-					alert("Algo pasa");
-				}
-			}
-		};
-		var p = {
-			//nombreUsuario : nombreUsuario,
-			tipo : "USERANDPWD",
-			email : emailRegistro,
-			pwd1 : pass1,
-			pwd2 : pass2
-		};
-
-		reqRegistrar.send("p=" + JSON.stringify(p));
-	}
 	
-	
-	function registroCuentaRedSocial(emailRegistro, id) {
+</script>
 
-		//var req = emailRegistro = document.getElementById("correo").value;
-		//var req=nombreUsuario=document.getElementById("nombreUsuario").value;
-		//var pass1 = document.getElementById("pwd1").value;
-		//var pass2 = document.getElementById("pwd2").value;
-		//var idSession=document.getElementById("idSession").value;
-		var divRegistro = document.getElementById("divRegistro");
-		var mensajeRegistro = document.getElementById("divRegistro");
+<script src="scripts/GestionCuentas.js"></script>
 
-		var reqRegistrar = new XMLHttpRequest();
-
-		reqRegistrar.open("post", "Registrar.jsp");
-		reqRegistrar.setRequestHeader("Content-Type",
-				"application/x-www-form-urlencoded");
-		reqRegistrar.onreadystatechange = function() {
-			if (reqRegistrar.readyState == 4) {
-				if (reqRegistrar.status == 200) {
-					var result = JSON.parse(reqRegistrar.responseText);
-					if (result.resultado == "OK") {
-
-						document.getElementById("nombreUsuario").value = "";
-						document.getElementById("email").value = "";
-						document.getElementById("pwd1").value = "";
-						document.getElementById("pwd2").value = "";
-						alert("Registro exitoso, " + emailRegistro);
-						divRegistro.style = "display:none";
-					} else {
-						console.log(result);
-						alert("Error: " + result.mensaje);
-						mensajeRegistro.innerHTML = result.resultado;
-					}
-				} else {
-					alert("Algo pasa");
-				}
-			}
-		};
-		var p = {
-			//nombreUsuario : nombreUsuario,
-			tipo : "REDSOCIAL",
-			email : emailRegistro,
-			pwd1 : id,
-			pwd2 : id
-		};
-
-		reqRegistrar.send("p=" + JSON.stringify(p));
-	}
-	
-	
-	</script>
 </html>

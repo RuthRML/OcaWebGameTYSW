@@ -4,18 +4,16 @@ import edu.uclm.esi.tysweb.laoca.dao.DAOUsuario;
 
 public class UsuarioRegistrado extends Usuario {
 
-	public UsuarioRegistrado(String nombreJugador) throws Exception {
-		super(nombreJugador);
-		// TODO Auto-generated constructor stub
+	public UsuarioRegistrado(String correoJugador) throws Exception {
+		super(correoJugador);
 	}
 
 	public UsuarioRegistrado() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public static Usuario login(String nombreUsuario, String pwd1) throws Exception {
-		return DAOUsuario.login(nombreUsuario, pwd1);
+	public static Usuario login(String correoUsuario, String pwd1) throws Exception {
+		return DAOUsuario.login(correoUsuario, pwd1);
 	}
 
 }

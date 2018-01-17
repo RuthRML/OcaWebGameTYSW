@@ -13,101 +13,97 @@
 		<link href="css/bootstrap.css" rel="stylesheet">
 		<link href="css/style.css" rel="stylesheet">
 		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-	</head>
+</head>
 <body>
-<div class="container" id="divLogin">
-	<div class="jumbotron">
-		<h1>Inicia sesión en La Oca</h1>
-	</div>
-	<div class="container" id="divRegistro">
-	<div class="row">
-		<form class="col-lg-6" style="margin: 0 auto;">
-			<form action="login.jps" method="post">
-				<div class="form-group">
-					<label for="labelCorreo">Correo Electrónico</label> <input
-							type="text" class="form-control" id="correo"
-							placeholder="ejemplo@ejemplo.com"
-							title="Introduzca tu dirección de correo">
-				</div>
-				<div class="form-group">
-					<label for="labelPwd1">Contraseña</label> <input type="password"
-						class="form-control" id="pwd1"
-						placeholder="Introduce tu contraseña" title="Contraseña">
-				</div>
-				<button onclick="event.preventDefault(); login()"
-							class="btn btn-primary" type="submit" id="btnLogin">Iniciar sesión</button>
-						<p>o inicia sesión usando cualquiera de las redes sociales.</p>
-				<div id="my-signin2" data-width="300" data-height="200"
-							data-longtitle="true">
-							<script>
-							function onSuccess(googleUser) {
-						        // Useful data for your client-side scripts:
-						        var profile = googleUser.getBasicProfile();
-						        var id = profile.getId();
-						        var email= profile.getEmail();
-						        registroCuentaRedSocial(email, id);
-						        //console.log("ID: " + profile.getId()); // Don't send this directly to your server!
-						        //console.log('Full Name: ' + profile.getName());
-						        //console.log('Given Name: ' + profile.getGivenName());
-						        //console.log('Family Name: ' + profile.getFamilyName());
-						        //console.log("Image URL: " + profile.getImageUrl());
-						        //console.log("Email: " + profile.getEmail());
+	<div class="container" id="divLogin">
+		<div class="jumbotron">
+			<h1>Inicia sesión en La Oca</h1>
+		</div>
+		<div class="container" id="divRegistro">
+			<div class="row">
+				<form class="col-lg-6" style="margin: 0 auto;">
+					<div class="form-group">
+						<label for="labelCorreo">Correo Electrónico</label><input
+								type="text" class="form-control" id="correo"
+								placeholder="ejemplo@ejemplo.com"
+								title="Introduzca tu dirección de correo o nombre">
+					</div>
+					<div class="form-group">
+						<label for="labelPwd1">Contraseña</label> <input type="password"
+							class="form-control" id="pwd1"
+							placeholder="Introduce tu contraseña" title="Contraseña">
+					</div>
+					<a href="cambiarPass.html">¿Olvidaste tu contraseña?</a><br>
+					<button onclick="event.preventDefault(); login()" class="btn btn-primary" type="button" id="btnLogin">
+						Iniciar sesión
+					</button>
+					<a href="index.html">Cancelar</a>
+					<p>o inicia sesión usando cualquiera de las redes sociales.</p>
+					
+					<div id="my-signin2" data-width="300" data-height="200"	data-longtitle="true">
+						<script>
+								function onSuccess(googleUser) {
+							        // Useful data for your client-side scripts:
+							        var profile = googleUser.getBasicProfile();
+							        var id = profile.getId();
+							        var email= profile.getEmail();
+							        loginCuentaRedSocial(email, id);
+							        //console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+							        //console.log('Full Name: ' + profile.getName());
+							        //console.log('Given Name: ' + profile.getGivenName());
+							        //console.log('Family Name: ' + profile.getFamilyName());
+							        //console.log("Image URL: " + profile.getImageUrl());
+							        //console.log("Email: " + profile.getEmail());
+		
+							        // The ID token you need to pass to your backend:
+							        //var id_token = googleUser.getAuthResponse().id_token;
+							        //console.log("ID Token: " + id_token);
+							      }
 
-						        // The ID token you need to pass to your backend:
-						        //var id_token = googleUser.getAuthResponse().id_token;
-						        //console.log("ID Token: " + id_token);
-						      }
-							
-							
-							
 								function onSignIn(googleUser) {
-									console.log('Logged in as: '
-											+ googleUser.getBasicProfile()
-													.getName());
-									console.log('Email:  '
-											+ googleUser.getBasicProfile()
-													.getEmail());
-									registroCuentaRedSocial(googleUser.getBasicProfile().getEmail(),
-											googleUser.getBasicProfile().getID());
-								}
+										console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+										console.log('Email:  ' + googleUser.getBasicProfile().getEmail());
+										loginCuentaRedSocial(googleUser.getBasicProfile().getEmail(), googleUser.getBasicProfile().getID());
+									}
+								
 								function onFailure(error) {
-									console.log(error);
+										console.log(error);
 								}
+								
 								function renderButton() {
-									gapi.signin2.render('my-signin2', {
-										'scope' : 'profile email',
-										'width' : 240,
-										'height' : 50,
-										'longtitle' : true,
-										'theme' : 'dark',
-										'onsuccess' : onSuccess,
-										'onfailure' : onFailure
-									});
-								}
-							</script>
-						</div>
-						
-						<script
-							src="https://apis.google.com/js/platform.js?onload=renderButton"
-							async defer>						
+										gapi.signin2.render('my-signin2', {
+											'scope' : 'profile email',
+											'width' : 240,
+											'height' : 50,
+											'longtitle' : true,
+											'theme' : 'dark',
+											'onsuccess' : onSuccess,
+											'onfailure' : onFailure
+										});
+									}
 						</script>
-						<br>
-						
-						<div class="fb-login-button" data-max-rows="1" data-size="medium"
-							data-button-type="login_with" data-show-faces="false"
-							data-auto-logout-link="false" data-use-continue-as="false"
-							data-scope="public_profile,email" onlogin="checkLoginState();">
-						</div>
-						<div id="status"></div>
-			</form>
-		</form>
+					</div>
+								
+					<script
+						src="https://apis.google.com/js/platform.js?onload=renderButton"
+						async defer>						
+					</script><br>
+								
+					<div class="fb-login-button" data-max-rows="1" data-size="medium"
+						data-button-type="login_with" data-show-faces="false"
+						data-auto-logout-link="false" data-use-continue-as="false"
+						data-scope="public_profile,email" onlogin="checkLoginState();">
+					</div>
+					<div id="status"></div>
+				</form>
+			</div>
+		</div>
 	</div>
-	</div>
-</div>
 
 </body>
 
 <script>
+
 //This is called with the results from from FB.getLoginStatus().
 var nombre;
 var idUsuario;
@@ -125,8 +121,7 @@ function statusChangeCallback(response) {
       testAPI(response);
   } else {
     // The person is not logged into your app or we are unable to tell.
-    document.getElementById('status').innerHTML = 'Please log ' +
-      'into this app.';
+    document.getElementById('status').innerHTML = 'Please log ' + 'into this app.';
   }
 }
 
@@ -186,89 +181,12 @@ function testAPI() {
     console.log('Successful login for: ' + response.name);
     //document.getElementById('status').innerHTML =
       //'Thanks for logging in, ' + idUsuario + ' ! ' +nombre;
-    registroCuentaRedSocial(nombre,idUsuario);
+    loginCuentaRedSocial(nombre,idUsuario);
   });
 }
 
-function login() {
-
-	var req = emailLogin = document.getElementById("correo").value;
-	var pass1 = document.getElementById("pwd1").value;
-	var divLogin = document.getElementById("divLogin");
-	//var mensajeRegistro = document.getElementById("divRegistro");
-
-	var reqLogin = new XMLHttpRequest();
-
-	reqLogin.open("post", "login.jsp");
-	reqLogin.setRequestHeader("Content-Type",
-			"application/x-www-form-urlencoded");
-	reqLogin.onreadystatechange = function() {
-		if (reqLogin.readyState == 4) {
-			if (reqLogin.status == 200) {
-				var result = JSON.parse(reqLogin.responseText);
-				if (result.resultado == "OK") {
-					document.getElementById("correo").value = "";
-					document.getElementById("pwd1").value = "";
-					alert("Login exitoso, " + emailLogin);
-					divRegistro.style = "display:none";
-				} else {
-					console.log(result);
-					alert("Error: " + result.mensaje);
-					//mensajeRegistro.innerHTML = result.resultado;
-				}
-			} else {
-				alert("Algo pasa.");
-			}
-		}
-	};
-	
-	var p = {
-		//nombreUsuario : nombreUsuario,
-		tipo : "USERANDPWD",
-		email : emailLogin,
-		pwd1 : pass1
-	};
-
-	reqLogin.send("p=" + JSON.stringify(p));
-}
-
-function registroCuentaRedSocial(emailLogin, id) {
-
-	var divLogin = document.getElementById("divLogin");
-	//var mensajeRegistro = document.getElementById("divRegistro");
-
-	var reqLogin = new XMLHttpRequest();
-
-	reqLogin.open("post", "Registrar.jsp");
-	reqLogin.setRequestHeader("Content-Type",
-			"application/x-www-form-urlencoded");
-	reqLogin.onreadystatechange = function() {
-		if (reqLogin.readyState == 4) {
-			if (reqLogin.status == 200) {
-				var result = JSON.parse(reqLogin.responseText);
-				if (result.resultado == "OK") {
-					document.getElementById("correo").value = "";
-					document.getElementById("pwd1").value = "";
-					alert("Login exitoso, " + emailLogin);
-					divRegistro.style = "display:none";
-				} else {
-					console.log(result);
-					alert("Error: " + result.mensaje);
-					//mensajeRegistro.innerHTML = result.resultado;
-				}
-			} else {
-				alert("Algo pasa");
-			}
-		}
-	};
-	var p = {
-		tipo : "REDSOCIAL",
-		email : emailLogin,
-		pwd1 : id
-	};
-
-	reqLogin.send("p=" + JSON.stringify(p));
-}
-
 </script>
+
+<script src="scripts/GestionCuentas.js"></script>
+
 </html>

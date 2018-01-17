@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<meta charset="UTF-8">
+		<meta name="google-signin-client_id"
+			content="808186466447-qkcbf15u53sou7hfn9un20olkmr83i6c.apps.googleusercontent.com"
+			charset="UTF-8">
+		<title>Cambiar contraseña - La Oca</title>
+		
+		<link
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+			rel="stylesheet">
+		<link href="css/bootstrap.css" rel="stylesheet">
+		<link href="css/style.css" rel="stylesheet">
+		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+</head>
+<body>
+
+	<div class="container">
+		<div class="jumbotron">
+			<h1>Cambio de contraseña</h1>
+		</div>
+	
+		<div class="row">
+			<form class="col-lg-6" style="margin: 0 auto;">
+				<div class="form-group">
+					<label for="labelCorreo">Introduce tu correo electrónico:</label><input
+							type="text" class="form-control" id="correo"
+							placeholder="ejemplo@ejemplo.com"
+							title="Introduzca tu dirección de correo">
+				<button onclick="event.preventDefault(); cambiarContrasenha()" class="btn btn-primary" type="button" id="btnCambiar">
+						Enviar
+				</button>
+				<a href="login.html">Cancelar</a>
+				</div>
+				
+				<p>Enviaremos un correo con los pasos para restablecer tu contraseña.</p>					
+			</form>
+		</div>
+	</div>
+</body>
+
+<script src="scripts/GestionCuentas.js"></script>
+
+</html>

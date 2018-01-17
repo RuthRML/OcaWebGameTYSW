@@ -89,10 +89,11 @@ public class Manager {
 		return ManagerHolder.singleton;
 	}
 
-	public void registrar(String email, String pwd) throws Exception {
-		Usuario usuario = new UsuarioRegistrado();
-		usuario.setNombre(email);
-		usuario.insert(pwd);
+	public Usuario registrar(String email, String pwd, String nombre) throws Exception {
+		Usuario usuario = new UsuarioRegistrado(email);
+		usuario.setNombre(nombre);
+		usuario.registrarUsuario(pwd);
+		return usuario;		
 	}
 
 	public Usuario login(String email, String pwd) throws Exception {

@@ -10,6 +10,7 @@
 	JSONObject jso = new JSONObject(p);
 	String nombreJugador = jso.getString("nombre");
 	int numeroDeJugadores = jso.getInt("numeroDeJugadores");
+
 	session.setAttribute("usuario", nombreJugador);
 	
 	JSONObject respuesta = new JSONObject();
@@ -23,9 +24,6 @@
 		respuesta.put("result", "OK");
 		respuesta.put("mensaje", idPartida);
 		
-		Cookie cookie = new Cookie ("kookie", "" + numeroDeJugadores);
-		cookie.setMaxAge(30); //Expira en 30 segundos
-		response.addCookie(cookie);
 	}catch (Exception e){
 		respuesta.put("result", "ERROR");
 		respuesta.put("mensaje", e.getMessage());
