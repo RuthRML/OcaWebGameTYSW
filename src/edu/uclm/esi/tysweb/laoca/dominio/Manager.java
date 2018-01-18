@@ -93,7 +93,7 @@ public class Manager {
 		Usuario usuario = new UsuarioRegistrado(email);
 		usuario.setNombre(nombre);
 		usuario.registrarUsuario(pwd);
-		return usuario;		
+		return usuario;
 	}
 
 	public Usuario login(String email, String pwd) throws Exception {

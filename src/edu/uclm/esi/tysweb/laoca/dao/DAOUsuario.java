@@ -54,8 +54,10 @@ public class DAOUsuario {
 			usuarios.insertOne(bUsuario);
 			//crearComoUsuarioDeLaBD(usuario, pwd);
 		} catch (MongoWriteException e) {
-			if (e.getCode() == 11000)
+			if (e.getCode() == 11000) {
 				throw new Exception("El usuario ya est\u00e1 registrado.");
+			}
+			
 			throw new Exception("Error en el registro de usuario.");
 		}
 		
