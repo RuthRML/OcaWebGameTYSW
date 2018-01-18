@@ -16,8 +16,8 @@ function crearPartida(){
 				console.log(respuesta);
 				if (respuesta.result == "OK") {
 					console.log(respuesta.result);
-					window.location.href = 'juego.html';
 					sessionStorage.setItem("nombre", document.getElementById("nombre").value);
+					window.location.href = 'juego.html';					
 					sessionStorage.setItem("idPartida", respuesta.mensaje);				
 				} else{
 					console.log(respuesta.mensaje);
@@ -87,6 +87,8 @@ function conectarWebSocket() {
 		}else if (mensaje.tipo == "COMIENZO"){
 
 			console.log("Comienza la partida.");
+			console.log("Empieza jugando" + mensaje.jugadorConElTurno);
+			actualizarBotonDado(mensaje);
 			tablero.actualizarNombresFichas(mensaje.jugadores);
 			//sessionStorage.casilla = 0;
 			//document.getElementById("casilla").innerHTML = sessionStorage.casilla;
@@ -104,6 +106,8 @@ function conectarWebSocket() {
 				var ganador = mensaje.ganador; //solo en caso que ya haya un ganador
 				var idPartida = mensaje.idPartida;
 				var jugadorQueTiroElDado = mensaje.jugador;
+				var mensajeAdicional = mensaje.mensajeAdicional;
+				var jugadorConElTurno = mensaje.jugadorConElTurno;
 
 				console.log(casillaOrigen);
 				console.log(dado);
@@ -112,6 +116,7 @@ function conectarWebSocket() {
 				console.log(mensajeLlegada);//console.log(ganador);
 				console.log(idPartida);
 				console.log(jugadorQueTiroElDado);
+				console.log(mensajeAdicional);
 
 				if(destinoInicial != null && destinoFinal == null){
 					tablero.actualizarFichas(jugadorQueTiroElDado, casillaOrigen, destinoInicial);
@@ -119,7 +124,7 @@ function conectarWebSocket() {
 					tablero.actualizarFichas(jugadorQueTiroElDado, casillaOrigen, destinoFinal);					
 				}
 
-				botonDado(mensaje);
+				actualizarBotonDado(mensaje);
 
 			}catch(err){
 				console.log("Error en partidas.js");
@@ -136,14 +141,14 @@ function conectarWebSocket() {
 
 }
 
-function botonDado(mensaje){
+function actualizarBotonDado(mensaje){
 	var btnDado = document.getElementById("btnDado");
 	if(mensaje.jugadorConElTurno == sessionStorage.getItem("nombre")){
 		//btnDado.setAttribute("style", "display:visible");
-		btnDado.disable = true; // AÑADIDO
+		btnDado.disabled = false; // AÑADIDO
 	}else{
 		//btnDado.setAttribute("style","display:none");
-		btnDado.disable = false; // AÑADIDO
+		btnDado.disabled = true; // AÑADIDO
 	}
 	document.getElementById("jugadorTurno").innerHTML = mensaje.jugadorConElTurno;
 }

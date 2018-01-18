@@ -14,11 +14,14 @@ public class Usuario {
 	protected Partida partida;
 	private Session sesion;
 	private int turnosSinTirar;
-
 	private Casilla casilla;
 
-	public Usuario(String correoJugador) throws Exception {
-		this.correo = correoJugador;
+	public Usuario(String jugador) throws Exception {
+		int token = jugador.indexOf("@");
+		if(token == -1)
+			this.nombre = jugador;
+		else
+			this.correo = jugador;
 	}
 
 	public Usuario() {

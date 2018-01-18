@@ -56,15 +56,14 @@ public class WSPartidas {
 			int idPartida = jso.getInt("idPartida");
 			String jugador = jso.getString("nombreJugador");
 			int dado = jso.getInt("puntos");
-			System.out.println("Partida "+idPartida + " jugador "+ jugador + " dado "+ dado);
+			System.out.println("Partida "+ idPartida + " jugador "+ jugador + " dado "+ dado);
 			 //Manager.get().actualizarTablero(idPartida, jugador, dado);
 
 			try {
-				JSONObject mensaje = Manager.get().tirarDado(idPartida, jugador, dado);
+				Manager.get().tirarDado(idPartida, jugador, dado);				
 			} catch (Exception e) {
-				System.out.println(e.getMessage());
+				System.out.println("Error al tirar el dado en el servidor.");
 			}
-
 		}
 
 	}

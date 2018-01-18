@@ -44,7 +44,6 @@ public class Partida {
 	}
 
 	public void add(Usuario jugador) {
-		// this.jugadores.put(usuario.getLogin(), usuario);
 		this.jugadores.add(jugador);
 	}
 
@@ -67,8 +66,8 @@ public class Partida {
 		// jsa.put(jugadores.))
 		// }
 		for (Usuario jugador : jugadores) {
-			jsa.put(jugador.getCorreo());
-			addJugador(jugador);
+			jsa.put(jugador.getNombre());
+			addJugadorAlTablero(jugador);
 		}
 		
 		jso.put("jugadores", jsa);
@@ -95,12 +94,13 @@ public class Partida {
 	public JSONObject tirarDado(String nombreJugador, int dado) throws Exception {
 		JSONObject result = new JSONObject();
 		Usuario jugador = findJugador(nombreJugador);
-		if (jugador != getJugadorConElTurno())
-			throw new Exception("No tienes el turno");
+		if (jugador != getJugadorConElTurno()) {
+			result.put("mensaje", "No tienes el turno");
+			throw new Exception("No tienes el turno");			
+		}
 		result.put("tipo", "TIRADA");
 		result.put("casillaOrigen", jugador.getCasilla().getPos());
 		result.put("dado", dado);
-		result.put("jugadorConElTurno", this.jugadorConElTurno); // A—ADIDO
 		Casilla destino = this.tablero.tirarDado(jugador, dado);
 		result.put("destinoInicial", destino.getPos());
 		Casilla siguiente = destino.getSiguiente();
@@ -113,7 +113,7 @@ public class Partida {
 			this.tablero.moverAJugador(jugador, siguiente);
 			if (siguiente.getPos() == 62) { // Llegada
 				this.ganador = jugador;
-				result.put("ganador", this.ganador.getCorreo());
+				result.put("ganador", this.ganador.getNombre());
 			}
 		}
 		if (destino.getPos() == 57) { // Muerte
@@ -123,12 +123,12 @@ public class Partida {
 			this.jugadorConElTurno--;
 			if (this.jugadores.size() == 1) {
 				this.ganador = this.jugadores.get(0);
-				result.put("ganador", this.ganador.getCorreo());
+				result.put("ganador", this.ganador.getNombre());
 			}
 		}
 		if (destino.getPos() == 62) { // Llegada
 			this.ganador = jugador;
-			result.put("ganador", this.ganador.getCorreo());
+			result.put("ganador", this.ganador.getNombre());
 		}
 		int turnosSinTirar = destino.getTurnosSinTirar();
 		if (turnosSinTirar > 0) {
@@ -136,6 +136,7 @@ public class Partida {
 					jugador.getNombre() + " est\u00e1 " + turnosSinTirar + " turnos sin tirar porque ha ca\u00eddo en ");
 			jugador.setTurnosSinTirar(destino.getTurnosSinTirar());
 		}
+		
 		result.put("jugadorConElTurno", pasarTurno(conservarTurno));
 		return result;
 	}
@@ -153,7 +154,7 @@ public class Partida {
 					pasado = true;
 			} while (!pasado);
 		}
-		return getJugadorConElTurno().getCorreo();
+		return getJugadorConElTurno().getNombre();
 	}
 
 	private Usuario findJugador(String nombreJugador) {
@@ -163,7 +164,7 @@ public class Partida {
 		return null;
 	}
 
-	public void addJugador(Usuario jugador) {
+	public void addJugadorAlTablero(Usuario jugador) {
 		this.tablero.addJugador(jugador);
 	}
 
@@ -178,18 +179,6 @@ public class Partida {
 				continue;
 			}
 		}
-		/*for (int i = jugadores.size() - 1; i >= 0; i--) {
-			Usuario jugador = jugadores.get(i);
-			try {
-				jugador.enviar(jso);
-			} catch (Exception e) {
-				// TODO: eliminar de la colecci√≥n, mirar si la partida ha terminado
-				// y decirle al WSServer que quite a este jugador
-				continue;
-				//this.jugadores.remove(jugador);
-				//WSPartidas.removeSession(jugador);
-			}
-		}*/
 	}
 	
 	void broadcast(JSONObject jso) {

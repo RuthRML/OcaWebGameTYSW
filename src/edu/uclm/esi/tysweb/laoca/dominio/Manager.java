@@ -23,8 +23,7 @@ public class Manager {
 	public Usuario crearPartida(String nombreJugador, int numeroDeJugadores) throws Exception {
 		Usuario usuario = findUsuario(nombreJugador);
 		if (usuario.getPartida() != null)
-			throw new Exception("El usuario ya está asociado a una partida. Desconéctate para crear una nueva o unirte a otra.");
-
+			throw new Exception("El usuario ya est\u00e1 asociado a una partida. Descon\u00e9ctate para crear una nueva o unirte a otra.");
 		Partida partida = new Partida(usuario, numeroDeJugadores);
 		usuario.setPartida(partida);
 		this.partidasPendientes.put(partida.getId(), partida);
@@ -37,7 +36,7 @@ public class Manager {
 		Usuario usuario = this.usuarios.get(nombreJugador);
 
 		if (usuario == null) {
-			System.out.println("El usuario no existe en la base de datos. Se crea uno nuevo.");
+			//System.out.println("El usuario no existe en la base de datos. Se crea uno nuevo.");
 			usuario = new Usuario(nombreJugador);
 			this.usuarios.put(nombreJugador, usuario);
 		}
@@ -59,7 +58,7 @@ public class Manager {
 		Usuario usuario = findUsuario(nombreJugador);
 		partida.add(usuario);
 		usuario.setPartida(partida);
-		//comprobarPartida(partida);
+		comprobarPartida(partida);
 		return usuario;
 	}
 
@@ -67,7 +66,7 @@ public class Manager {
 		if (partida.isReady()) {
 			this.partidasEnJuego.put(partida.getId(), partida);
 			this.partidasPendientes.remove(partida.getId());			
-			partida.comenzar();
+			//partida.comenzar();
 		}
 	}
 
@@ -105,7 +104,7 @@ public class Manager {
 	// partida.actualizar(jugador, dado);
 	// }
 
-	public JSONObject tirarDado(int idPartida, String jugador, int dado) throws Exception {
+	public void tirarDado(int idPartida, String jugador, int dado) throws Exception {
 		Partida partida = this.partidasEnJuego.get(idPartida);
 		JSONObject mensaje = partida.tirarDado(jugador, dado);
 		mensaje.put("idPartida", idPartida);
@@ -114,7 +113,6 @@ public class Manager {
 		if (mensaje != null && mensaje.opt("ganador") != null) {
 			terminar(partida);
 		}
-		return mensaje;
 	}
 
 	private void terminar(Partida partida) {

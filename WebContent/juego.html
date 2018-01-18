@@ -86,7 +86,7 @@
 		function tirarDado(){
 			//var numero = getRandomInt(1,6);
 			var numero=Math.floor(Math.random() * (6 - 1 + 1)) + 1;
-			console.log(numero);
+			//console.log(numero);
 			var p={
 					tipo:'DADO',
 					idPartida : sessionStorage.idPartida,
@@ -95,7 +95,7 @@
 					
 			};
 			ws.send(JSON.stringify(p));
-			console.log(p+" ha sido enviado");
+			console.log(p.nombreJugador +" ha sacado un " + numero);
 			return numero;
 			
 		}

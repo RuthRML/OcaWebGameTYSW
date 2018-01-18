@@ -2,9 +2,9 @@ package edu.uclm.esi.tysweb.laoca.dominio;
 
 public class Tablero {
 	private Casilla[] casillas;
-	public final static String de_Oca_A_Oca = "De oca a oca y tiro porque me toca";
-	public final static String dePuenteAPuente = "De puente a puente y tiro porque me lleva la corriente";
-	public final static String deDadoADado = "De dado a dado y tiro porque me ha tocado";
+	public final static String de_Oca_A_Oca = "De oca a oca y tiro porque me toca.";
+	public final static String dePuenteAPuente = "De puente a puente y tiro porque me lleva la corriente.";
+	public final static String deDadoADado = "De dado a dado y tiro porque me ha tocado.";
 
 	Tablero() {
 		this.casillas = new Casilla[63];
@@ -14,10 +14,8 @@ public class Tablero {
 		}
 
 		// Ocas
-		this.casillas[4].setSiguiente(this.casillas[8]);
+		this.casillas[4].setSiguiente(this.casillas[13]);
 		this.casillas[4].setMensaje(de_Oca_A_Oca);
-		this.casillas[8].setSiguiente(this.casillas[13]);
-		this.casillas[8].setMensaje(de_Oca_A_Oca);
 		this.casillas[13].setSiguiente(this.casillas[17]);
 		this.casillas[13].setMensaje(de_Oca_A_Oca);
 		this.casillas[17].setSiguiente(this.casillas[22]);
@@ -53,10 +51,9 @@ public class Tablero {
 		this.casillas[52].setSiguiente(this.casillas[25]);
 		this.casillas[52].setMensaje(deDadoADado);
 
-		// Posada, pozo, laberinto y c√°rcel
+		// Posada, pozo y c·rcel
 		this.casillas[18].setTurnosSinTirar(3);
-		this.casillas[31].setTurnosSinTirar(3);
-		this.casillas[41].setTurnosSinTirar(3);
+		this.casillas[30].setTurnosSinTirar(3);
 		this.casillas[51].setTurnosSinTirar(3);
 	}
 
