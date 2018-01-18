@@ -120,4 +120,15 @@ public class Manager {
 		partidasEnJuego.remove(partida.getId());
 	}
 
+	public void expulsarJugador(int idPartida, String jugador) throws Exception {
+		Partida partida = this.partidasEnJuego.get(idPartida);
+		Usuario usuario = findUsuario(jugador);
+		JSONObject mensaje = partida.removeJugador(usuario);
+		this.usuarios.remove(usuario.getNombre(), usuario);
+		partida.broadcast(mensaje);
+		if(mensaje != null && mensaje.opt("ganador") != null) {
+			terminar(partida);
+		}				
+	}
+
 }

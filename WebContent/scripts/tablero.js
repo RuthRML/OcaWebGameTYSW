@@ -397,16 +397,22 @@ Tablero.prototype.actualizarNombresFichas = function(jugadores){
 	    this.fichas[i].nombreJugador=jugadores[i];
 	    var lijugador = document.createElement("li");
 	    lijugador.className = "list-group-item";
-	    if(this.fichas[i].color == "green")
+	    if(this.fichas[i].color == "green"){
 	    	lijugador.appendChild(document.createTextNode(jugadores[i] + " es el verde."));
-	    else if(this.fichas[i].color == "gold")
+	    	lijugador.setAttribute("id", jugadores[i]);
+	    }else if(this.fichas[i].color == "gold"){
 	    	lijugador.appendChild(document.createTextNode(jugadores[i] + " es el amarillo."));
-	    else if(this.fichas[i].color == "red")
+	    	lijugador.setAttribute("id", jugadores[i]);
+	    }else if(this.fichas[i].color == "red"){
 	    	lijugador.appendChild(document.createTextNode(jugadores[i] + " es el rojo."));
-	    else if(this.fichas[i].color == "mediumpurple")
+	    	lijugador.setAttribute("id", jugadores[i]);
+	    }else if(this.fichas[i].color == "mediumpurple"){
 	    	lijugador.appendChild(document.createTextNode(jugadores[i] + " es el morado."));
-	    else
+	    	lijugador.setAttribute("id", jugadores[i]);
+	    }else{
 	    	lijugador.appendChild(document.createTextNode(jugadores[i] + " es el azul."));
+	    	lijugador.setAttribute("id", jugadores[i]);
+	    }
 		listListaJugadores.appendChild(lijugador);
 	}
 }
@@ -623,6 +629,16 @@ Ficha.prototype.dibujar = function(lienzo) {
 	}
 }
 
+Tablero.prototype.eliminarExpulsado = function(expulsado){
+	for(var i = 0; i<this.fichas.length; i++){
+		if(this.fichas[i].nombreJugador.equals(expulsado)){
+			this.fichas[i].circle.remove();
+			var listListaJugadores = document.getElementById("listaDeJugadores");
+			var lijugador = document.getElementById(expulsado);
+			listListaJugadores.removeChild(lijugador);
+		}
+	}
+}
 
 
 

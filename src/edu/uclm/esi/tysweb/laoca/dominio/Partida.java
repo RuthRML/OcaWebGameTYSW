@@ -217,4 +217,20 @@ public class Partida {
 		r += "\n";
 		return r;
 	}
+
+	public JSONObject removeJugador(Usuario usuario) {
+		JSONObject result = new JSONObject();
+		result.put("tipo", "EXPULSADO");
+		result.put("mensaje", "Se ha ido un jugador");
+		result.put("usuarioExpulsado", usuario.getNombre());	
+		this.jugadores.remove(usuario);
+		this.numeroDeJugadores--;		
+		result.put("jugadorConElTurno", pasarTurno(false));
+		if(this.numeroDeJugadores == 1 && this.jugadores.size() == 1) {
+			this.ganador = this.jugadores.firstElement();
+			result.put("ganador", this.ganador);
+		}
+		
+		return result;
+	}
 }

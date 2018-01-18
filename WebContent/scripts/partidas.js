@@ -70,7 +70,8 @@ function conectarWebSocket() {
 
 	ws.onopen = function(){
 		console.log("Websocket conectado.");
-
+		var nombreJugador = document.getElementById("nombreJugador");
+		nombreJugador.innerHTML = sessionStorage.nombre;
 		//var tablero = new Tablero();
 		//tablero.dibujar(svgTablero);
 	}
@@ -135,6 +136,15 @@ function conectarWebSocket() {
 				//TODO mostrar en pantalla que ya hubo un ganador
 			}	
 
+		}else if(mensaje.tipo == "EXPULSADO"){
+			console.log("Ha llegado el mensaje");
+			var expulsado = mensaje.usuarioExpulsado;
+			tablero.eliminarExpulsado(expulsado);
+			alert(mensaje.mensaje);
+			actualizarBotonDato(mensaje);
+			if(mensaje.ganador != null){
+				//TODO mostrar en pantalla que ya hubo un ganador
+			}
 		}
 
 	}
@@ -146,9 +156,19 @@ function actualizarBotonDado(mensaje){
 	if(mensaje.jugadorConElTurno == sessionStorage.getItem("nombre")){
 		//btnDado.setAttribute("style", "display:visible");
 		btnDado.disabled = false; // AÑADIDO
+		alert("¡Te toca!");
+		var time = setTimeout(function(){
+			alert("Se te ha acabado el tiempo. Has sido expulsado.");
+			var p={
+					tipo:'EXPULSADO',
+					idPartida : sessionStorage.idPartida,
+					nombreJugador : sessionStorage.nombre,					
+			};
+			ws.send(JSON.stringify(p));
+			}, 3000);
 	}else{
 		//btnDado.setAttribute("style","display:none");
-		btnDado.disabled = true; // AÑADIDO
+		btnDado.disabled = true; // AÑADIDO		
 	}
 	document.getElementById("jugadorTurno").innerHTML = mensaje.jugadorConElTurno;
 }

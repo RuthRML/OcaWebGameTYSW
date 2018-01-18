@@ -57,12 +57,20 @@ public class WSPartidas {
 			String jugador = jso.getString("nombreJugador");
 			int dado = jso.getInt("puntos");
 			System.out.println("Partida "+ idPartida + " jugador "+ jugador + " dado "+ dado);
-			 //Manager.get().actualizarTablero(idPartida, jugador, dado);
-
+			
 			try {
 				Manager.get().tirarDado(idPartida, jugador, dado);				
 			} catch (Exception e) {
 				System.out.println("Error al tirar el dado en el servidor.");
+			}
+			
+		}else if(jso.get("tipo").equals("EXPULSADO")) {
+			int idPartida = jso.getInt("idPartida");
+			String jugador = jso.getString("nombreJugador");
+			try {
+				Manager.get().expulsarJugador(idPartida, jugador);
+			}catch (Exception e) {
+				System.out.println("Error al expulsar a un jugador.");
 			}
 		}
 
