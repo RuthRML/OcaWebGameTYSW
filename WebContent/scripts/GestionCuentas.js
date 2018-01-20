@@ -100,7 +100,6 @@ function loginCuentaRedSocial(emailLogin, id) {
 	reqLogin.send("p=" + JSON.stringify(p));
 }
 
-//TODO Mirar correspondencia excepcion servidor con mensaje mostrado
 function registro() {
 
 	var nombre = document.getElementById("nombre").value;
@@ -131,8 +130,7 @@ function registro() {
 					sessionStorage.setItem("nombre", result.nombreUsuario);						
 					window.location.href='lobby.html';
 				} else {
-					console.log(result.resultado);
-					mensajeRegistro.innerHTML = result.resultado;
+					mensajeRegistro.innerHTML = result.mensaje;
 				}
 			} else {
 				alert("Error en la request al registrar usuario.");

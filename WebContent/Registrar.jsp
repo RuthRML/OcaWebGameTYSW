@@ -23,7 +23,7 @@
    
         Usuario usuario = Manager.get().registrar(email, pwd1, nombre);
         respuesta.put("nombreUsuario", usuario.getNombre());
-        respuesta.put("resultado","OK");
+        respuesta.put("resultado", "OK");
 
     }catch(Exception e){
 		System.out.println("El mensaje error es: " + e.getMessage());
