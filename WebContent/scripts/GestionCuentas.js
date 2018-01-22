@@ -120,8 +120,8 @@ function registro() {
 				var result = JSON.parse(reqRegistrar.responseText);
 				if (result.resultado == "OK") {
 
-					document.getElementById("nombreUsuario").value = "";
-					document.getElementById("email").value = "";
+					document.getElementById("nombre").value = "";
+					document.getElementById("correo").value = "";
 					document.getElementById("pwd1").value = "";
 					document.getElementById("pwd2").value = "";
 

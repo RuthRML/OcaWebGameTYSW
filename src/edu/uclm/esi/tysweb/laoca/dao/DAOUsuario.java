@@ -18,11 +18,11 @@ import edu.uclm.esi.tysweb.laoca.mongodb.MongoBroker;
 
 public class DAOUsuario {
 
-	public static boolean existe(String nombreJugador) throws Exception {
+	public static boolean existe(String correo) throws Exception {
 
 		MongoBroker broker = MongoBroker.get();
 		BsonDocument criterio = new BsonDocument();
-		criterio.append("email", new BsonString(nombreJugador));
+		criterio.append("email", new BsonString(correo));
 
 		MongoClient conexion = broker.getConexionPrivilegiada();
 		MongoDatabase db = conexion.getDatabase("laoca");
@@ -30,7 +30,7 @@ public class DAOUsuario {
 		MongoCollection<BsonDocument> usuarios = db.getCollection("usuarios", BsonDocument.class);
 		BsonDocument usuario = usuarios.find(criterio).first();
 		
-		conexion.close();
+		//conexion.close();
 
 		return usuario != null;
 
