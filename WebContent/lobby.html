@@ -10,6 +10,12 @@
 <link href="css/bootstrap.css" rel="stylesheet">
 <link href="css/style.css" rel="stylesheet">
 
+<script>
+p = location.search.substring(1, location.search.length);
+
+arrayp = p.split("=");
+</script>
+
 </head>
 
 <body>
@@ -19,7 +25,17 @@
 			<h1>Bienvenido a la web del juego de la Oca</h1>
 		</div>
 		<div class="row">
-			<form class="col-lg-6" style="margin: 0 auto;">
+			<div class="col-lg-3">
+				<div id="panelUsuario">
+					<button onclick="event.preventDefault(); cerrarSesion();" class="btn btn-primary" 
+						type="button" id="btnCerrarSesion">Cerrar sesión</button>
+					<p style="text-align: center; text-transform: uppercase; font-weight: bold;">
+						Ránking de La Oca</p>
+					<ul id="listaRanking" class="list-group">
+					</ul>
+				</div>
+			</div>
+			<form class="col-lg-9" style="margin: 0 auto;">
 
 				<div class="form-group">
 					<label for="labelNombre">Introduce nombre de Jugador</label> <input
@@ -48,6 +64,30 @@
 		if (sessionStorage.nombre != undefined) {
 			document.getElementById("nombre").value = sessionStorage.nombre;
 		}
+		
+		if(arrayp[1] == "registro" || arrayp[1] == "login" || arrayp[1] == "partida"){
+			document.getElementById("nombre").disabled = true;
+		}else{
+			document.getElementById("panelUsuario").style.display = "none";
+		}
+		
+		var request = new XMLHttpRequest();
+		request.open("get","ranking.jsp");
+		request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		request.onreadystatechange=function() {
+			if (request.readyState==4) {
+				//var respuesta=JSON.parse(request.responseText);
+				if (request.status == 200) {
+
+				} else{
+					console.log("Error al cargar ránking.");
+				}
+			}
+		};
+		
+		request.send();
+		
+		
 	</script>
 
 	<script src="scripts/tablero.js"></script>

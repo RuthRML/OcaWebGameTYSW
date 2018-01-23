@@ -19,6 +19,8 @@
             session.setAttribute("usuario", usuario);
             respuesta.put("nombreUsuario", usuario.getNombre());
             respuesta.put("resultado","OK");
+            respuesta.put("correo", usuario.getCorreo());
+            respuesta.put("sesion", session.getId());
             Cookie cookiePass = new Cookie("cookiePass", pwd1);
             response.addCookie(cookiePass);
         }else{

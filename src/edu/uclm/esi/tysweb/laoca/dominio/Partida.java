@@ -204,9 +204,11 @@ public class Partida {
 		return this.ganador;
 	}
 
-	public void terminar() {
-		for (Usuario jugador : this.jugadores)
+	public void terminar() throws Exception {
+		for (Usuario jugador : this.jugadores) {
 			jugador.setPartida(null);
+		}
+			getGanador().sumarVictoria();
 	}
 
 	@Override

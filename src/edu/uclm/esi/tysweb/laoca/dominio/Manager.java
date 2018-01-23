@@ -1,9 +1,14 @@
 package edu.uclm.esi.tysweb.laoca.dominio;
 
 import java.io.File;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.json.JSONObject;
+
+import edu.uclm.esi.tysweb.laoca.dao.DAOUsuario;
 
 //import edu.uclm.esi.tysweb.laoca.dao.BrokerConPool;
 
@@ -23,7 +28,8 @@ public class Manager {
 	public Usuario crearPartida(String nombreJugador, int numeroDeJugadores) throws Exception {
 		Usuario usuario = findUsuario(nombreJugador);
 		if (usuario.getPartida() != null)
-			throw new Exception("El usuario ya est\u00e1 asociado a una partida. Descon\u00e9ctate para crear una nueva o unirte a otra.");
+			throw new Exception(
+					"El usuario ya est\u00e1 asociado a una partida. Descon\u00e9ctate para crear una nueva o unirte a otra.");
 		Partida partida = new Partida(usuario, numeroDeJugadores);
 		usuario.setPartida(partida);
 		this.partidasPendientes.put(partida.getId(), partida);
@@ -36,7 +42,8 @@ public class Manager {
 		Usuario usuario = this.usuarios.get(nombreJugador);
 
 		if (usuario == null) {
-			//System.out.println("El usuario no existe en la base de datos. Se crea uno nuevo.");
+			// System.out.println("El usuario no existe en la base de datos. Se crea uno
+			// nuevo.");
 			usuario = new Usuario(nombreJugador);
 			this.usuarios.put(nombreJugador, usuario);
 		}
@@ -65,8 +72,8 @@ public class Manager {
 	public void comprobarPartida(Partida partida) {
 		if (partida.isReady()) {
 			this.partidasEnJuego.put(partida.getId(), partida);
-			this.partidasPendientes.remove(partida.getId());			
-			//partida.comenzar();
+			this.partidasPendientes.remove(partida.getId());
+			// partida.comenzar();
 		}
 	}
 
@@ -92,11 +99,14 @@ public class Manager {
 		Usuario usuario = new UsuarioRegistrado(email);
 		usuario.setNombre(nombre);
 		usuario.registrarUsuario(pwd);
+		this.usuarios.put(usuario.getNombre(), usuario);
 		return usuario;
 	}
 
 	public Usuario login(String email, String pwd) throws Exception {
-		return UsuarioRegistrado.login(email, pwd);
+		Usuario usuario = UsuarioRegistrado.login(email, pwd);
+		this.usuarios.put(usuario.getNombre(), usuario);
+		return usuario;
 	}
 
 	// public void actualizarTablero(int idPartida, String jugador, int dado) {
@@ -115,7 +125,7 @@ public class Manager {
 		}
 	}
 
-	private void terminar(Partida partida) {
+	private void terminar(Partida partida) throws Exception {
 		partida.terminar();
 		partidasEnJuego.remove(partida.getId());
 	}
@@ -129,6 +139,43 @@ public class Manager {
 		if(mensaje != null && mensaje.opt("ganador") != null) {
 			terminar(partida);
 		}				
+	}
+	
+	public void cerrarSesion(String nombreJugador) throws Exception {
+		this.usuarios.remove(nombreJugador);
+	}
+	
+	public JSONArray calcularRanking() {
+		return null;
+	}
+
+	public String recuperarPwd(String email) throws Exception {
+		DAOUsuario dao = new DAOUsuario();
+		String respuesta = null;
+		boolean existe = dao.existe(email);
+		if (existe) {
+			RecuperarPwd recovery = new RecuperarPwd();
+			recovery.setEmail(email);
+			respuesta = null;
+			recovery.generarCodigo();
+			DAOUsuario.registrarCodigoRecuperacion(email, recovery.getCodigo());
+
+			respuesta = recovery.execute();
+
+		} else {
+			throw new Exception("El usuario no existe en la base de datos");
+		}
+		return respuesta;
+
+	}
+
+	public Usuario insertarNuevaPwd(String email, String pass1, String codigo) throws Exception {
+
+		Usuario usuario = new UsuarioRegistrado(email);
+		usuario.setCorreo(email);
+		usuario.registrarUsuarioNuevaPwd(pass1, codigo);
+		return usuario;
+
 	}
 
 }

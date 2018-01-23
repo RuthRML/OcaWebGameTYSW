@@ -40,10 +40,12 @@ function login() {
 					document.getElementById("correo").value = "";
 					document.getElementById("pwd1").value = "";
 					alert("Login exitoso, " + emailLogin);
-					sessionStorage.nombre = result.nombreUsuario;						
-					window.location.href='lobby.html';
+					sessionStorage.setItem("nombre", result.nombreUsuario);	
+					sessionStorage.setItem("sesion", result.sesion);
+					sessionStorage.setItem("correo", result.correo);
+					pasarVariable("lobby.html", "login");
 				} else {
-					console.log(result.mensaje);
+					alert(result.mensaje);
 					//alert("Error: " + result.mensaje);
 					//mensajeRegistro.innerHTML = result.resultado;
 				}
@@ -79,8 +81,10 @@ function loginCuentaRedSocial(emailLogin, id) {
 					document.getElementById("correo").value = "";
 					document.getElementById("pwd1").value = "";
 					alert("Login exitoso, " + emailLogin);
-					sessionStorage.nombre = result.nombreUsuario;						
-					window.location.href='lobby.html';
+					sessionStorage.setItem("nombre", result.nombreUsuario);						
+					sessionStorage.setItem("sesion", result.sesion);
+					sessionStorage.setItem("correo", result.correo);
+					pasarVariable("lobby.html", "login");
 				} else {
 					console.log(result);
 					alert("Error: " + result.mensaje);
@@ -98,6 +102,13 @@ function loginCuentaRedSocial(emailLogin, id) {
 	};
 
 	reqLogin.send("p=" + JSON.stringify(p));
+}
+
+
+function pasarVariable(pagina, procedencia){
+	pagina += "?";
+	pagina += "p=" + procedencia;
+	location.href = pagina;
 }
 
 function registro() {
@@ -127,8 +138,10 @@ function registro() {
 
 					alert("Registro exitoso, " + emailRegistro);
 
-					sessionStorage.setItem("nombre", result.nombreUsuario);						
-					window.location.href='lobby.html';
+					sessionStorage.setItem("nombre", result.nombreUsuario);
+					sessionStorage.setItem("sesion", result.sesion);
+					sessionStorage.setItem("correo", emailRegistro);
+					pasarVariable("lobby.html", "registro");
 				} else {
 					mensajeRegistro.innerHTML = result.mensaje;
 				}
@@ -177,8 +190,10 @@ function registroCuentaRedSocial(nombreUser, emailRegistro, id) {
 					document.getElementById("pwd2").value = "";
 					alert("Registro exitoso, " + emailRegistro);
 
-					sessionStorage.nombre = result.nombreUsuario;						
-					window.location.href='lobby.html';
+					sessionStorage.setItem("nombre", result.nombreUsuario);						
+					sessionStorage.setItem("sesion", result.sesion);
+					sessionStorage.setItem("correo", emailRegistro);
+					pasarVariable("lobby.html", "registro");
 				} else {
 					console.log(result);
 					alert("Error: " + result.mensaje);
@@ -200,7 +215,127 @@ function registroCuentaRedSocial(nombreUser, emailRegistro, id) {
 	reqRegistrar.send("p=" + JSON.stringify(p));
 }
 
-function cambiarContrasenha() {
-	var email = document.getElementById("correo").value;
+function recuperarpwd() {
+	var emailarecuperar = document.getElementById("correo").value;
+	
+	
+	
+	
+	var reqRegistrar = new XMLHttpRequest();
+
+	reqRegistrar.open("post", "RecuperarPwd.jsp");
+	reqRegistrar.setRequestHeader("Content-Type",
+	"application/x-www-form-urlencoded");
+	reqRegistrar.onreadystatechange = function() {
+		if (reqRegistrar.readyState == 4) {
+			if (reqRegistrar.status == 200) {
+				var result = JSON.parse(reqRegistrar.responseText);
+				if (result.resultado == "OK") {
+					alert("Se ha enviado un correo");
+					/*
+					 
+					 document.getElementById("nombreUsuario").value = "";
+					document.getElementById("email").value = "";
+					document.getElementById("pwd1").value = "";
+					document.getElementById("pwd2").value = "";
+					alert("Registro exitoso, " + emailRegistro);
+
+					sessionStorage.nombre = result.nombreUsuario;						
+					window.location.href='lobby.html';
+					*/
+				} else {
+					console.log(result);
+					alert("Error: " + result.mensaje);
+					mensajeRegistro.innerHTML = result.resultado;
+				}
+			} else {
+				alert("Algo pasa");
+			}
+		}
+	};
+	var p = {
+			tipo : "RECUPERARPWD",
+			email : emailarecuperar
+	};
+
+	reqRegistrar.send("p=" + JSON.stringify(p));
+	
+	
 
 }
+
+
+
+
+
+function registrarpwdnueva(){
+	var pass1 = document.getElementById("pwd1").value;
+	var pass2 = document.getElementById("pwd2").value;
+	
+	
+	
+	var emailRegistro = getParameterByName('usuario');
+	var code = getParameterByName('codigo');
+	
+	
+	//var emailRegistro=p.usuario;
+	//var code=p.codigo;
+	
+	//var idSession=document.getElementById("idSession").value;
+	//var divRegistro = document.getElementById("divRegistro");
+	//var mensajeRegistro = document.getElementById("msgRegistro");
+
+	var reqRegistrar = new XMLHttpRequest();
+	reqRegistrar.open("post", "crearpwd.jsp");
+	reqRegistrar.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	
+	reqRegistrar.onreadystatechange = function() {
+		if (reqRegistrar.readyState == 4) {
+			if (reqRegistrar.status == 200) {
+				var result = JSON.parse(reqRegistrar.responseText);
+				if (result.resultado == "OK") {
+
+					
+
+					alert("Cambio exitoso, " + emailRegistro);
+
+					sessionStorage.setItem("nombre", result.nombreUsuario);						
+					window.location.href='index.html';
+				} else {
+					alert(result.mensaje);
+					//mensajeRegistro.innerHTML = result.mensaje;
+				}
+			} else {
+				alert("Error en la request al cambiar contraseña.");
+			}
+		}
+	};
+	
+	var p = {
+			tipo : "NUEVAPWD",
+			email : emailRegistro,
+			codigo : code,
+			pwd1 : pass1,
+			pwd2 : pass2
+			
+	};
+
+	reqRegistrar.send("p=" + JSON.stringify(p));
+	
+	
+	
+	
+}
+
+
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+

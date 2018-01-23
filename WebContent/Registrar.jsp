@@ -23,6 +23,7 @@
    
         Usuario usuario = Manager.get().registrar(email, pwd1, nombre);
         respuesta.put("nombreUsuario", usuario.getNombre());
+        respuesta.put("sesion", session.getId());
         respuesta.put("resultado", "OK");
 
     }catch(Exception e){

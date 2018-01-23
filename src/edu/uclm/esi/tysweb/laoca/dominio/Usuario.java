@@ -15,6 +15,7 @@ public class Usuario {
 	private Session sesion;
 	private int turnosSinTirar;
 	private Casilla casilla;
+	private int victorias;
 
 	public Usuario(String jugador) throws Exception {
 		int token = jugador.indexOf("@");
@@ -37,7 +38,7 @@ public class Usuario {
 	}
 
 	public Partida getPartida() {
-		return partida;
+		return this.partida;
 	}
 
 	public void setWSSession(Session sesion) {
@@ -56,6 +57,14 @@ public class Usuario {
 	public void registrarUsuario(String pwd) throws Exception {
 		if (!DAOUsuario.existe(this.correo)) {
 			DAOUsuario.registrar(this, pwd);
+		}
+	}
+	
+	
+	public void registrarUsuarioNuevaPwd(String pwd,String codigo) throws Exception {
+		if (!DAOUsuario.existe(this.correo)) {
+			DAOUsuario.registrarNuevaPwd(this, pwd,codigo);
+			DAOUsuario.eliminarCodigoRecuperacion(this,pwd,codigo);
 		}
 	}
 
@@ -87,12 +96,39 @@ public class Usuario {
 	}
 
 	public String getNombre() {
-		return nombre;
+		return this.nombre;
 	}
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+	
+	
+	
+	public Session getSesion() {
+		return this.sesion;
+	}
+
+	public void setSesion(Session sesion) {
+		this.sesion = sesion;
+	}
+
+	public void sumarVictoria() throws Exception {
+		DAOUsuario.sumarVictoriaBD(this);		
+	}
+
+	public int getVictorias() {
+		return this.victorias;
+	}
+
+	public void incVictorias() {
+		this.victorias = this.victorias + 1;
+	}
+	
+	public void setVictorias(int victorias) {
+		this.victorias = victorias;
+	}
+
 	
 	
 

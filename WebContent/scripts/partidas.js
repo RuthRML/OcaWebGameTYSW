@@ -63,6 +63,31 @@ function unirse(){
 
 }
 
+function cerrarSesion() {
+	var request = new XMLHttpRequest();
+	request.open("post", "cerrarSesion.jsp");
+	request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+	request.onreadystatechange = function(){
+		if(request.readyState == 4){
+			if (request.status == 200) {
+				sessionStorage.removeItem("sesion");
+				sessionStorage.removeItem("nombre");
+				window.location.href = "index.html";
+			}else{
+				alert("Error al cerrar sesión.");
+			}
+		}
+	};
+
+	var p = {
+			nombre : document.getElementById("nombre").value
+	};
+
+	request.send("p=" + JSON.stringify(p));
+
+}
+
 var ws;
 
 function conectarWebSocket() {
@@ -131,9 +156,15 @@ function conectarWebSocket() {
 				console.log("Error en partidas.js");
 			}
 
-			/*En caso que haya un ganador*/
 			if(ganador != null){
-				//TODO mostrar en pantalla que ya hubo un ganador
+				alert("Ha ganado " + ganador);
+				ws.close();
+				if(sessionStorage.getItem("correo") != null){
+					pasarVariable("lobby.html", "partida");
+				}else{
+					window.location.href = "lobby.html";
+				}
+				
 			}	
 
 		}else if(mensaje.tipo == "EXPULSADO"){
@@ -143,7 +174,14 @@ function conectarWebSocket() {
 			alert(mensaje.mensaje);
 			actualizarBotonDato(mensaje);
 			if(mensaje.ganador != null){
-				//TODO mostrar en pantalla que ya hubo un ganador
+				alert("Ha ganado " + ganador);
+				ws.close();
+				if(sessionStorage.getItem("correo") != null){
+					pasarVariable("lobby.html", "partida");
+				}else{
+					window.location.href = "lobby.html";
+				}
+				
 			}
 		}
 
@@ -151,13 +189,20 @@ function conectarWebSocket() {
 
 }
 
+function pasarVariable(pagina, procedencia){
+	pagina += "?";
+	pagina += "p=" + procedencia;
+	location.href = pagina;
+}
+
+
 function actualizarBotonDado(mensaje){
 	var btnDado = document.getElementById("btnDado");
 	if(mensaje.jugadorConElTurno == sessionStorage.getItem("nombre")){
 		//btnDado.setAttribute("style", "display:visible");
 		btnDado.disabled = false; // AÑADIDO
-		alert("¡Te toca!");
-		var time = setTimeout(function(){
+		//alert("¡Te toca!");
+		/*var time = setTimeout(function(){
 			alert("Se te ha acabado el tiempo. Has sido expulsado.");
 			var p={
 					tipo:'EXPULSADO',
@@ -165,7 +210,7 @@ function actualizarBotonDado(mensaje){
 					nombreJugador : sessionStorage.nombre,					
 			};
 			ws.send(JSON.stringify(p));
-			}, 3000);
+			}, 3000);*/
 	}else{
 		//btnDado.setAttribute("style","display:none");
 		btnDado.disabled = true; // AÑADIDO		
@@ -179,6 +224,5 @@ function addMensaje(texto) {
 	//divChat.appendChild(div);
 	//div.innerHTML=texto;
 }
-
 
 
