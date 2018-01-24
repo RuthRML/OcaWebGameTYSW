@@ -2,9 +2,12 @@ package edu.uclm.esi.tysweb.laoca.dao;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.util.Iterator;
 
 import org.bson.BsonDocument;
 import org.bson.BsonString;
+import org.json.JSONArray;
+import org.bson.BsonInt32;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
@@ -18,8 +21,26 @@ import edu.uclm.esi.tysweb.laoca.dominio.UsuarioRegistrado;
 import edu.uclm.esi.tysweb.laoca.mongodb.MongoBroker;
 
 
-import org.bson.BsonInt32;
+
 public class DAOUsuario {
+	
+	public JSONArray getRanking() throws Exception{
+		JSONArray lista = new JSONArray();
+		
+		MongoBroker broker = MongoBroker.get();
+		MongoClient conexion = broker.getConexionPrivilegiada();
+		MongoDatabase db = conexion.getDatabase("laoca");
+		
+		MongoCollection<BsonDocument> ranking = db.getCollection("ranking", BsonDocument.class);
+		FindIterable<BsonDocument> resultado = ranking.find();
+		Iterator<BsonDocument> listaI = resultado.iterator();
+		
+		while(listaI.hasNext()) {
+			lista.put(listaI.next());
+		}
+		
+		return lista;
+	}
 
 	public static boolean existe(String correo) throws Exception {
 
@@ -32,8 +53,6 @@ public class DAOUsuario {
 
 		MongoCollection<BsonDocument> usuarios = db.getCollection("usuarios", BsonDocument.class);
 		BsonDocument usuario = usuarios.find(criterio).first();
-
-		// conexion.close();
 
 		return usuario != null;
 
@@ -57,8 +76,6 @@ public class DAOUsuario {
 		MongoCollection<BsonDocument> usuarios = db.getCollection("usuarios", BsonDocument.class);
 		MongoCollection<BsonDocument> ranking = db.getCollection("ranking", BsonDocument.class);
 
-		MongoClient client = MongoBroker.get().getDatabase("laoca", "creadorDeUsuarios", "creadorDeUsuarios");
-
 		try {
 			usuarios.insertOne(bUsuario);
 			ranking.insertOne(rUsuario);
@@ -68,9 +85,7 @@ public class DAOUsuario {
 			}			
 			throw new Exception("Error en el registro de usuario.");
 		}
-		
 
-		// conexion.close();
 	}
 
 	private static BsonString encriptar(String pwd) throws Exception {
@@ -85,64 +100,6 @@ public class DAOUsuario {
 		return new BsonString(hashtext);
 
 	}
-
-	/*
-	 * private static void crearComoUsuarioDeLaBD(Usuario usuario, String pwd)
-	 * throws Exception { BsonDocument creacionDeUsuario = new BsonDocument();
-	 * creacionDeUsuario.append("createUser", new BsonString(usuario.getCorreo()));
-	 * creacionDeUsuario.append("pwd", new BsonString(pwd)); BsonDocument rol = new
-	 * BsonDocument(); rol.append("role", new BsonString("JugadorDeLaOca"));
-	 * rol.append("db", new BsonString("laoca")); BsonArray roles = new BsonArray();
-	 * roles.add(rol); creacionDeUsuario.append("roles", roles);
-	 * 
-	 * MongoBroker.get().getConexionPrivilegiada().getDatabase("laoca").runCommand(
-	 * creacionDeUsuario);
-	 * 
-	 * 
-	 * BsonDocument creacionDeUsuario = new BsonDocument();
-	 * creacionDeUsuario.append("user", new BsonString(usuario.getLogin()));
-	 * creacionDeUsuario.append("pwd", new BsonString(pwd));
-	 * 
-	 * //Crear el array de roles BsonDocument rol = new BsonDocument();
-	 * rol.append("role", new BsonString("JugadorDeLaOca")); rol.append("db", new
-	 * BsonString("laoca"));
-	 * 
-	 * 
-	 * BsonArray roles = new BsonArray(); roles.add(rol);
-	 * creacionDeUsuario.append("roles", roles);
-	 * MongoBroker.get().getDatabase("laoca", "creadorDeUsuarios",
-	 * "creadorDeUsuarios").getDatabase("laoca").runCommand(creacionDeUsuario);
-	 * 
-	 * }
-	 */
-
-	/*
-	 * public static boolean enter(Usuario usuario, String pwd1) throws Exception {
-	 * boolean entro = false; if (existe(usuario.getCorreo())) { if
-	 * (validaContrasenha(usuario.getCorreo(), pwd1)) {
-	 * 
-	 * } else { throw new Exception("Contrase\u00f1a invalida"); } } else { throw
-	 * new Exception("Usuario incorrecto."); }
-	 * 
-	 * return entro;
-	 * 
-	 * }
-	 */
-
-	/*
-	 * private static boolean validaContrasenha(String nombreJugador, String pwd1)
-	 * throws Exception { MongoBroker broker = MongoBroker.get(); BsonDocument
-	 * criterio = new BsonDocument(); criterio.append("email", new
-	 * BsonString(nombreJugador));
-	 * 
-	 * MongoDatabase db = broker.getDatabase("laoca"); MongoCollection<BsonDocument>
-	 * usuarios = db.getCollection("usuarios", BsonDocument.class); BsonDocument
-	 * usuario = usuarios.find(criterio).first(); // broker.close();
-	 * 
-	 * return usuario != null;
-	 * 
-	 * }
-	 */
 
 	public static Usuario login(String correoUsuario, String pwd1) throws Exception {
 
@@ -180,28 +137,33 @@ public class DAOUsuario {
 			throw new Exception("Contrase\u00f1a inv\u00e1lida o no existe el usuario.");
 		}
 		
-		//conexion.close();
-		
 		return usuario;
 	}
 	
 	
 	
-public static void sumarVictoriaBD(Usuario usuario) throws Exception{
+	public static void sumarVictoriaBD(Usuario usuario) throws Exception{
 		
 		usuario.incVictorias();
 		
 		BsonDocument updateUsuario = new BsonDocument();
 		BsonDocument criterio = new BsonDocument();
 		
-		criterio.append("nombre", new BsonString(usuario.getNombre()));
+		criterio.append("correo", new BsonString(usuario.getCorreo()));
 		updateUsuario.append("$set", new BsonDocument().append("victorias", new BsonInt32(usuario.getVictorias())));
 		
 		MongoClient conexion = MongoBroker.get().getConexionPrivilegiada();
 		MongoDatabase db = conexion.getDatabase("laoca");
 		MongoCollection<BsonDocument> ranking = db.getCollection("ranking", BsonDocument.class);
 		
-		ranking.updateOne(criterio, updateUsuario);
+		FindIterable<BsonDocument> resultado = ranking.find(criterio);
+		BsonDocument usuarioFind = resultado.first();
+		
+		if(usuarioFind != null) {
+			ranking.updateOne(criterio, updateUsuario);
+		}else {
+			throw new Exception("El usuario no está registrado.");
+		}
 		
 	}
 
@@ -213,37 +175,20 @@ public static void sumarVictoriaBD(Usuario usuario) throws Exception{
 			newDocument.append("$set", new BasicDBObject().append("pwd", encriptar(pwd)));
 			BasicDBObject searchQuery = new BasicDBObject().append("email", usuario.getCorreo());
 
-			// BsonDocument bUsuario = new BsonDocument();
-
-			// bUsuario.append("pwd", encriptar(pwd));
-
-			// BsonDocument criterio = new BsonDocument();
-			// criterio.append("email", new BsonString(usuario.getCorreo()));
-
 			MongoClient conexion = MongoBroker.get().getConexionPrivilegiada();
 			MongoDatabase db = conexion.getDatabase("laoca");
 			MongoCollection<BsonDocument> usuarios = db.getCollection("usuarios", BsonDocument.class);
 
-			// MongoClient client = MongoBroker.get().getDatabase("laoca",
-			// "creadorDeUsuarios", "creadorDeUsuarios");
-
 			try {
-
-				// BsonDocument usuario1 = usuarios.find(criterio).first();
-				// usuario1.append("pwd", encriptar(pwd));
-				// usuarios.updateOne(usuario, arg1)
 				usuarios.updateOne(searchQuery, newDocument);
-
-				// crearComoUsuarioDeLaBD(usuario, pwd);
 			} catch (MongoWriteException e) {
 				if (e.getCode() == 11000) {
 					throw new Exception("Error 11000 en DAOUsuario.java");
 				}
-
 				throw new Exception("Error en DAOUsuario.java");
 			}
 		}else {
-			throw new Exception("No existe tal codigo de recuperaciÃ³n");
+			throw new Exception("No existe tal codigo de recuperación");
 		}
 
 	}
@@ -260,10 +205,30 @@ public static void sumarVictoriaBD(Usuario usuario) throws Exception{
 		MongoCollection<BsonDocument> usuarios = db.getCollection("usuarioscambiopwd", BsonDocument.class);
 		BsonDocument usuarioconcodigo = usuarios.find(criterio).first();
 
-		// conexion.close();
-
 		return usuario != null;
 	}
+	
+	public static void registrarNuevaPwdVoluntario(Usuario usuario, String pwd) throws Exception {
+
+		BasicDBObject newDocument = new BasicDBObject();
+		newDocument.append("$set", new BasicDBObject().append("pwd", encriptar(pwd)));
+		BasicDBObject searchQuery = new BasicDBObject().append("email", usuario.getCorreo());
+
+		MongoClient conexion = MongoBroker.get().getConexionPrivilegiada();
+		MongoDatabase db = conexion.getDatabase("laoca");
+		MongoCollection<BsonDocument> usuarios = db.getCollection("usuarios", BsonDocument.class);
+
+		try {
+			usuarios.updateOne(searchQuery, newDocument);
+		} catch (MongoWriteException e) {
+			if (e.getCode() == 11000) {
+				throw new Exception("Error 11000 en DAOUsuario.java");
+			}
+			throw new Exception("Error en DAOUsuario.java");
+		}
+	
+
+}
 
 	public static void registrarCodigoRecuperacion(String email, String codigo) throws Exception {
 		BsonDocument bCodigoRecuperacionUsuario = new BsonDocument();
@@ -275,22 +240,18 @@ public static void sumarVictoriaBD(Usuario usuario) throws Exception{
 		MongoDatabase db = conexion.getDatabase("laoca");
 		MongoCollection<BsonDocument> codigosrecuperacion = db.getCollection("usuarioscambiopwd", BsonDocument.class);
 
-		MongoClient client = MongoBroker.get().getDatabase("laoca", "creadorDeUsuarios", "creadorDeUsuarios");
-
 		try {
 			codigosrecuperacion.insertOne(bCodigoRecuperacionUsuario);
-			// crearComoUsuarioDeLaBD(usuario, pwd);
 		} catch (MongoWriteException e) {
 			if (e.getCode() == 11000) {
 				throw new Exception("El codigo ya esta registrado");
 			}
-
 			throw new Exception("Error en el registro de codigo recuperacion.");
 		}
 		
 	}
 
-	public static void eliminarCodigoRecuperacion(Usuario usuario, String pwd, String codigo) throws Exception {
+public static void eliminarCodigoRecuperacion(Usuario usuario, String pwd, String codigo) throws Exception {
 		
 		BsonDocument bCodigoRecuperacionUsuario = new BsonDocument();
 
@@ -304,8 +265,7 @@ public static void sumarVictoriaBD(Usuario usuario) throws Exception{
 		MongoClient client = MongoBroker.get().getDatabase("laoca", "creadorDeUsuarios", "creadorDeUsuarios");
 
 		try {
-			codigosrecuperacion.dropIndex(bCodigoRecuperacionUsuario);
-			// crearComoUsuarioDeLaBD(usuario, pwd);
+			codigosrecuperacion.deleteOne(bCodigoRecuperacionUsuario);
 		} catch (MongoWriteException e) {
 			if (e.getCode() == 11000) {
 				throw new Exception("Error 11000 en eliminar codigo de Recuperacion");

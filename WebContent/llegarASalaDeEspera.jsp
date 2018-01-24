@@ -12,7 +12,7 @@
 	
 	JSONObject respuesta = new JSONObject();
 	
-	try{
+	try{		
 		Usuario usuario = Manager.get().addJugador(nombreJugador);
 		session.setAttribute("usuario", usuario);
 		int idPartida = usuario.getPartida().getId();

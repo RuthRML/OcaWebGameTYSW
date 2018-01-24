@@ -6,11 +6,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.json.JSONObject;
-
 import edu.uclm.esi.tysweb.laoca.dao.DAOUsuario;
 
-//import edu.uclm.esi.tysweb.laoca.dao.BrokerConPool;
 
 public class Manager {
 	private ConcurrentHashMap<String, Usuario> usuarios;
@@ -42,11 +39,10 @@ public class Manager {
 		Usuario usuario = this.usuarios.get(nombreJugador);
 
 		if (usuario == null) {
-			// System.out.println("El usuario no existe en la base de datos. Se crea uno
-			// nuevo.");
 			usuario = new Usuario(nombreJugador);
 			this.usuarios.put(nombreJugador, usuario);
 		}
+		
 		return usuario;
 	}
 
@@ -73,7 +69,6 @@ public class Manager {
 		if (partida.isReady()) {
 			this.partidasEnJuego.put(partida.getId(), partida);
 			this.partidasPendientes.remove(partida.getId());
-			// partida.comenzar();
 		}
 	}
 
@@ -109,11 +104,6 @@ public class Manager {
 		return usuario;
 	}
 
-	// public void actualizarTablero(int idPartida, String jugador, int dado) {
-	// Partida partida=this.partidasEnJuego.get(idPartida);
-	// partida.actualizar(jugador, dado);
-	// }
-
 	public void tirarDado(int idPartida, String jugador, int dado) throws Exception {
 		Partida partida = this.partidasEnJuego.get(idPartida);
 		JSONObject mensaje = partida.tirarDado(jugador, dado);
@@ -132,6 +122,9 @@ public class Manager {
 
 	public void expulsarJugador(int idPartida, String jugador) throws Exception {
 		Partida partida = this.partidasEnJuego.get(idPartida);
+		if(partida == null) {
+			partida = this.partidasPendientes.get(idPartida);
+		}
 		Usuario usuario = findUsuario(jugador);
 		JSONObject mensaje = partida.removeJugador(usuario);
 		this.usuarios.remove(usuario.getNombre(), usuario);
@@ -145,8 +138,9 @@ public class Manager {
 		this.usuarios.remove(nombreJugador);
 	}
 	
-	public JSONArray calcularRanking() {
-		return null;
+	public JSONArray calcularRanking() throws Exception {
+		DAOUsuario dao = new DAOUsuario();
+		return dao.getRanking();
 	}
 
 	public String recuperarPwd(String email) throws Exception {
@@ -159,9 +153,7 @@ public class Manager {
 			respuesta = null;
 			recovery.generarCodigo();
 			DAOUsuario.registrarCodigoRecuperacion(email, recovery.getCodigo());
-
 			respuesta = recovery.execute();
-
 		} else {
 			throw new Exception("El usuario no existe en la base de datos");
 		}
@@ -177,5 +169,15 @@ public class Manager {
 		return usuario;
 
 	}
+	
+	public Usuario insertarNuevaPwdVoluntario(String email, String pass1) throws Exception {
+
+		Usuario usuario = new UsuarioRegistrado(email);
+		usuario.setCorreo(email);
+		usuario.registrarUsuarioNuevaPwdVoluntario(pass1);
+		return usuario;
+
+	}
+	
 
 }

@@ -26,11 +26,7 @@ public class Partida {
 	private int jugadorConElTurno;
 
 	public Partida(Usuario creador, int numeroDeJugadores) {
-		// this.jugadores = new ConcurrentHashMap();
-		// this.jugadores.put(creador.getLogin(), creador);
-		// this.numeroDeJugadores = numeroDeJugadores;
-		// this.id = new Random().nextInt();
-
+		
 		this.jugadores = new Vector<>();
 		this.jugadores.add(creador);
 		this.numeroDeJugadores = numeroDeJugadores;
@@ -51,10 +47,6 @@ public class Partida {
 		return this.jugadores.size() == this.numeroDeJugadores;
 	}
 
-	// public void actualizar(String jugador, int dado) {
-	// TODO Auto-generated method stub
-	// }
-
 	public void comenzar() {
 		JSONObject jso = new JSONObject();
 		jso.put("tipo", "COMIENZO");
@@ -62,9 +54,7 @@ public class Partida {
 		JSONArray jsa = new JSONArray();
 		this.jugadorConElTurno = (new Random()).nextInt(this.jugadores.size());
 		jso.put("jugadorConElTurno", getJugadorConElTurno().getNombre());
-		// for (int i = 0; i < this.jugadores.size(); i++) {
-		// jsa.put(jugadores.))
-		// }
+		
 		for (Usuario jugador : jugadores) {
 			jsa.put(jugador.getNombre());
 			addJugadorAlTablero(jugador);
@@ -72,17 +62,6 @@ public class Partida {
 		
 		jso.put("jugadores", jsa);
 		broadcastPrimeraVez(jso);
-		/*
-		 * Enumeration< Usuario> eJugadores = this.jugadores.elements();
-		 * while(eJugadores.hasMoreElements()) { Usuario
-		 * jugador=eJugadores.nextElement();
-		 * 
-		 * //if(cont++==posTurno) // jso.put("jugadorConelturno", jugador.get)
-		 * 
-		 * try {//por si se desconecta jugador.enviar(jso); }catch (Exception e) { //
-		 * TODO: Eliminar de la coleccion, mirar si la partida ha terminado // y decirle
-		 * al WSServer que quite a este jugador } }
-		 */
 	}
 
 	public Usuario getJugadorConElTurno() {
@@ -105,6 +84,7 @@ public class Partida {
 		result.put("destinoInicial", destino.getPos());
 		Casilla siguiente = destino.getSiguiente();
 		boolean conservarTurno = false;
+		
 		if (siguiente != null) {
 			conservarTurno = true;
 			String mensaje = destino.getMensaje();
@@ -116,24 +96,34 @@ public class Partida {
 				result.put("ganador", this.ganador.getNombre());
 			}
 		}
+		
 		if (destino.getPos() == 57) { // Muerte
 			jugador.setPartida(null);
-			result.put("mensaje", jugador.getNombre() + " cae en la muerte");
-			this.jugadores.remove(jugador);
+			result.put("mensaje", jugador.getNombre() + " cae en la muerte.");
 			this.jugadorConElTurno--;
 			if (this.jugadores.size() == 1) {
 				this.ganador = this.jugadores.get(0);
 				result.put("ganador", this.ganador.getNombre());
 			}
 		}
+		
 		if (destino.getPos() == 62) { // Llegada
 			this.ganador = jugador;
 			result.put("ganador", this.ganador.getNombre());
 		}
+		
 		int turnosSinTirar = destino.getTurnosSinTirar();
+		
 		if (turnosSinTirar > 0) {
+			String sitio = "";
+			if(destino.getPos() == 18)
+				sitio = "Taberna";
+			else if(destino.getPos() == 30)
+				sitio = "Pozo";
+			else if(destino.getPos() == 51)
+				sitio = "C·rcel";
 			result.put("mensajeAdicional",
-					jugador.getNombre() + " est\u00e1 " + turnosSinTirar + " turnos sin tirar porque ha ca\u00eddo en ");
+					jugador.getNombre() + " est\u00e1 " + turnosSinTirar + " turnos sin tirar porque ha ca\u00eddo en " + sitio);
 			jugador.setTurnosSinTirar(destino.getTurnosSinTirar());
 		}
 		
@@ -148,12 +138,13 @@ public class Partida {
 				this.jugadorConElTurno = (this.jugadorConElTurno + 1) % this.jugadores.size();
 				Usuario jugador = getJugadorConElTurno();
 				int turnosSinTirar = jugador.getTurnosSinTirar();
-				if (turnosSinTirar > 0) {
+				if (turnosSinTirar > 0) 
 					jugador.setTurnosSinTirar(turnosSinTirar - 1);
-				} else
+				else
 					pasado = true;
 			} while (!pasado);
 		}
+		
 		return getJugadorConElTurno().getNombre();
 	}
 
@@ -187,17 +178,13 @@ public class Partida {
 			try {
 				jugador.enviar(jso);
 			} catch (Exception e) {
-				// TODO: eliminar de la colecci√≥n, mirar si la partida ha terminado
-				// y decirle al WSServer que quite a este jugador
-				//continue;
 				this.jugadores.remove(jugador);
-				WSPartidas.removeSession(jugador);
 			}
 		}
 	}
 
 	public Vector<Usuario> getJugadores() {
-		return jugadores;
+		return this.jugadores;
 	}
 
 	public Usuario getGanador() {
@@ -221,18 +208,20 @@ public class Partida {
 	}
 
 	public JSONObject removeJugador(Usuario usuario) {
+		
 		JSONObject result = new JSONObject();
 		result.put("tipo", "EXPULSADO");
 		result.put("mensaje", "Se ha ido un jugador");
 		result.put("usuarioExpulsado", usuario.getNombre());	
 		this.jugadores.remove(usuario);
-		this.numeroDeJugadores--;		
-		result.put("jugadorConElTurno", pasarTurno(false));
-		if(this.numeroDeJugadores == 1 && this.jugadores.size() == 1) {
-			this.ganador = this.jugadores.firstElement();
-			result.put("ganador", this.ganador);
+		this.numeroDeJugadores--;
+		if(this.jugadores.size() > 0) {
+			result.put("jugadorConElTurno", pasarTurno(false));		
+			if(this.numeroDeJugadores == 1 && this.jugadores.size() == 1) {
+				this.ganador = this.jugadores.firstElement();
+				result.put("ganador", this.ganador.getNombre());
+			}		
 		}
-		
 		return result;
 	}
 }

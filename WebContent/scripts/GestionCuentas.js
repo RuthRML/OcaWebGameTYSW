@@ -11,7 +11,7 @@ function estaConectado(){
 		if (request.readyState==4) {
 			var respuesta=JSON.parse(request.responseText);
 			if (respuesta.result=="OK") {
-				sessionStorage.nombre = respuesta.nombreUsuario;						
+				sessionStorage.setItem("nombre", respuesta.nombreUsuario);						
 				window.location.href='lobby.html';
 			} else{
 				console.log("Error.");
@@ -25,11 +25,8 @@ function login() {
 
 	var emailLogin = document.getElementById("correo").value;
 	var pass1 = document.getElementById("pwd1").value;
-	//var divLogin = document.getElementById("divLogin");
-	//var mensajeRegistro = document.getElementById("divRegistro");
 
 	var reqLogin = new XMLHttpRequest();
-
 	reqLogin.open("post", "login.jsp");
 	reqLogin.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	reqLogin.onreadystatechange = function() {
@@ -46,8 +43,7 @@ function login() {
 					pasarVariable("lobby.html", "login");
 				} else {
 					alert(result.mensaje);
-					//alert("Error: " + result.mensaje);
-					//mensajeRegistro.innerHTML = result.resultado;
+					console.log(result.mensaje);
 				}
 			} else {
 				console.log("Error en la request.");
@@ -67,10 +63,8 @@ function login() {
 function loginCuentaRedSocial(emailLogin, id) {
 
 	var divLogin = document.getElementById("divLogin");
-	//var mensajeRegistro = document.getElementById("divRegistro");
 
 	var reqLogin = new XMLHttpRequest();
-
 	reqLogin.open("post", "login.jsp");
 	reqLogin.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	reqLogin.onreadystatechange = function() {
@@ -86,12 +80,11 @@ function loginCuentaRedSocial(emailLogin, id) {
 					sessionStorage.setItem("correo", result.correo);
 					pasarVariable("lobby.html", "login");
 				} else {
-					console.log(result);
+					console.log(result.mensaje);
 					alert("Error: " + result.mensaje);
-					//mensajeRegistro.innerHTML = result.resultado;
 				}
 			} else {
-				alert("Algo pasa");
+				alert("Error con la request.");
 			}
 		}
 	};
@@ -117,8 +110,6 @@ function registro() {
 	var emailRegistro = document.getElementById("correo").value;
 	var pass1 = document.getElementById("pwd1").value;
 	var pass2 = document.getElementById("pwd2").value;
-	//var idSession=document.getElementById("idSession").value;
-	//var divRegistro = document.getElementById("divRegistro");
 	var mensajeRegistro = document.getElementById("msgRegistro");
 
 	var reqRegistrar = new XMLHttpRequest();
@@ -165,16 +156,10 @@ function registro() {
 
 function registroCuentaRedSocial(nombreUser, emailRegistro, id) {
 
-	//var req = emailRegistro = document.getElementById("correo").value;
-	//var req=nombreUsuario=document.getElementById("nombreUsuario").value;
-	//var pass1 = document.getElementById("pwd1").value;
-	//var pass2 = document.getElementById("pwd2").value;
-	//var idSession=document.getElementById("idSession").value;
 	var divRegistro = document.getElementById("divRegistro");
 	var mensajeRegistro = document.getElementById("divRegistro");
 
 	var reqRegistrar = new XMLHttpRequest();
-
 	reqRegistrar.open("post", "Registrar.jsp");
 	reqRegistrar.setRequestHeader("Content-Type",
 	"application/x-www-form-urlencoded");
@@ -184,10 +169,11 @@ function registroCuentaRedSocial(nombreUser, emailRegistro, id) {
 				var result = JSON.parse(reqRegistrar.responseText);
 				if (result.resultado == "OK") {
 
-					document.getElementById("nombreUsuario").value = "";
-					document.getElementById("email").value = "";
+					document.getElementById("nombre").value = "";
+					document.getElementById("correo").value = "";
 					document.getElementById("pwd1").value = "";
 					document.getElementById("pwd2").value = "";
+					
 					alert("Registro exitoso, " + emailRegistro);
 
 					sessionStorage.setItem("nombre", result.nombreUsuario);						
@@ -200,7 +186,7 @@ function registroCuentaRedSocial(nombreUser, emailRegistro, id) {
 					mensajeRegistro.innerHTML = result.resultado;
 				}
 			} else {
-				alert("Algo pasa");
+				alert("Error con la request.");
 			}
 		}
 	};
@@ -216,13 +202,10 @@ function registroCuentaRedSocial(nombreUser, emailRegistro, id) {
 }
 
 function recuperarpwd() {
-	var emailarecuperar = document.getElementById("correo").value;
 	
-	
-	
+	var emailarecuperar = document.getElementById("correo").value;	
 	
 	var reqRegistrar = new XMLHttpRequest();
-
 	reqRegistrar.open("post", "RecuperarPwd.jsp");
 	reqRegistrar.setRequestHeader("Content-Type",
 	"application/x-www-form-urlencoded");
@@ -231,25 +214,15 @@ function recuperarpwd() {
 			if (reqRegistrar.status == 200) {
 				var result = JSON.parse(reqRegistrar.responseText);
 				if (result.resultado == "OK") {
-					alert("Se ha enviado un correo");
-					/*
-					 
-					 document.getElementById("nombreUsuario").value = "";
-					document.getElementById("email").value = "";
-					document.getElementById("pwd1").value = "";
-					document.getElementById("pwd2").value = "";
-					alert("Registro exitoso, " + emailRegistro);
-
-					sessionStorage.nombre = result.nombreUsuario;						
-					window.location.href='lobby.html';
-					*/
+					alert("Se ha enviado un correo a "+emailarecuperar+" con instrucciones para" +
+							"recuperar tu contraseña");
 				} else {
 					console.log(result);
 					alert("Error: " + result.mensaje);
 					mensajeRegistro.innerHTML = result.resultado;
 				}
 			} else {
-				alert("Algo pasa");
+				alert("Error en la request.");
 			}
 		}
 	};
@@ -259,31 +232,14 @@ function recuperarpwd() {
 	};
 
 	reqRegistrar.send("p=" + JSON.stringify(p));
-	
-	
-
 }
 
-
-
-
-
 function registrarpwdnueva(){
+	
 	var pass1 = document.getElementById("pwd1").value;
 	var pass2 = document.getElementById("pwd2").value;
-	
-	
-	
 	var emailRegistro = getParameterByName('usuario');
 	var code = getParameterByName('codigo');
-	
-	
-	//var emailRegistro=p.usuario;
-	//var code=p.codigo;
-	
-	//var idSession=document.getElementById("idSession").value;
-	//var divRegistro = document.getElementById("divRegistro");
-	//var mensajeRegistro = document.getElementById("msgRegistro");
 
 	var reqRegistrar = new XMLHttpRequest();
 	reqRegistrar.open("post", "crearpwd.jsp");
@@ -294,16 +250,11 @@ function registrarpwdnueva(){
 			if (reqRegistrar.status == 200) {
 				var result = JSON.parse(reqRegistrar.responseText);
 				if (result.resultado == "OK") {
-
-					
-
 					alert("Cambio exitoso, " + emailRegistro);
-
 					sessionStorage.setItem("nombre", result.nombreUsuario);						
 					window.location.href='index.html';
 				} else {
 					alert(result.mensaje);
-					//mensajeRegistro.innerHTML = result.mensaje;
 				}
 			} else {
 				alert("Error en la request al cambiar contraseña.");
@@ -316,17 +267,47 @@ function registrarpwdnueva(){
 			email : emailRegistro,
 			codigo : code,
 			pwd1 : pass1,
-			pwd2 : pass2
-			
+			pwd2 : pass2			
 	};
 
 	reqRegistrar.send("p=" + JSON.stringify(p));
-	
-	
-	
-	
 }
 
+function registrarpwdvoluntario(){
+	var pass1 = document.getElementById("pwd1").value;
+	var pass2 = document.getElementById("pwd2").value;
+	var emailRegistro = sessionStorage.getItem("correo");
+
+	var reqRegistrar = new XMLHttpRequest();
+	reqRegistrar.open("post", "cambioPwdVoluntario.jsp");
+	reqRegistrar.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	
+	reqRegistrar.onreadystatechange = function() {
+		if (reqRegistrar.readyState == 4) {
+			if (reqRegistrar.status == 200) {
+				var result = JSON.parse(reqRegistrar.responseText);
+				if (result.resultado == "OK") {
+					alert("Cambio de contraseña exitoso, " + emailRegistro);						
+					window.location.href='lobby.html';
+				} else {
+					alert(result.mensaje);
+				}
+			} else {
+				alert("Error en la request al cambiar contraseña.");
+			}
+		}
+	};
+	
+	var p = {
+			tipo : "NUEVAPWDVOLUNTARIO",
+			email : emailRegistro,
+			pwd1 : pass1,
+			pwd2 : pass2			
+	};
+
+	reqRegistrar.send("p=" + JSON.stringify(p));
+
+}
 
 function getParameterByName(name, url) {
     if (!url) url = window.location.href;
@@ -337,5 +318,6 @@ function getParameterByName(name, url) {
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
+
 
 

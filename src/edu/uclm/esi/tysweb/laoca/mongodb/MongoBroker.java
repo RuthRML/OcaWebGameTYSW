@@ -38,32 +38,6 @@ public class MongoBroker {
 		}
 	}
 
-	public static void main(String[] args) {
-		MongoBroker broker = MongoBroker.get();
-		MongoDatabase db = broker.conexionPrivilegiada.getDatabase("laoca");
-
-		if (db.getCollection("usuarios") == null)
-			db.createCollection("usuarios");
-
-		MongoCollection<BsonDocument> usuarios = db.getCollection("usuarios", BsonDocument.class);
-
-		for (int i = 1; i <= 100; i++) {
-			BsonDocument pepe = new BsonDocument();
-			pepe.put("email", new BsonString("pepe" + i + "@pepe.com"));
-			pepe.put("pwd", new BsonString("pepe"));
-			usuarios.insertOne(pepe);
-		}
-
-		BsonDocument criterio = new BsonDocument();
-		criterio.append("email", new BsonString("pepe100@pepe.com"));
-		FindIterable<BsonDocument> busqueda = usuarios.find(criterio);
-		BsonDocument elementoBuscado = busqueda.first();
-		System.out.println(elementoBuscado.getString("email"));
-		System.out.println(elementoBuscado.getString("pwd"));
-
-		broker.conexionPrivilegiada.close();
-	}
-
 	private static class MongoBrokerHolder {
 		static MongoBroker singleton = new MongoBroker();
 	}

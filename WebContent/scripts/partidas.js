@@ -1,10 +1,9 @@
 function crearPartida(){
 	var nickname = document.getElementById("nombre").value;
 	var numJugadores = document.getElementById("numero").value;
-	console.log(nickname + numJugadores);
 
-	if(nickname == "" || numJugadores == "" || numJugadores <= 0){
-		alert("Para empezar una partida debes introducir un número de jugadores válido y un nombre de usuario.");
+	if(nickname == "" || numJugadores == "" || numJugadores < 2 || numJugadores > 5){
+		alert("Para empezar una partida debes introducir un número de jugadores válido (de 2 a 5) y un nombre de usuario.");
 	}else{
 		var request = new XMLHttpRequest();
 		request.open("post", "crearPartida.jsp");
@@ -18,7 +17,7 @@ function crearPartida(){
 					console.log(respuesta.result);
 					sessionStorage.setItem("nombre", document.getElementById("nombre").value);
 					window.location.href = 'juego.html';					
-					sessionStorage.setItem("idPartida", respuesta.mensaje);				
+					sessionStorage.setItem("idPartida", respuesta.partida);				
 				} else{
 					console.log(respuesta.mensaje);
 					alert(respuesta.mensaje);
@@ -45,7 +44,6 @@ function unirse(){
 			var respuesta = JSON.parse(request.responseText);
 			if (respuesta.result == "OK") {
 				console.log(respuesta);
-				//conectarWebSocket();
 				window.location.href = 'juego.html';
 				sessionStorage.setItem("nombre", document.getElementById("nombre").value);
 				sessionStorage.setItem("idPartida", respuesta.mensaje);
@@ -60,7 +58,6 @@ function unirse(){
 	};
 
 	request.send("p=" + JSON.stringify(p));
-
 }
 
 function cerrarSesion() {
@@ -73,6 +70,7 @@ function cerrarSesion() {
 			if (request.status == 200) {
 				sessionStorage.removeItem("sesion");
 				sessionStorage.removeItem("nombre");
+				sessionStorage.removeItem("correo");
 				window.location.href = "index.html";
 			}else{
 				alert("Error al cerrar sesión.");
@@ -96,15 +94,12 @@ function conectarWebSocket() {
 	ws.onopen = function(){
 		console.log("Websocket conectado.");
 		var nombreJugador = document.getElementById("nombreJugador");
-		nombreJugador.innerHTML = sessionStorage.nombre;
-		//var tablero = new Tablero();
-		//tablero.dibujar(svgTablero);
+		nombreJugador.innerHTML = sessionStorage.getItem("nombre");
 	}
 
 	ws.onmessage = function (datos){
 		var mensaje = datos.data;
 		mensaje = JSON.parse(mensaje);
-		//console.log("Estoy aquí.");
 
 		if(mensaje.tipo == "DIFUSION"){
 
@@ -116,9 +111,6 @@ function conectarWebSocket() {
 			console.log("Empieza jugando" + mensaje.jugadorConElTurno);
 			actualizarBotonDado(mensaje);
 			tablero.actualizarNombresFichas(mensaje.jugadores);
-			//sessionStorage.casilla = 0;
-			//document.getElementById("casilla").innerHTML = sessionStorage.casilla;
-			// Avisar quien tiene el turno
 
 		}else if (mensaje.tipo == "TIRADA"){
 
@@ -139,7 +131,7 @@ function conectarWebSocket() {
 				console.log(dado);
 				console.log(destinoInicial);
 				console.log(destinoFinal);
-				console.log(mensajeLlegada);//console.log(ganador);
+				console.log(mensajeLlegada);
 				console.log(idPartida);
 				console.log(jugadorQueTiroElDado);
 				console.log(mensajeAdicional);
@@ -158,24 +150,25 @@ function conectarWebSocket() {
 
 			if(ganador != null){
 				alert("Ha ganado " + ganador);
+				sessionStorage.removeItem("idPartida");
 				ws.close();
 				if(sessionStorage.getItem("correo") != null){
 					pasarVariable("lobby.html", "partida");
 				}else{
 					window.location.href = "lobby.html";
-				}
-				
+				}				
 			}	
 
 		}else if(mensaje.tipo == "EXPULSADO"){
 			console.log("Ha llegado el mensaje");
 			var expulsado = mensaje.usuarioExpulsado;
 			tablero.eliminarExpulsado(expulsado);
-			alert(mensaje.mensaje);
-			actualizarBotonDato(mensaje);
+			console.log(mensaje.mensaje);
+			actualizarBotonDado(mensaje);
 			if(mensaje.ganador != null){
-				alert("Ha ganado " + ganador);
+				alert("Ha ganado " + mensaje.ganador);
 				ws.close();
+				sessionStorage.removeItem("idPartida");
 				if(sessionStorage.getItem("correo") != null){
 					pasarVariable("lobby.html", "partida");
 				}else{
@@ -199,30 +192,58 @@ function pasarVariable(pagina, procedencia){
 function actualizarBotonDado(mensaje){
 	var btnDado = document.getElementById("btnDado");
 	if(mensaje.jugadorConElTurno == sessionStorage.getItem("nombre")){
-		//btnDado.setAttribute("style", "display:visible");
-		btnDado.disabled = false; // AÑADIDO
-		//alert("¡Te toca!");
-		/*var time = setTimeout(function(){
+		btnDado.disabled = false;
+		
+		time = setTimeout(function(){
 			alert("Se te ha acabado el tiempo. Has sido expulsado.");
 			var p={
 					tipo:'EXPULSADO',
-					idPartida : sessionStorage.idPartida,
-					nombreJugador : sessionStorage.nombre,					
-			};
-			ws.send(JSON.stringify(p));
-			}, 3000);*/
+					idPartida : sessionStorage.getItem("idPartida"),
+					nombreJugador : sessionStorage.getItem("nombre"),					
+				};
+			
+				ws.send(JSON.stringify(p));
+				
+				sessionStorage.removeItem("idPartida");	
+				ws.close();
+				
+				if(sessionStorage.getItem("correo") != null){
+					pasarVariable("lobby.html", "partida");
+				}else{
+					window.location.href = "lobby.html";
+				}
+				
+			}, 15000);
 	}else{
-		//btnDado.setAttribute("style","display:none");
-		btnDado.disabled = true; // AÑADIDO		
+		
+		btnDado.disabled = true;	
 	}
+	
 	document.getElementById("jugadorTurno").innerHTML = mensaje.jugadorConElTurno;
 }
 
-
-function addMensaje(texto) {
-	//var div=document.createElement("div");
-	//divChat.appendChild(div);
-	//div.innerHTML=texto;
+function salir() {
+	
+	var token = confirm("¿Seguro que quieres abandonar la partida?");
+	if(token == true){
+		var p={
+				tipo:'EXPULSADO',
+				idPartida : sessionStorage.getItem("idPartida"),
+				nombreJugador : sessionStorage.getItem("nombre"),					
+		};
+		
+		ws.send(JSON.stringify(p));
+		
+		sessionStorage.removeItem("idPartida");	
+		ws.close();
+		
+		if(sessionStorage.getItem("correo") != null){
+			pasarVariable("lobby.html", "partida");
+		}else{
+			window.location.href = "lobby.html";
+		}
+	}
+	
 }
 
 

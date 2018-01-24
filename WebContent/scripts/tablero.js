@@ -417,127 +417,13 @@ Tablero.prototype.actualizarNombresFichas = function(jugadores){
 	}
 }
 
-
-
-
-
-
-/*Pendiente*/
-/*
-Tablero.prototype.actualizarFichas = function(jugador, casillaAnterior,casillaNueva) {
-	for (var i = 0; i < 5; i++) { //algun numero que represente la cantidad de jugadores
-		if( this.fichas[i].nombreJugador==jugador){
-			var casillaAsociadaNueva = this.casillas[casillaNueva];
-			var casillaAsociadaAnterior=this.casillas[casillaAnterior]
-		
-			
-			
-			
-			
-			if(casillaNueva>=0&&casillaNueva<10){
-				var new_pos_x = casillaAsociada.x0+((casillaAsociadaNueva.xF-casillaAsociadaNueva.x0) /2);
-				fichas[i].circle.setAttribute("cx", new_pos_x);
-				
-				
-				
-				//ficha.circle.setAttribute("cy", y);
-				break;
-			}
-
-			if(casillaNueva>=10&&casillaNueva<17){
-				var new_pos_y = casillaAsociada.y0+((casillaAsociadaNueva.yF-casillaAsociadaNueva.y0) /2);
-				this.fichas[i].circle.setAttribute("cy", new_pos_y);
-				var new_pos_x = casillaAsociada.y0+((casillaAsociadaNueva.yF-casillaAsociadaNueva.y0) /2);
-				
-				this.fichas[i].circle.setAttribute("cx", new_pos);
-				//ficha.circle.setAttribute("cy", y);
-				break;
-			}
-			if(casillaNueva>=17&&casillaNueva<26){
-				var new_pos = casillaAsociada.x0-((casillaAsociadaNueva.x0-casillaAsociadaNueva.xF) /2);
-				this.fichas[i].circle.setAttribute("cx", new_pos);
-				//ficha.circle.setAttribute("cy", y);
-				break;
-			}
-			if(casillaNueva>=26&&casillaNueva<32){
-				var new_pos = casillaAsociada.y0-((casillaAsociadaNueva.y0-casillaAsociadaNueva.yF) /2);
-				this.fichas[i].circle.setAttribute("cy", new_pos);
-				//ficha.circle.setAttribute("cy", y);
-				break;
-			}
-			
-			
-			
-			
-			
-			
-			if(casillaNueva>=32&&casillaNueva<40){
-				var new_pos = casillaAsociada.x0+((casillaAsociadaNueva.xF-casillaAsociadaNueva.x0) /2);
-				this.fichas[i].circle.setAttribute("cx", new_pos);
-				//ficha.circle.setAttribute("cy", y);
-				break;
-			}
-
-			if(casillaNueva>=40&&casillaNueva<45){
-				var new_pos = casillaAsociada.y0+((casillaAsociadaNueva.yF-casillaAsociadaNueva.y0) /2);
-				this.fichas[i].circle.setAttribute("cy", new_pos);
-				//ficha.circle.setAttribute("cy", y);
-				break;
-			}
-			if(casillaNueva>=45&&casillaNueva<52){
-				var new_pos = casillaAsociada.x0-((casillaAsociadaNueva.x0-casillaAsociadaNueva.xF) /2);
-				this.fichas[i].circle.setAttribute("cx", new_pos);
-				//ficha.circle.setAttribute("cy", y);
-				break;
-			}
-			if(casillaNueva>52&&casillaNueva<56){
-				var new_pos = casillaAsociada.y0-((casillaAsociadaNueva.y0-casillaAsociadaNueva.yF) /2);
-				this.fichas[i].circle.setAttribute("cy", new_pos);
-				//ficha.circle.setAttribute("cy", y);
-				break;
-			}
-			
-			
-			
-			
-			
-			if(casillaNueva>=56&&casillaNueva<62){
-				var new_pos = casillaAsociadaNueva.x0+((casillaAsociadaNueva.xF-casillaAsociadaNueva.x0) /2);
-				fichas[i].circle.setAttribute("cx", new_pos);
-				//ficha.circle.setAttribute("cy", y);
-				break;
-			}
-
-			if(casillaNueva>=62&&casillaNueva<65){
-				var new_pos = casillaAsociadaNueva.y0+((casillaAsociadaNueva.yF-casillaAsociadaNueva.y0) /2);
-				fichas[i].circle.setAttribute("cy", new_pos);
-				//ficha.circle.setAttribute("cy", y);
-				break;
-			}
-			
-			
-			
-			
-			
-		} 
-	}
-}
-
-*/
-
-
-
 Tablero.prototype.actualizarFichas = function(jugador, casillaAnterior, casillaNueva) {
-	for (var i = 0; i < 5; i++) { //algun numero que represente la cantidad de jugadores
+	for (var i = 0; i < 5; i++) { 
 		if( this.fichas[i].nombreJugador==jugador){
 			
 			var casillaAsociadaNueva = this.casillas[casillaNueva];
-			var casillaAsociadaAnterior=this.casillas[casillaAnterior]
-			
-			//sessionStorage.casilla = this.casillas[casillaNueva].valor;
-			//document.getElementById("casilla").innerHTML = sessionStorage.casilla;
-			
-			//var new_pos_x = casillaAsociadaNueva.x0+((casillaAsociadaNueva.xF-casillaAsociadaNueva.x0) /2);
+			var casillaAsociadaAnterior = this.casillas[casillaAnterior]
+
 			if(this.fichas[i].color == "mediumpurple"){
 				this.fichas[i].circle.setAttribute("cx", casillaAsociadaNueva.x0+50);
 				this.fichas[i].circle.setAttribute("cy", casillaAsociadaNueva.y0+50);
@@ -631,7 +517,7 @@ Ficha.prototype.dibujar = function(lienzo) {
 
 Tablero.prototype.eliminarExpulsado = function(expulsado){
 	for(var i = 0; i<this.fichas.length; i++){
-		if(this.fichas[i].nombreJugador.equals(expulsado)){
+		if(this.fichas[i].nombreJugador == expulsado){
 			this.fichas[i].circle.remove();
 			var listListaJugadores = document.getElementById("listaDeJugadores");
 			var lijugador = document.getElementById(expulsado);

@@ -44,10 +44,6 @@
 					<p>
 						El turno es de: <span id="jugadorTurno"></span>
 					</p>
-					<p>
-						Estás en la casilla: <span id="casilla"></span>
-					</p>
-
 					<hr>
 					<p
 						style="text-align: center; text-transform: uppercase; font-weight: bold;">Jugadores de la partida</p>
@@ -67,8 +63,9 @@
 	<script>
 		var tablero = new Tablero();
 		var lienzo = document.getElementById("tablero");
+		var time;
 		tablero.dibujar(lienzo);
-		
+		document.getElementById("btnDado").disabled = true;
 		document.getElementById("idPartida").innerHTML = sessionStorage.getItem("idPartida");
 	</script>
 
@@ -83,25 +80,24 @@
 		conectarWebSocket();
 		
 		function tirarDado(){
-			//var numero = getRandomInt(1,6);
-			var numero=Math.floor(Math.random() * (6 - 1 + 1)) + 1;
-			//console.log(numero);
+			if(time != null){
+				clearTimeout(time);
+			}			
+			var numero = Math.floor(Math.random() * (6 - 1 + 1)) + 1;
 			var p={
 					tipo:'DADO',
-					idPartida : sessionStorage.idPartida,
-					nombreJugador : sessionStorage.nombre,
-					puntos : numero
-					
+					idPartida : sessionStorage.getItem("idPartida"),
+					nombreJugador : sessionStorage.getItem("nombre"),
+					puntos : numero					
 			};
+			
 			ws.send(JSON.stringify(p));
 			console.log(p.nombreJugador +" ha sacado un " + numero);
+			
 			return numero;
 			
 		}
-	
-		//function getRandomInt(min, max) {
-		//    return Math.floor(Math.random() * (max - min + 1)) + min;
-		//}
+
 	</script>
 
 </body>

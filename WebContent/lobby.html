@@ -29,6 +29,8 @@ arrayp = p.split("=");
 				<div id="panelUsuario">
 					<button onclick="event.preventDefault(); cerrarSesion();" class="btn btn-primary" 
 						type="button" id="btnCerrarSesion">Cerrar sesión</button>
+					<button onclick="event.preventDefault(); cambiarpassvoluntario();" class="btn btn-primary" 
+						type="button" id="btnCerrarSesion">Cambiar contraseña</button>
 					<p style="text-align: center; text-transform: uppercase; font-weight: bold;">
 						Ránking de La Oca</p>
 					<ul id="listaRanking" class="list-group">
@@ -46,13 +48,13 @@ arrayp = p.split("=");
 					<label for="labelNumeroJugadores">Introduce número de
 						jugadores</label> <input type="number" class="form-control" id="numero"
 						placeholder="Número de jugadores"
-						title="Introduce número de jugadores">
+						title="Introduce número de jugadores"
+						min="2" max="5">
 				</div>
 				<button onclick="event.preventDefault(); crearPartida();"
 					class="btn btn-primary" type="button" id="btnCrearPartida">Crear nueva sala</button>
 				<button onclick="event.preventDefault(); unirse();"
 					class="btn btn-primary" type="button" id="btnUnirse">Unirse</button>
-				<a href="index.html">Cancelar</a>
 				<div id="divMensajes"></div>
 			</form>
 
@@ -76,18 +78,43 @@ arrayp = p.split("=");
 		request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 		request.onreadystatechange=function() {
 			if (request.readyState==4) {
-				//var respuesta=JSON.parse(request.responseText);
-				if (request.status == 200) {
-
-				} else{
-					console.log("Error al cargar ránking.");
+				var respuesta = JSON.parse(request.responseText);
+				if (respuesta.resultado == "OK") {
+					var listaRanking = respuesta.listaJugadores;
+					listaRanking.sort(function (a, b) {
+						  if (a.victorias.value > b.victorias.value) {
+						    return -1;
+						  }
+						  if (a.victorias.value < b.victorias.value) {
+						    return 1;
+						  }
+						  return 0;
+						});
+					var list = document.getElementById("listaRanking");
+					var con = 0;
+					for(var i in listaRanking) {
+						if(con < 5){
+							 var lijugador = document.createElement("li");
+							 lijugador.className = "list-group-item";
+							 lijugador.appendChild(document.createTextNode(listaRanking[i].nombre.value + " : " + 
+									 listaRanking[i].victorias.value + " victorias."));						 
+							 list.appendChild(lijugador);
+							 con++;
+						}else{
+							break;
+						}
+					}
+				}else{
+					console.log(respuesta.mensaje);					
 				}
 			}
 		};
 		
 		request.send();
 		
-		
+		function cambiarpassvoluntario(){
+			window.location.href='cambiopwdVoluntario.html';
+		}
 	</script>
 
 	<script src="scripts/tablero.js"></script>

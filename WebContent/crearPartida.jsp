@@ -21,7 +21,7 @@
 		
 		session.setAttribute ("usuario", usuarioPartida);
 		respuesta.put("result", "OK");
-		respuesta.put("mensaje", idPartida);
+		respuesta.put("partida", idPartida);
 		
 	}catch (Exception e){
 		respuesta.put("result", "ERROR");

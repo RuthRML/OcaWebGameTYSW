@@ -45,11 +45,6 @@ public class Usuario {
 		this.sesion = sesion;
 	}
 
-	public void enviar(String jugador, int dado) {
-		// TODO Auto-generated method stub
-
-	}
-
 	public void setCorreo(String email) {
 		this.correo = email;
 	}
@@ -58,13 +53,18 @@ public class Usuario {
 		if (!DAOUsuario.existe(this.correo)) {
 			DAOUsuario.registrar(this, pwd);
 		}
-	}
-	
+	}	
 	
 	public void registrarUsuarioNuevaPwd(String pwd,String codigo) throws Exception {
-		if (!DAOUsuario.existe(this.correo)) {
+		if (DAOUsuario.existe(this.correo)) {
 			DAOUsuario.registrarNuevaPwd(this, pwd,codigo);
 			DAOUsuario.eliminarCodigoRecuperacion(this,pwd,codigo);
+		}
+	}
+	
+	public void registrarUsuarioNuevaPwdVoluntario(String pwd) throws Exception {
+		if (DAOUsuario.existe(this.correo)) {
+			DAOUsuario.registrarNuevaPwdVoluntario(this, pwd);
 		}
 	}
 
@@ -102,8 +102,6 @@ public class Usuario {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	
-	
 	
 	public Session getSesion() {
 		return this.sesion;
