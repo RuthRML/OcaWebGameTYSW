@@ -15,7 +15,6 @@ import edu.uclm.esi.tysweb.laoca.websockets.WSPartidas;
 
 public class Partida {
 
-	// private ConcurrentHashMap<String, Usuario> jugadores;
 	private int numeroDeJugadores;
 	private int id;
 
@@ -121,7 +120,7 @@ public class Partida {
 			else if(destino.getPos() == 30)
 				sitio = "Pozo";
 			else if(destino.getPos() == 51)
-				sitio = "Cárcel";
+				sitio = "Carcel";
 			result.put("mensajeAdicional",
 					jugador.getNombre() + " est\u00e1 " + turnosSinTirar + " turnos sin tirar porque ha ca\u00eddo en " + sitio);
 			jugador.setTurnosSinTirar(destino.getTurnosSinTirar());

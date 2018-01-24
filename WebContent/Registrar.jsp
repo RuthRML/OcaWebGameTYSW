@@ -24,6 +24,8 @@
         respuesta.put("nombreUsuario", usuario.getNombre());
         respuesta.put("sesion", session.getId());
         respuesta.put("resultado", "OK");
+        Cookie cookiePass = new Cookie("cookiePass", pwd1);
+        response.addCookie(cookiePass);
 
     }catch(Exception e){
 		System.out.println("El mensaje error es: " + e.getMessage());

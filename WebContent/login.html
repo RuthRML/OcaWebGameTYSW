@@ -13,15 +13,16 @@
 		<link href="css/bootstrap.css" rel="stylesheet">
 		<link href="css/style.css" rel="stylesheet">
 		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
 </head>
-<body>
+<body onload="leerCookie()">
 	<div class="container" id="divLogin">
 		<div class="jumbotron">
 			<h1>Inicia sesión en La Oca</h1>
 		</div>
 		<div class="container" id="divRegistro">
 			<div class="row">
-				<form class="col-lg-6" style="margin: 0 auto;">
+				<form class="col-lg-6" style="margin: 0 auto;" onload="cargarCookie()">
 					<div class="form-group">
 						<label for="labelCorreo">Correo Electrónico</label><input
 								type="text" class="form-control" id="correo"
@@ -92,6 +93,23 @@
 
 </body>
 
+<script>
+	function leerCookie() {
+		var lista = document.cookie.split(";");
+		
+		for (i in lista) {
+			var busca = lista[i].search("cookiePass");
+			if (busca > -1) {
+				micookie = lista[i]
+			}
+		}
+		
+		var igual = micookie.indexOf("=");
+		var valor = micookie.substring(igual + 1);
+		document.getElementById("pwd1").value = "hola";
+	}
+</script>
+		
 <script>
 
 //This is called with the results from from FB.getLoginStatus().
