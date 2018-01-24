@@ -14,8 +14,11 @@ public class Tablero {
 		}
 
 		// Ocas
-		this.casillas[4].setSiguiente(this.casillas[13]);
+		
+		this.casillas[4].setSiguiente(this.casillas[8]);
 		this.casillas[4].setMensaje(de_Oca_A_Oca);
+		this.casillas[8].setSiguiente(this.casillas[13]);
+		this.casillas[8].setMensaje(de_Oca_A_Oca);
 		this.casillas[13].setSiguiente(this.casillas[17]);
 		this.casillas[13].setMensaje(de_Oca_A_Oca);
 		this.casillas[17].setSiguiente(this.casillas[22]);

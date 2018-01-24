@@ -40,7 +40,9 @@
 				<button onclick="event.preventDefault(); registrarpwdvoluntario()" class="btn btn-primary" type="button" id="btnCambiar">
 						Enviar
 				</button>
-				<a href="login.html">Cancelar</a>
+				<button class="btn btn-primary" type="button" id="btnCancelar" onclick="event.preventDefault(); pasarVariableAqui()">
+						Cancelar
+				</button>
 				</div>
 				
 								
@@ -50,5 +52,11 @@
 </body>
 
 <script src="scripts/GestionCuentas.js"></script>
+
+<script>
+function pasarVariableAqui(){
+	pasarVariable("lobby.html", "login");
+}
+</script>
 
 </html>

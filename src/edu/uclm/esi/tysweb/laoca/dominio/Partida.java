@@ -90,7 +90,7 @@ public class Partida {
 			result.put("destinoFinal", siguiente.getPos());
 			result.put("mensaje", mensaje);
 			this.tablero.moverAJugador(jugador, siguiente);
-			if (siguiente.getPos() == 62) { // Llegada
+			if (siguiente.getPos() == 64) { // Llegada
 				this.ganador = jugador;
 				result.put("ganador", this.ganador.getNombre());
 			}
@@ -106,7 +106,7 @@ public class Partida {
 			}
 		}
 		
-		if (destino.getPos() == 62) { // Llegada
+		if (destino.getPos() == 64) { // Llegada
 			this.ganador = jugador;
 			result.put("ganador", this.ganador.getNombre());
 		}
@@ -130,7 +130,7 @@ public class Partida {
 		return result;
 	}
 
-	private String pasarTurno(boolean conservarTurno) {
+	public String pasarTurno(boolean conservarTurno) {
 		if (!conservarTurno) {
 			boolean pasado = false;
 			do {

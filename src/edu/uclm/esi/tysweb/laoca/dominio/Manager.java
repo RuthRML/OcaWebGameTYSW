@@ -22,6 +22,10 @@ public class Manager {
 		this.partidasEnJuego = new ConcurrentHashMap<>();
 	}
 
+	public ConcurrentHashMap<Integer, Partida> getPartidasEnJuego() {
+		return partidasEnJuego;
+	}
+
 	public Usuario crearPartida(String nombreJugador, int numeroDeJugadores) throws Exception {
 		Usuario usuario = findUsuario(nombreJugador);
 		if (usuario.getPartida() != null)

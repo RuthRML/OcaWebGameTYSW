@@ -192,7 +192,7 @@ Tablero.prototype.crearCasillas = function() {
 		this.casillas.push(casilla);
 	}
 
-	var ocas = [ 4, 13, 17, 22, 26, 31, 35, 40, 44, 49, 53, 58 ];
+	var ocas = [ 4, 8, 13, 17, 22, 26, 31, 35, 40, 44, 49, 53, 58 ];
 	var puentes = [5, 11];
 	var pozo = 30;
 	var posada = 18;
