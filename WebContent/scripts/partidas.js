@@ -7,8 +7,7 @@ function crearPartida() {
 	} else {
 		var request = new XMLHttpRequest();
 		request.open("post", "crearPartida.jsp");
-		request.setRequestHeader("Content-Type",
-				"application/x-www-form-urlencoded");
+		request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
 		request.onreadystatechange = function() {
 			if (request.readyState == 4) {
@@ -16,8 +15,7 @@ function crearPartida() {
 				console.log(respuesta);
 				if (respuesta.result == "OK") {
 					console.log(respuesta.result);
-					sessionStorage.setItem("nombre", document
-							.getElementById("nombre").value);
+					sessionStorage.setItem("nombre", document.getElementById("nombre").value);
 					window.location.href = 'juego.html';
 					sessionStorage.setItem("idPartida", respuesta.partida);
 				} else {
@@ -39,8 +37,7 @@ function crearPartida() {
 function unirse() {
 	var request = new XMLHttpRequest();
 	request.open("post", "llegarASalaDeEspera.jsp");
-	request.setRequestHeader("Content-Type",
-			"application/x-www-form-urlencoded");
+	request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
 	request.onreadystatechange = function() {
 		if (request.readyState == 4) {
@@ -66,8 +63,7 @@ function unirse() {
 function cerrarSesion() {
 	var request = new XMLHttpRequest();
 	request.open("post", "cerrarSesion.jsp");
-	request.setRequestHeader("Content-Type",
-			"application/x-www-form-urlencoded");
+	request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
 	request.onreadystatechange = function() {
 		if (request.readyState == 4) {
