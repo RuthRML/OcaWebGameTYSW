@@ -121,6 +121,7 @@ function registro() {
 			if (reqRegistrar.status == 200) {
 				var result = JSON.parse(reqRegistrar.responseText);
 				if (result.resultado == "OK") {
+					mensajeRegistro.innerHTML = "";
 
 					document.getElementById("nombre").value = "";
 					document.getElementById("correo").value = "";

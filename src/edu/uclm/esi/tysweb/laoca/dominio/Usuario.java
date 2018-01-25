@@ -52,6 +52,8 @@ public class Usuario {
 	public void registrarUsuario(String pwd) throws Exception {
 		if (!DAOUsuario.existe(this.correo)) {
 			DAOUsuario.registrar(this, pwd);
+		} else {
+			throw new Exception("Ya existe un usuario registrado con ese correo.");
 		}
 	}	
 	
