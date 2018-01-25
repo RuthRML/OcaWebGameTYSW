@@ -176,7 +176,7 @@ public class DAOUsuario {
 		if(usuarioFind != null) {
 			ranking.updateOne(criterio, updateUsuario);
 		}else {
-			throw new Exception("El usuario no est� registrado.");
+			throw new Exception("El usuario no est\u00e1 registrado.");
 		}
 		
 	}
@@ -202,7 +202,7 @@ public class DAOUsuario {
 				throw new Exception("Error en DAOUsuario.java");
 			}
 		}else {
-			throw new Exception("No existe tal codigo de recuperaci�n");
+			throw new Exception("No existe tal codigo de recuperaci\u00f3n");
 		}
 
 	}
