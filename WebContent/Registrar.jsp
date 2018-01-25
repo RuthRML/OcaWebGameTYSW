@@ -1,3 +1,4 @@
+<%@page import="edu.uclm.esi.tysweb.laoca.dao.DAOUsuario"%>
 <%@page import="edu.uclm.esi.tysweb.laoca.dominio.Usuario"%>
 <%@page import="org.json.JSONObject"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -24,7 +25,7 @@
         respuesta.put("nombreUsuario", usuario.getNombre());
         respuesta.put("sesion", session.getId());
         respuesta.put("resultado", "OK");
-        Cookie cookiePass = new Cookie("cookiePass", pwd1);
+        Cookie cookiePass = new Cookie("cookiePass", "cipherPass=?" + DAOUsuario.encriptar(pwd1).asString().getValue());
         response.addCookie(cookiePass);
 
     }catch(Exception e){

@@ -88,7 +88,7 @@ public class DAOUsuario {
 
 	}
 
-	private static BsonString encriptar(String pwd) throws Exception {
+	public static BsonString encriptar(String pwd) throws Exception {
 		MessageDigest md = MessageDigest.getInstance("MD5");
 		byte[] messageDigest = md.digest(pwd.getBytes());
 		BigInteger number = new BigInteger(1, messageDigest);
@@ -103,7 +103,9 @@ public class DAOUsuario {
 
 	public static Usuario login(String correoUsuario, String pwd1) throws Exception {
 
-		int token = correoUsuario.indexOf("@");
+		String checkCipherPwd = "cipherPass=?";
+		int tokenCorreo = correoUsuario.indexOf("@");
+		int tokenPwd = pwd1.indexOf(checkCipherPwd);
 		Usuario usuario = null;
 		
 		MongoClient conexion = MongoBroker.get().getConexionPrivilegiada();
@@ -111,13 +113,25 @@ public class DAOUsuario {
 		BsonDocument criterio = new BsonDocument();
 		BsonDocument criterio2 = new BsonDocument();
 		
-		if(token != -1) {						
+		if(tokenCorreo != -1) {						
 			criterio.append("email", new BsonString(correoUsuario));
-			criterio.append("pwd", encriptar(pwd1));
+			
+			if(tokenPwd != -1) {
+				criterio.append("pwd", new BsonString(pwd1.substring(checkCipherPwd.length())));
+			} else {
+				criterio.append("pwd", encriptar(pwd1));
+			}
+			
 			criterio2.append("correo", new BsonString(correoUsuario));
 		}else {
 			criterio.append("nombre", new BsonString(correoUsuario));
-			criterio.append("pwd", encriptar(pwd1));
+			
+			if(tokenPwd != -1) {
+				criterio.append("pwd", new BsonString(pwd1.substring(checkCipherPwd.length())));
+			} else {
+				criterio.append("pwd", encriptar(pwd1));
+			}
+			
 			criterio2.append("nombre", new BsonString(correoUsuario));
 		}
 		
@@ -162,7 +176,7 @@ public class DAOUsuario {
 		if(usuarioFind != null) {
 			ranking.updateOne(criterio, updateUsuario);
 		}else {
-			throw new Exception("El usuario no está registrado.");
+			throw new Exception("El usuario no estï¿½ registrado.");
 		}
 		
 	}
@@ -188,7 +202,7 @@ public class DAOUsuario {
 				throw new Exception("Error en DAOUsuario.java");
 			}
 		}else {
-			throw new Exception("No existe tal codigo de recuperación");
+			throw new Exception("No existe tal codigo de recuperaciï¿½n");
 		}
 
 	}

@@ -1,3 +1,4 @@
+<%@page import="edu.uclm.esi.tysweb.laoca.dao.DAOUsuario"%>
 <%@page import="edu.uclm.esi.tysweb.laoca.dominio.Usuario"%>
 <%@page import="org.json.JSONObject"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -21,8 +22,13 @@
             respuesta.put("resultado","OK");
             respuesta.put("correo", usuario.getCorreo());
             respuesta.put("sesion", session.getId());
-            Cookie cookiePass = new Cookie("cookiePass", pwd1);
-            response.addCookie(cookiePass);
+            Cookie cookiePass;
+            
+            if(!pwd1.contains("cipherPass=?")){
+            	cookiePass = new Cookie("cookiePass", "cipherPass=?" + DAOUsuario.encriptar(pwd1).asString().getValue());
+            	response.addCookie(cookiePass);
+            }
+
         }else{
         	System.out.println("Request login errónea.");
         	respuesta.put("resultado", "ERROR");
