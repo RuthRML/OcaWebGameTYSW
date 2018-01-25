@@ -21,7 +21,6 @@ import edu.uclm.esi.tysweb.laoca.dominio.UsuarioRegistrado;
 import edu.uclm.esi.tysweb.laoca.mongodb.MongoBroker;
 
 
-
 public class DAOUsuario {
 	
 	public JSONArray getRanking() throws Exception{

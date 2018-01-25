@@ -60,7 +60,7 @@ public class Manager {
 
 	public Usuario addJugador(String nombreJugador) throws Exception {
 		if (this.partidasPendientes.isEmpty())
-			throw new Exception("No hay partidas pendientes. Crea una.");
+			throw new Exception("No hay partidas pendientes; crea una nueva.");
 		Partida partida = this.partidasPendientes.elements().nextElement();
 		Usuario usuario = findUsuario(nombreJugador);
 		partida.add(usuario);

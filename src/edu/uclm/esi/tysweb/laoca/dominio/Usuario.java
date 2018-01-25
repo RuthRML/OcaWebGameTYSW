@@ -1,11 +1,8 @@
 package edu.uclm.esi.tysweb.laoca.dominio;
 
 import java.io.IOException;
-
 import javax.websocket.Session;
-
 import org.json.JSONObject;
-
 import edu.uclm.esi.tysweb.laoca.dao.DAOUsuario;
 
 public class Usuario {
