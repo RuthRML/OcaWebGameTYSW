@@ -55,15 +55,20 @@
 					<a href="index.html">Cancelar</a>
 					<p>o registrarse usando cualquiera de las redes sociales.</p>
 					<div id="my-signin2" data-width="300" data-height="200"
-						data-longtitle="true">
-
+						data-longtitle="true" onclick="presionar()">
+					
+					<!-- <div class="g-signin2" data-width="300" data-height="200" data-longtitle="true">
+					-->
 						<script>
+						var sehapresionado=false;
 							function onSuccess(googleUser) {
 								// Useful data for your client-side scripts:
-								var profile = googleUser.getBasicProfile();
+								if(sehapresionado){
+									var profile = googleUser.getBasicProfile();
 								var id = profile.getId();
 								var email = profile.getEmail();
 								registroCuentaRedSocial(profile.getName(),email, id);
+								}
 							}
 
 							function onSignIn(googleUser) {
@@ -73,14 +78,18 @@
 								console.log('Email:  '
 										+ googleUser.getBasicProfile()
 												.getEmail());
-								registroCuentaRedSocial(
-										googleUser.getBasicProfile().getName(),
-										googleUser.getBasicProfile().getEmail(),
-										googleUser.getBasicProfile().getID());
+								//registroCuentaRedSocial(
+								//		googleUser.getBasicProfile().getName(),
+								//		googleUser.getBasicProfile().getEmail(),
+								//		googleUser.getBasicProfile().getID());
 							}
 
 							function onFailure(error) {
 								console.log(error);
+							}
+							
+							function presionar(){
+								sehapresionado=true;
 							}
 
 							function renderButton() {

@@ -13,9 +13,8 @@
 		<link href="css/bootstrap.css" rel="stylesheet">
 		<link href="css/style.css" rel="stylesheet">
 		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-
 </head>
-<body onload="leerCookie()">
+<body>
 	<div class="container" id="divLogin">
 		<div class="jumbotron">
 			<h1>Inicia sesión en La Oca</h1>
@@ -41,24 +40,31 @@
 					<a href="index.html">Cancelar</a>
 					<p>o inicia sesión usando cualquiera de las redes sociales.</p>
 					
-					<div id="my-signin2" data-width="300" data-height="200"	data-longtitle="true">
+					<div id="my-signin2" data-width="300" data-height="200"	data-longtitle="true"
+					onclick="presionar()">
 						<script>
+						var sehapresionado=false;
 								function onSuccess(googleUser) {
 							        // Useful data for your client-side scripts:
+							        	if(sehapresionado){
 							        var profile = googleUser.getBasicProfile();
 							        var id = profile.getId();
 							        var email= profile.getEmail();
 							        loginCuentaRedSocial(email, id);
+							        	}
 							      }
 
 								function onSignIn(googleUser) {
 										console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
 										console.log('Email:  ' + googleUser.getBasicProfile().getEmail());
-										loginCuentaRedSocial(googleUser.getBasicProfile().getEmail(), googleUser.getBasicProfile().getID());
+										//loginCuentaRedSocial(googleUser.getBasicProfile().getEmail(), googleUser.getBasicProfile().getID());
 									}
 								
 								function onFailure(error) {
 										console.log(error);
+								}
+								function presionar(){
+									sehapresionado=true;
 								}
 								
 								function renderButton() {
@@ -72,6 +78,7 @@
 											'onfailure' : onFailure
 										});
 									}
+								
 						</script>
 					</div>
 								
@@ -93,23 +100,6 @@
 
 </body>
 
-<script>
-	function leerCookie() {
-		var lista = document.cookie.split(";");
-		
-		for (i in lista) {
-			var busca = lista[i].search("cookiePass");
-			if (busca > -1) {
-				micookie = lista[i]
-			}
-		}
-		
-		var igual = micookie.indexOf("=");
-		var valor = micookie.substring(igual + 1);
-		document.getElementById("pwd1").value = "hola";
-	}
-</script>
-		
 <script>
 
 //This is called with the results from from FB.getLoginStatus().

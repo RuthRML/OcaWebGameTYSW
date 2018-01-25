@@ -7,8 +7,8 @@ public class Tablero {
 	public final static String deDadoADado = "De dado a dado y tiro porque me ha tocado.";
 
 	Tablero() {
-		this.casillas = new Casilla[63];
-		for (int i = 0; i < 63; i++) {
+		this.casillas = new Casilla[65];
+		for (int i = 0; i < 65; i++) {
 			this.casillas[i] = new Casilla(i);
 			this.casillas[i].setMensaje("Casilla normal");
 		}
@@ -39,7 +39,7 @@ public class Tablero {
 		this.casillas[49].setMensaje(de_Oca_A_Oca);
 		this.casillas[53].setSiguiente(this.casillas[58]);
 		this.casillas[53].setMensaje(de_Oca_A_Oca);
-		this.casillas[58].setSiguiente(this.casillas[62]);
+		this.casillas[58].setSiguiente(this.casillas[64]);
 		this.casillas[58].setMensaje(de_Oca_A_Oca);
 
 		// Puentes
@@ -55,9 +55,9 @@ public class Tablero {
 		this.casillas[52].setMensaje(deDadoADado);
 
 		// Posada, pozo y cárcel
-		this.casillas[18].setTurnosSinTirar(3);
-		this.casillas[30].setTurnosSinTirar(3);
-		this.casillas[51].setTurnosSinTirar(3);
+		this.casillas[18].setTurnosSinTirar(2);
+		this.casillas[30].setTurnosSinTirar(2);
+		this.casillas[51].setTurnosSinTirar(2);
 	}
 
 	Casilla tirarDado(Usuario jugador, int dado) {

@@ -200,7 +200,7 @@ Tablero.prototype.crearCasillas = function() {
 	var muerte = 57;
 	var dados = [ 25, 52 ];
 	var salida = 0;
-	var meta = 63;
+	var meta = 64;
 
 	for (var i = 0; i < ocas.length; i++) {
 		this.casillas[ocas[i]].tipo = "OCA";

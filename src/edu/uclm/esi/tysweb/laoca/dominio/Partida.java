@@ -41,6 +41,10 @@ public class Partida {
 	public void add(Usuario jugador) {
 		this.jugadores.add(jugador);
 	}
+	
+	public void setJugadorConElTurno(int jugadorConElTurno) {
+		this.jugadorConElTurno = jugadorConElTurno;
+	}
 
 	public boolean isReady() {
 		return this.jugadores.size() == this.numeroDeJugadores;
