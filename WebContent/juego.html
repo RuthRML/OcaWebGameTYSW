@@ -29,6 +29,11 @@
 					<h3>Partida ID:</h3><span id="idPartida"></span>
 					<h4>Jugando como:</h4><span id="nombreJugador"></span>
 					<br>
+					<input type="number" class="form-control" id="numeroDado"
+						placeholder="Número para el dado"
+						title="Introduce número de dado"
+						min="1" max="6"></input>
+						<br>
 					<button class="btn btn-outline-primary" id="btnDado" onclick="event.preventDefault(); tirarDado()">
 						<img src="imagenes/die.png">
 						<p>¡Lanzar dado!</p>
@@ -43,6 +48,9 @@
 						style="text-align: center; text-transform: uppercase; font-weight: bold;">Información de la partida</p>
 					<p>
 						El turno es de: <span id="jugadorTurno"></span>
+					</p>
+					<p>
+						La partida la ha ganado: <span id="jugadorGanador"></span>
 					</p>
 					<hr>
 					<p
@@ -82,17 +90,22 @@
 		function tirarDado(){
 			if(time != null){
 				clearTimeout(time);
-			}			
-			var numero = Math.floor(Math.random() * (6 - 1 + 1)) + 1;
-			var p={
-					tipo:'DADO',
-					idPartida : sessionStorage.getItem("idPartida"),
-					nombreJugador : sessionStorage.getItem("nombre"),
-					puntos : numero					
-			};
-			
-			ws.send(JSON.stringify(p));
-			console.log(p.nombreJugador +" ha sacado un " + numero);
+			}
+			//var numero = Math.floor(Math.random() * (6 - 1 + 1)) + 1;
+			var numero = document.getElementById("numeroDado").value;
+			if(numero != null){
+				var p={
+						tipo:'DADO',
+						idPartida : sessionStorage.getItem("idPartida"),
+						nombreJugador : sessionStorage.getItem("nombre"),
+						puntos : numero					
+				};
+				
+				ws.send(JSON.stringify(p));
+				console.log(p.nombreJugador +" ha sacado un " + numero);
+			}else{
+				alert("Por favor, introduce número de dado para poder tirar.");
+			}
 			
 			return numero;
 			

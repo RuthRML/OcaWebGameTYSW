@@ -135,6 +135,7 @@ function conectarWebSocket() {
 				console.log(idPartida);
 				console.log(jugadorQueTiroElDado);
 				console.log(mensajeAdicional);
+				document.getElementById("jugadorGanador").innerHTML = ganador;
 
 				if (destinoInicial != null && destinoFinal == null) {
 					tablero.actualizarFichas(jugadorQueTiroElDado, casillaOrigen, destinoInicial);
@@ -149,14 +150,16 @@ function conectarWebSocket() {
 			}
 
 			if (ganador != null) {
-				alert("Ha ganado " + ganador);
-				sessionStorage.removeItem("idPartida");
-				ws.close();
-				if (sessionStorage.getItem("correo") != null) {
-					pasarVariable("lobby.html", "partida");
-				} else {
-					window.location.href = "lobby.html";
-				}
+				//alert("Ha ganado " + ganador);
+				var timeGanador = setTimeout(function() {
+					sessionStorage.removeItem("idPartida");
+					ws.close();
+					if (sessionStorage.getItem("correo") != null) {
+						pasarVariable("lobby.html", "partida");
+					} else {
+						window.location.href = "lobby.html";
+					}
+				}, 4000);
 			}
 
 		} else if (mensaje.tipo == "EXPULSADO") {

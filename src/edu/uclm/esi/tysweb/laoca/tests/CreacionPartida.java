@@ -1,24 +1,15 @@
 package edu.uclm.esi.tysweb.laoca.tests;
 
-import java.util.regex.Pattern;
 import java.util.concurrent.TimeUnit;
 import org.junit.*;
 import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.Select;
-
-import edu.uclm.esi.tysweb.laoca.dominio.Manager;
-import edu.uclm.esi.tysweb.laoca.dominio.Partida;
-import edu.uclm.esi.tysweb.laoca.dominio.Usuario;
 
 public class CreacionPartida {
   private WebDriver driver;
   private WebDriver driver2;
   private String baseUrl;
-  private boolean acceptNextAlert = true;
   private StringBuffer verificationErrors = new StringBuffer();
   private String jugadorA = "Prueba0";
   private String jugadorB = "Prueba1";
@@ -42,78 +33,164 @@ public class CreacionPartida {
     driver.findElement(By.id("nombre")).sendKeys(jugadorA);
     driver.findElement(By.id("numero")).clear();
     driver.findElement(By.id("numero")).sendKeys("2");
-    Usuario userA = Manager.get().crearPartida(jugadorA, 2);
-    driver.get(baseUrl + "/OcaWebGameTYSW/juego.html");    
+    driver.findElement(By.id("btnCrearPartida")).click();
     
-    
-    Thread.sleep(1000);
+    Thread.sleep(2000);
     
     driver2.get(baseUrl + "/OcaWebGameTYSW/lobby.html");
     driver2.findElement(By.id("nombre")).clear();
     driver2.findElement(By.id("nombre")).sendKeys(jugadorB);
-    Usuario userB = Manager.get().addJugador(jugadorB);
-    driver2.get(baseUrl + "/OcaWebGameTYSW/juego.html");  
+    driver2.findElement(By.id("btnUnirse")).click();
     
-    
-    Thread.sleep(1000);
-    
-    if(userA.getPartida().getId().equals(userB.getPartida().getId())) {
-	    Partida partida = Manager.get().getPartidasEnJuego().get(userA.getPartida().getId());
-	    partida.comenzar();
-	    partida.setJugadorConElTurno(0); // El turno inicial es para A
+    Thread.sleep(2000);
 	    
-	    	// Turno Jugador A
-	    	partida.tirarDado(jugadorA, 4); // Origen: 0, Final: 9 (Oca)
-	    	partida.tirarDado(jugadorA, 3); // Origen: 9, Final: 5 (Puente)
-	    	partida.tirarDado(jugadorA, 3); // Origen: 5, Final: 13 (Oca)
-	    	partida.tirarDado(jugadorA, 1); // Origen: 13, Final: 14
-	    	
-	    	// Turno Jugador B
-	    	partida.tirarDado(jugadorB, 1); // Origen: 0, Final: 1
-	    	
-	    	// Turno Jugador A
-	    	partida.tirarDado(jugadorA, 4); // Origen: 14, Final: 18 (Taberna = 3 turnos sin tirar)
-	    	
-	    	// Turno Jugador B
-	    	partida.tirarDado(jugadorB, 4); // Origen: 1, Final: 11 (Puente)
-	    	partida.tirarDado(jugadorB, 1); // Origen: 11, Final: 12
-	    	partida.tirarDado(jugadorB, 5); // Origen: 12, Final: 22 (Oca)
-	    	partida.tirarDado(jugadorB, 3); // Origen: 22, Final: 52 (Dados)
-	    	partida.tirarDado(jugadorB, 2); // Origen: 52, Final: 54
-	    	partida.tirarDado(jugadorB, 1); // Origen: 54, Final: 55
-	    	
-	    	// Turno Jugador A
-	    	partida.tirarDado(jugadorA, 4); // Origen: 18, Final: 26 (Oca)
-	    	partida.tirarDado(jugadorA, 5); // Origen: 26, Final: 35 (Oca)
-	    	partida.tirarDado(jugadorA, 5); // Origen: 35, Final: 44 (Oca)
-	    	partida.tirarDado(jugadorA, 5); // Origen: 44, Final: 53 (Oca)
-	    	partida.tirarDado(jugadorA, 1); // Origen: 53, Final: 54
-	    	
-	    	// Turno Jugador B
-	    	partida.tirarDado(jugadorB, 6); // Origen: 55, Final: 61
-	    	
-	    	// Turno Jugador A
-	    	partida.tirarDado(jugadorA, 1); // Origen: 54, Final: 55
-	    	
-	    	// Turno Jugador B, cambiado el dado para poder llegar a meta y pasarse 1
-	    	partida.tirarDado(jugadorB, 4); // Origen: 61, Final: 63
-	    	
-	    	// Turno Jugador A
-	    	partida.tirarDado(jugadorA, 4); // Origen: 55, Final: 59
-	    	
-	    	// Turno Jugador B
-	    	partida.tirarDado(jugadorB, 1); // Origen: 63, Final: 64 	
-	    	
-	    	String ganador = partida.getGanador().getNombre();
-	    	
-	    	try {
-	    		assertEquals(jugadorB, ganador);
-	    	}catch(Error e) {
-	    		verificationErrors.append(e.toString());
-	    	}
-
-    }
+	// Turno Jugador A
+    driver.findElement(By.id("numeroDado")).clear();
+    driver.findElement(By.id("numeroDado")).sendKeys("4"); // Origen: 0, Final: 9 (Oca)
+    driver.findElement(By.id("btnDado")).click();
     
+    Thread.sleep(2000);
+    
+    driver.findElement(By.id("numeroDado")).clear();
+    driver.findElement(By.id("numeroDado")).sendKeys("3"); // Origen: 9, Final: 5 (Puente)
+    driver.findElement(By.id("btnDado")).click();
+    
+    Thread.sleep(2000);
+    
+    driver.findElement(By.id("numeroDado")).clear();
+    driver.findElement(By.id("numeroDado")).sendKeys("3"); // Origen: 5, Final: 13 (Oca)
+    driver.findElement(By.id("btnDado")).click();
+    
+    Thread.sleep(2000);
+    
+    driver.findElement(By.id("numeroDado")).clear();
+    driver.findElement(By.id("numeroDado")).sendKeys("1"); // Origen: 13, Final: 14
+    driver.findElement(By.id("btnDado")).click();
+    
+    Thread.sleep(2000);
+	    	
+	// Turno Jugador B
+    driver2.findElement(By.id("numeroDado")).clear();
+    driver2.findElement(By.id("numeroDado")).sendKeys("1"); // Origen: 0, Final: 1
+    driver2.findElement(By.id("btnDado")).click();
+    
+    Thread.sleep(2000);
+	    	
+	// Turno Jugador A
+    driver.findElement(By.id("numeroDado")).clear();
+    driver.findElement(By.id("numeroDado")).sendKeys("4"); // Origen: 14, Final: 18 (Taberna = 3 turnos sin tirar)
+    driver.findElement(By.id("btnDado")).click();
+    
+    Thread.sleep(2000);
+	    	
+	// Turno Jugador B
+    driver2.findElement(By.id("numeroDado")).clear();
+    driver2.findElement(By.id("numeroDado")).sendKeys("4"); // Origen: 1, Final: 11 (Puente)
+    driver2.findElement(By.id("btnDado")).click();
+    
+    Thread.sleep(2000);
+    
+    driver2.findElement(By.id("numeroDado")).clear();
+    driver2.findElement(By.id("numeroDado")).sendKeys("1"); // Origen: 11, Final: 12
+    driver2.findElement(By.id("btnDado")).click();
+    
+    Thread.sleep(2000);
+    
+    driver2.findElement(By.id("numeroDado")).clear();
+    driver2.findElement(By.id("numeroDado")).sendKeys("5"); // Origen: 12, Final: 22 (Oca)
+    driver2.findElement(By.id("btnDado")).click();
+    
+    Thread.sleep(2000);
+    
+    driver2.findElement(By.id("numeroDado")).clear();
+    driver2.findElement(By.id("numeroDado")).sendKeys("3"); // Origen: 22, Final: 52 (Dados)
+    driver2.findElement(By.id("btnDado")).click();
+    
+    Thread.sleep(2000);
+    
+    driver2.findElement(By.id("numeroDado")).clear();
+    driver2.findElement(By.id("numeroDado")).sendKeys("2"); // Origen: 52, Final: 54
+    driver2.findElement(By.id("btnDado")).click();
+    
+    Thread.sleep(2000);
+    
+    driver2.findElement(By.id("numeroDado")).clear();
+    driver2.findElement(By.id("numeroDado")).sendKeys("1"); // Origen: 54, Final: 55
+    driver2.findElement(By.id("btnDado")).click();
+    
+    Thread.sleep(2000);
+	    	
+	// Turno Jugador A
+    driver.findElement(By.id("numeroDado")).clear();
+    driver.findElement(By.id("numeroDado")).sendKeys("4"); // Origen: 18, Final: 26 (Oca)
+    driver.findElement(By.id("btnDado")).click();
+    
+    Thread.sleep(2000);
+    
+    driver.findElement(By.id("numeroDado")).clear();
+    driver.findElement(By.id("numeroDado")).sendKeys("5"); // Origen: 26, Final: 35 (Oca)
+    driver.findElement(By.id("btnDado")).click();
+    
+    Thread.sleep(2000);
+    
+    driver.findElement(By.id("numeroDado")).clear();
+    driver.findElement(By.id("numeroDado")).sendKeys("5"); // Origen: 35, Final: 44 (Oca)
+    driver.findElement(By.id("btnDado")).click();
+    
+    Thread.sleep(2000);
+    
+    driver.findElement(By.id("numeroDado")).clear();
+    driver.findElement(By.id("numeroDado")).sendKeys("5"); // Origen: 44, Final: 53 (Oca)
+    driver.findElement(By.id("btnDado")).click();
+    
+    Thread.sleep(2000);
+    
+    driver.findElement(By.id("numeroDado")).clear();
+    driver.findElement(By.id("numeroDado")).sendKeys("1"); // Origen: 53, Final: 54
+    driver.findElement(By.id("btnDado")).click();
+    
+    Thread.sleep(2000);
+	    	
+	// Turno Jugador B
+    driver2.findElement(By.id("numeroDado")).clear();
+    driver2.findElement(By.id("numeroDado")).sendKeys("6"); // Origen: 55, Final: 61
+    driver2.findElement(By.id("btnDado")).click();
+    
+    Thread.sleep(2000);
+	    	
+	// Turno Jugador A
+    driver.findElement(By.id("numeroDado")).clear();
+    driver.findElement(By.id("numeroDado")).sendKeys("1"); // Origen: 54, Final: 55
+    driver.findElement(By.id("btnDado")).click();
+    
+    Thread.sleep(2000);
+	    	
+	// Turno Jugador B, cambiado el número de dado para poder llegar a meta (que es diferente) y pasarse 1
+    driver2.findElement(By.id("numeroDado")).clear();
+    driver2.findElement(By.id("numeroDado")).sendKeys("4"); // Origen: 61, Final: 63
+    driver2.findElement(By.id("btnDado")).click();
+    
+    Thread.sleep(2000);
+	
+	// Turno Jugador A
+    driver.findElement(By.id("numeroDado")).clear();
+    driver.findElement(By.id("numeroDado")).sendKeys("4"); // Origen: 55, Final: 59
+    driver.findElement(By.id("btnDado")).click();
+    
+    Thread.sleep(2000);
+	
+	// Turno Jugador B
+    driver2.findElement(By.id("numeroDado")).clear();
+    driver2.findElement(By.id("numeroDado")).sendKeys("1"); // Origen: 63, Final: 64 (Meta)
+    driver2.findElement(By.id("btnDado")).click();
+	
+	String ganador = driver.findElement(By.id("jugadorGanador")).getText();
+	    	
+	try {
+		assertEquals(jugadorB, ganador);
+	}catch(Error e) {
+		verificationErrors.append(e.toString());
+	} 
     
   }
 
@@ -124,39 +201,6 @@ public class CreacionPartida {
     String verificationErrorString = verificationErrors.toString();
     if (!"".equals(verificationErrorString)) {
       fail(verificationErrorString);
-    }
-  }
-
-  private boolean isElementPresent(By by) {
-    try {
-      driver.findElement(by);
-      return true;
-    } catch (NoSuchElementException e) {
-      return false;
-    }
-  }
-
-  private boolean isAlertPresent() {
-    try {
-      driver.switchTo().alert();
-      return true;
-    } catch (NoAlertPresentException e) {
-      return false;
-    }
-  }
-
-  private String closeAlertAndGetItsText() {
-    try {
-      Alert alert = driver.switchTo().alert();
-      String alertText = alert.getText();
-      if (acceptNextAlert) {
-        alert.accept();
-      } else {
-        alert.dismiss();
-      }
-      return alertText;
-    } finally {
-      acceptNextAlert = true;
     }
   }
 }
